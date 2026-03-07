@@ -1,8 +1,6 @@
-# 你给 Codex 的“总任务说明”
+Read PROJECT_SPEC.md, AGENTS.md, docs/architecture.md, docs/data-model.md, docs/workflows.md, and docs/acceptance.md first. Treat them as the system of record. Then implement the project incrementally, keeping the repository runnable at every step. Prefer building legible artifacts, strong validation, and feedback loops over clever hidden logic.
 
-下面这段可以直接发给 Codex。它会比“帮我做一个自增长知识库”强太多，因为它把**目标、边界、架构、数据模型、交付物、工程风格**都写清楚了。Codex 本来就适合做多步骤、长时程、端到端的工程任务；OpenAI 官方也把 Codex定位为能在 cloud/worktrees 里并行完成功能、重构、迁移和复杂开发工作的 agent。([OpenAI][4])
 
-```text
 You are building a new project called MindVault.
 
 Before coding, read these files and treat them as the system of record:
@@ -139,18 +137,4 @@ Also create a reusable Codex skill for this repository called mindvault-builder 
 
 ---
 
-# 最后一句最重要
-
-你现在最该给 Codex 的，不是“多一点描述”，而是：
-
-**把你的想法变成仓库里的结构化真相。**
-
-Codex 在长任务里最强的地方，不是猜你想什么，而是**在一个写清楚意图、规则、完成标准、反馈回路的环境里持续执行**。这也是 OpenAI 在 Codex 工程实践和提示指南里反复强调的方向。([OpenAI Developers][2])
-
-如果你愿意，我下一条可以直接继续给你补两样东西：
-一份 `README.md` 初稿，和一份给 Codex 的“第一阶段开发任务单”。
-
-[1]: https://openai.com/index/harness-engineering/ "Harness engineering: leveraging Codex in an agent-first world | OpenAI"
-[2]: https://developers.openai.com/cookbook/examples/gpt-5/codex_prompting_guide/ "Codex Prompting Guide"
-[3]: https://developers.openai.com/blog/run-long-horizon-tasks-with-codex/ "Run long horizon tasks with Codex"
-[4]: https://openai.com/codex/ "Codex | AI Coding Partner from OpenAI | OpenAI"
+# 最后一句最重要 **把你的想法变成仓库里的结构化真相。**
