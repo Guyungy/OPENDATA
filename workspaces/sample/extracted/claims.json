@@ -1,6 +1,6 @@
 [
   {
-    "id": "clm_2eee4981e749",
+    "id": "clm_ec900e94e7d0",
     "workspace_id": "sample",
     "subject": "Nimbus",
     "predicate": "mentions",
@@ -8,17 +8,17 @@
     "claim_text": "Nimbus acquired Atlas Labs in 2025",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_0dae9ad1da11",
-      "chunk_id": "chk_99a780945912"
+      "source_id": "src_4850ff21266c",
+      "chunk_id": "chk_3daed44786fd"
     },
     "speaker": "Alice",
-    "claim_time": "2026-03-07T11:33:59.258374+00:00",
+    "claim_time": "2026-03-07T11:52:45.257150+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_cd0d241f0cfe",
+    "id": "clm_30722430ebf2",
     "workspace_id": "sample",
     "subject": "I",
     "predicate": "mentions",
@@ -26,17 +26,17 @@
     "claim_text": "I think the merger launched a new platform called Orbit",
     "claim_type": "opinion",
     "source_ref": {
-      "source_id": "src_0dae9ad1da11",
-      "chunk_id": "chk_cba1a42a70f5"
+      "source_id": "src_4850ff21266c",
+      "chunk_id": "chk_645e19288b07"
     },
     "speaker": "Bob",
-    "claim_time": "2026-03-07T11:33:59.259439+00:00",
+    "claim_time": "2026-03-07T11:52:45.257362+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_6b751cec8929",
+    "id": "clm_3017cf4b8137",
     "workspace_id": "sample",
     "subject": "Maybe",
     "predicate": "mentions",
@@ -44,17 +44,17 @@
     "claim_text": "Maybe the timeline is uncertain",
     "claim_type": "uncertain",
     "source_ref": {
-      "source_id": "src_0dae9ad1da11",
-      "chunk_id": "chk_9d5156055bc5"
+      "source_id": "src_4850ff21266c",
+      "chunk_id": "chk_602ab392e436"
     },
     "speaker": "Cara",
-    "claim_time": "2026-03-07T11:33:59.259533+00:00",
+    "claim_time": "2026-03-07T11:52:45.257426+00:00",
     "confidence": 0.5,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_066c1440327f",
+    "id": "clm_17f7e70fbc4f",
     "workspace_id": "sample",
     "subject": "Briefing",
     "predicate": "mentions",
@@ -62,17 +62,17 @@
     "claim_text": "Briefing",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_2cbf0333cb11",
-      "chunk_id": "chk_fc6ccdef9461"
+      "source_id": "src_6ef07315e8f1",
+      "chunk_id": "chk_860b16bd0620"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-07T11:33:59.259581+00:00",
+    "claim_time": "2026-03-07T11:52:45.257451+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_9d53cb7fcf0e",
+    "id": "clm_bd575afdf995",
     "workspace_id": "sample",
     "subject": "Nimbus",
     "predicate": "mentions",
@@ -80,17 +80,17 @@
     "claim_text": "Nimbus works at GlobalAlliance according to one source",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_2cbf0333cb11",
-      "chunk_id": "chk_d2488edebb07"
+      "source_id": "src_6ef07315e8f1",
+      "chunk_id": "chk_0da81365d6fb"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-07T11:33:59.259658+00:00",
+    "claim_time": "2026-03-07T11:52:45.257474+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_29702adfdab2",
+    "id": "clm_197cc197fc8d",
     "workspace_id": "sample",
     "subject": "Atlas",
     "predicate": "mentions",
@@ -98,17 +98,17 @@
     "claim_text": "Atlas released an integration update",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_2cbf0333cb11",
-      "chunk_id": "chk_cc90d53e9a57"
+      "source_id": "src_6ef07315e8f1",
+      "chunk_id": "chk_116223aa008b"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-07T11:33:59.259752+00:00",
+    "claim_time": "2026-03-07T11:52:45.257505+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_7a6ef4b3d37b",
+    "id": "clm_e09ec3790d59",
     "workspace_id": "sample",
     "subject": "Nimbus",
     "predicate": "mentions",
@@ -116,17 +116,17 @@
     "claim_text": "Nimbus acquired Atlas Labs to expand enterprise AI capabilities",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_526cb7967e8e",
-      "chunk_id": "chk_92ac1df455f9"
+      "source_id": "src_d83aff79bf82",
+      "chunk_id": "chk_d7088bae8f87"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-07T11:33:59.259810+00:00",
+    "claim_time": "2026-03-07T11:52:45.257531+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_fa0768b441bc",
+    "id": "clm_c55fdbb2174e",
     "workspace_id": "sample",
     "subject": "The",
     "predicate": "mentions",
@@ -134,11 +134,11 @@
     "claim_text": "The company announced Orbit in Berlin during the annual summit",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_526cb7967e8e",
-      "chunk_id": "chk_34f8a4fcfc21"
+      "source_id": "src_d83aff79bf82",
+      "chunk_id": "chk_7ce77afd67de"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-07T11:33:59.259954+00:00",
+    "claim_time": "2026-03-07T11:52:45.257580+00:00",
     "confidence": 0.75,
     "verdict": "unverified",
     "status": "active"

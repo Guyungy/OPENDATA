@@ -54,3 +54,12 @@ pytest
 ## Notes
 
 Business intelligence remains inspectable in declarative policy files and artifacts, while Python code handles runtime orchestration, persistence, and validation.
+
+## Codex development workflow
+
+For long-horizon agent work, use repository docs (not one-off chat prompts) as the control plane:
+- `docs/codex-ops.md` for the control prompt + task template.
+- `docs/roadmap.md` for milestone sequencing.
+- `docs/status.md` for current progress and next tasks.
+
+This keeps milestone boundaries, validation, and review-queue behavior explicit and recoverable between runs.
