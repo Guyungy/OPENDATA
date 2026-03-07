@@ -56,3 +56,24 @@ Later versions should support:
 - scheduled ingestion
 - queue processing
 - recurring summaries
+
+
+## Review consumption workflow
+
+The governance loop is closed through explicit review decisions:
+
+1. read `governance/review_queue.json`
+2. apply a decision (`accepted`, `rejected`, `deferred`) to one review item
+3. persist decision record in `governance/review_decisions.json`
+4. update review item status and `updated_at` in `governance/review_queue.json`
+5. apply effects to canonical/governance artifacts by review type:
+   - `entity_merge`: create/merge canonical entity when accepted
+   - `alias`: update alias map on acceptance, persist rejection blocks on reject
+   - `conflict`: resolve conflict and selected canonical value when accepted
+   - `schema_promotion`: promote or reject schema candidate lifecycle state
+   - `placeholder_relevance`: apply placeholder lifecycle action or preserve/defer
+6. write review outcome summary artifact (`governance/review_outcomes.json`)
+7. reflect outcomes in dashboard/changelog artifacts
+
+This flow is available through CLI:
+- `python -m mindvault review --workspace <workspace> --review-item <id> --decision <accepted|rejected|deferred> --decided-by <actor> --rationale <text>`

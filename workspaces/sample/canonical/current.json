@@ -7,17 +7,23 @@
       "aliases": [],
       "attributes": {},
       "supporting_claims": [
+        "clm_0cba55f1e8d9",
         "clm_197cc197fc8d",
         "clm_1d158d01422f",
         "clm_29702adfdab2",
         "clm_2eee4981e749",
+        "clm_3c3d733c2fce",
         "clm_3fd5336d08c8",
+        "clm_42d124fbffc4",
+        "clm_4d17adc77954",
+        "clm_676117b34594",
         "clm_75d6c917be8d",
         "clm_770a6cee1f3c",
         "clm_7a6ef4b3d37b",
         "clm_8fc547760405",
         "clm_aa8bb13cdfa6",
         "clm_aad35509b0ae",
+        "clm_b644f3a43296",
         "clm_cf7f45c2e8b3",
         "clm_e09ec3790d59",
         "clm_eaa56956e06e",
@@ -26,7 +32,7 @@
       "source_refs": [],
       "confidence": 0.6,
       "created_at": "2026-03-07T11:33:38.022606+00:00",
-      "updated_at": "2026-03-07T12:21:42.123487+00:00",
+      "updated_at": "2026-03-07T12:50:35.642017+00:00",
       "status": "active",
       "intent_alignment": {
         "goal": "Build an organization-centric knowledge base for market and product updates.",
@@ -41,11 +47,15 @@
       "attributes": {},
       "supporting_claims": [
         "clm_2eee4981e749",
+        "clm_3c3d733c2fce",
         "clm_3fd5336d08c8",
+        "clm_42d124fbffc4",
+        "clm_4d17adc77954",
         "clm_770a6cee1f3c",
         "clm_7a6ef4b3d37b",
         "clm_aa8bb13cdfa6",
         "clm_aad35509b0ae",
+        "clm_b644f3a43296",
         "clm_cf7f45c2e8b3",
         "clm_e09ec3790d59",
         "clm_eaa56956e06e",
@@ -54,7 +64,7 @@
       "source_refs": [],
       "confidence": 0.6,
       "created_at": "2026-03-07T11:33:38.022648+00:00",
-      "updated_at": "2026-03-07T12:21:42.123502+00:00",
+      "updated_at": "2026-03-07T12:50:35.642031+00:00",
       "status": "active",
       "intent_alignment": {
         "goal": "Build an organization-centric knowledge base for market and product updates.",
@@ -70,12 +80,16 @@
       "supporting_claims": [
         "clm_24b1104d218a",
         "clm_2eee4981e749",
+        "clm_3c3d733c2fce",
         "clm_3fd5336d08c8",
+        "clm_42d124fbffc4",
+        "clm_4d17adc77954",
         "clm_770a6cee1f3c",
         "clm_7a6ef4b3d37b",
         "clm_9d53cb7fcf0e",
         "clm_aa8bb13cdfa6",
         "clm_aad35509b0ae",
+        "clm_b644f3a43296",
         "clm_bd575afdf995",
         "clm_cf7f45c2e8b3",
         "clm_e09ec3790d59",
@@ -85,7 +99,7 @@
       "source_refs": [],
       "confidence": 0.6,
       "created_at": "2026-03-07T11:33:38.022674+00:00",
-      "updated_at": "2026-03-07T12:21:42.123509+00:00",
+      "updated_at": "2026-03-07T12:50:35.642039+00:00",
       "status": "active",
       "intent_alignment": {
         "goal": "Build an organization-centric knowledge base for market and product updates.",
@@ -99,6 +113,7 @@
       "aliases": [],
       "attributes": {},
       "supporting_claims": [
+        "clm_0d7fcc73c0d1",
         "clm_30722430ebf2",
         "clm_a35453c2e75b",
         "clm_ae7aa836ece7",
@@ -106,12 +121,13 @@
         "clm_c55fdbb2174e",
         "clm_cd0d241f0cfe",
         "clm_cf953783d4fb",
+        "clm_eb6fbcc202fb",
         "clm_fa0768b441bc"
       ],
       "source_refs": [],
       "confidence": 0.6,
       "created_at": "2026-03-07T11:33:38.022689+00:00",
-      "updated_at": "2026-03-07T12:21:42.123522+00:00",
+      "updated_at": "2026-03-07T12:50:35.642053+00:00",
       "status": "active",
       "intent_alignment": {
         "goal": "Build an organization-centric knowledge base for market and product updates.",
@@ -176,16 +192,18 @@
       "aliases": [],
       "attributes": {},
       "supporting_claims": [
+        "clm_0d7fcc73c0d1",
         "clm_a35453c2e75b",
         "clm_ae7aa836ece7",
         "clm_ba4bebb5d6fc",
         "clm_c55fdbb2174e",
+        "clm_eb6fbcc202fb",
         "clm_fa0768b441bc"
       ],
       "source_refs": [],
       "confidence": 0.6,
       "created_at": "2026-03-07T11:33:38.022837+00:00",
-      "updated_at": "2026-03-07T12:21:42.123515+00:00",
+      "updated_at": "2026-03-07T12:50:35.642046+00:00",
       "status": "active",
       "intent_alignment": {
         "goal": "Build an organization-centric knowledge base for market and product updates.",
@@ -199,16 +217,18 @@
       "aliases": [],
       "attributes": {},
       "supporting_claims": [
+        "clm_0d7fcc73c0d1",
         "clm_a35453c2e75b",
         "clm_ae7aa836ece7",
         "clm_ba4bebb5d6fc",
         "clm_c55fdbb2174e",
+        "clm_eb6fbcc202fb",
         "clm_fa0768b441bc"
       ],
       "source_refs": [],
       "confidence": 0.6,
       "created_at": "2026-03-07T11:33:38.022852+00:00",
-      "updated_at": "2026-03-07T12:21:42.123527+00:00",
+      "updated_at": "2026-03-07T12:50:35.642059+00:00",
       "status": "active",
       "intent_alignment": {
         "goal": "Build an organization-centric knowledge base for market and product updates.",
@@ -341,6 +361,58 @@
       "relation_type": "acquired",
       "supporting_claims": [
         "clm_770a6cee1f3c"
+      ],
+      "source_refs": [],
+      "confidence": 0.7,
+      "valid_time": "unknown",
+      "status": "active"
+    },
+    {
+      "id": "rel_61981400e77f",
+      "from_entity_id": "ent_c0d11e2cd62c",
+      "to_entity_id": "ent_d8408745ce45",
+      "relation_type": "acquired",
+      "supporting_claims": [
+        "clm_42d124fbffc4"
+      ],
+      "source_refs": [],
+      "confidence": 0.7,
+      "valid_time": "unknown",
+      "status": "active"
+    },
+    {
+      "id": "rel_9e3ce98ef5ec",
+      "from_entity_id": "ent_c0d11e2cd62c",
+      "to_entity_id": "ent_d8408745ce45",
+      "relation_type": "acquired",
+      "supporting_claims": [
+        "clm_3c3d733c2fce"
+      ],
+      "source_refs": [],
+      "confidence": 0.7,
+      "valid_time": "unknown",
+      "status": "active"
+    },
+    {
+      "id": "rel_a1b17f022ee3",
+      "from_entity_id": "ent_c0d11e2cd62c",
+      "to_entity_id": "ent_d8408745ce45",
+      "relation_type": "acquired",
+      "supporting_claims": [
+        "clm_b644f3a43296"
+      ],
+      "source_refs": [],
+      "confidence": 0.7,
+      "valid_time": "unknown",
+      "status": "active"
+    },
+    {
+      "id": "rel_27e406c7aff3",
+      "from_entity_id": "ent_c0d11e2cd62c",
+      "to_entity_id": "ent_d8408745ce45",
+      "relation_type": "acquired",
+      "supporting_claims": [
+        "clm_4d17adc77954"
       ],
       "source_refs": [],
       "confidence": 0.7,
@@ -566,21 +638,89 @@
       "source_refs": [],
       "confidence": 0.65,
       "status": "active"
+    },
+    {
+      "id": "evt_55184ea7e515",
+      "event_type": "announcement",
+      "title": "Atlas released an integration update",
+      "participants": [
+        "Atlas"
+      ],
+      "time_range": "unknown",
+      "location": "unknown",
+      "supporting_claims": [
+        "clm_0cba55f1e8d9"
+      ],
+      "source_refs": [],
+      "confidence": 0.65,
+      "status": "active"
+    },
+    {
+      "id": "evt_ea2a8752d7e4",
+      "event_type": "announcement",
+      "title": "The company announced Orbit in Berlin during the annual summit",
+      "participants": [
+        "Berlin",
+        "Orbit",
+        "The"
+      ],
+      "time_range": "unknown",
+      "location": "unknown",
+      "supporting_claims": [
+        "clm_eb6fbcc202fb"
+      ],
+      "source_refs": [],
+      "confidence": 0.65,
+      "status": "active"
+    },
+    {
+      "id": "evt_e7b8f4d76005",
+      "event_type": "announcement",
+      "title": "Atlas released an integration update",
+      "participants": [
+        "Atlas"
+      ],
+      "time_range": "unknown",
+      "location": "unknown",
+      "supporting_claims": [
+        "clm_676117b34594"
+      ],
+      "source_refs": [],
+      "confidence": 0.65,
+      "status": "active"
+    },
+    {
+      "id": "evt_1bb8348fc4a9",
+      "event_type": "announcement",
+      "title": "The company announced Orbit in Berlin during the annual summit",
+      "participants": [
+        "Berlin",
+        "Orbit",
+        "The"
+      ],
+      "time_range": "unknown",
+      "location": "unknown",
+      "supporting_claims": [
+        "clm_0d7fcc73c0d1"
+      ],
+      "source_refs": [],
+      "confidence": 0.65,
+      "status": "active"
     }
   ],
   "insights": [
     {
-      "id": "ins_12a06c8f4c68",
+      "id": "ins_8381d8fb0308",
       "title": "Run summary",
-      "text": "Goal: Build an organization-centric knowledge base for market and product updates. | Processed 4 claims and produced 13 events.",
+      "text": "Goal: Build an organization-centric knowledge base for market and product updates. | Processed 4 claims and produced 17 events.",
       "based_on": [
-        "clm_3fd5336d08c8",
-        "clm_8fc547760405",
-        "clm_770a6cee1f3c",
-        "clm_ae7aa836ece7"
+        "clm_b644f3a43296",
+        "clm_676117b34594",
+        "clm_4d17adc77954",
+        "clm_0d7fcc73c0d1"
       ],
       "confidence": 0.6,
-      "created_at": "2026-03-07T12:21:42.123614+00:00"
+      "created_at": "2026-03-07T12:50:35.642107+00:00"
     }
   ],
   "schema": {

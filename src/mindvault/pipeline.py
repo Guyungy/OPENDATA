@@ -83,17 +83,67 @@ def _record_snapshot(workspace: Path, run_id: str, canonical: dict, changelog: d
     write_json(str(workspace / "snapshots" / f"{run_id}_changelog.json"), changelog)
 
 
-def _build_changelog(prev: dict, curr: dict) -> dict:
+def _decision_summary(review_queue: list[dict], review_decisions: list[dict]) -> dict:
+    queue_counts = {"pending": 0, "accepted": 0, "rejected": 0, "deferred": 0}
+    by_type: dict[str, int] = {}
+    for item in review_queue:
+        status = item.get("status", "pending")
+        if status in queue_counts:
+            queue_counts[status] += 1
+        by_type[item["type"]] = by_type.get(item["type"], 0) + 1
+
+    effect_counts = {
+        "review_items_resolved": 0,
+        "merges_accepted": 0,
+        "aliases_accepted": 0,
+        "conflicts_resolved": 0,
+        "schema_promotions_accepted": 0,
+        "placeholders_deprecated": 0,
+        "review_items_deferred": 0,
+    }
+    for decision in review_decisions:
+        value = decision.get("decision")
+        if value in {"accepted", "rejected"}:
+            effect_counts["review_items_resolved"] += 1
+        if value == "deferred":
+            effect_counts["review_items_deferred"] += 1
+        for effect in decision.get("applied_effects", []):
+            name = effect.get("effect")
+            if name in {"entity_created_from_review", "entity_merged_from_review"}:
+                effect_counts["merges_accepted"] += 1
+            elif name == "alias_accepted":
+                effect_counts["aliases_accepted"] += 1
+            elif name == "conflict_resolved":
+                effect_counts["conflicts_resolved"] += 1
+            elif name == "schema_promoted":
+                effect_counts["schema_promotions_accepted"] += 1
+            elif name == "placeholder_deprecated":
+                effect_counts["placeholders_deprecated"] += 1
+
+    return {"queue_counts": queue_counts, "by_type": by_type, "effects": effect_counts}
+
+
+def _build_changelog(prev: dict, curr: dict, review_queue: list[dict], review_decisions: list[dict]) -> dict:
+    review_summary = _decision_summary(review_queue, review_decisions)
     return {
         "created_at": now_iso(),
         "entity_delta": len(curr.get("entities", [])) - len(prev.get("entities", [])),
         "relation_delta": len(curr.get("relations", [])) - len(prev.get("relations", [])),
         "event_delta": len(curr.get("events", [])) - len(prev.get("events", [])),
+        "review_outcomes": review_summary["effects"],
         "summary": "Canonical layer updated from extracted candidates and governance checks.",
     }
 
 
-def _render_dashboard(workspace: Path, run_id: str, stats: dict, changelog: dict, governance: dict, intent: dict) -> None:
+def _render_dashboard(
+    workspace: Path,
+    run_id: str,
+    stats: dict,
+    changelog: dict,
+    governance: dict,
+    intent: dict,
+    review_decisions: list[dict],
+) -> None:
     intent_section = ""
     if intent.get("report_preferences", {}).get("include_intent_summary", True):
         intent_section = (
@@ -105,13 +155,27 @@ def _render_dashboard(workspace: Path, run_id: str, stats: dict, changelog: dict
             f"- Preferred relation types: {', '.join(intent['preferred_relation_types']) or 'none'}\n"
         )
 
-    pending_review = [item for item in governance["review_queue"] if item["status"] == "pending"]
+    review_counts = {"pending": 0, "accepted": 0, "rejected": 0, "deferred": 0}
     review_type_counts: dict[str, int] = {}
-    for item in pending_review:
+    for item in governance["review_queue"]:
+        status = item.get("status", "pending")
+        if status in review_counts:
+            review_counts[status] += 1
         review_type_counts[item["type"]] = review_type_counts.get(item["type"], 0) + 1
+
     type_lines = "\n".join([f"- {review_type}: {count}" for review_type, count in sorted(review_type_counts.items())])
     if not type_lines:
         type_lines = "- none"
+
+    recent_decisions = review_decisions[-5:]
+    recent_lines = "\n".join(
+        [
+            f"- {item['decided_at']}: {item['review_item_id']} -> {item['decision']} ({item['status']})"
+            for item in recent_decisions
+        ]
+    )
+    if not recent_lines:
+        recent_lines = "- none"
 
     md = f"""# MindVault Dashboard
 
@@ -133,13 +197,28 @@ def _render_dashboard(workspace: Path, run_id: str, stats: dict, changelog: dict
 - Claim confidence (avg): {governance['confidence_scoring_results']['claims_avg']}
 
 ## Review Summary
-- Pending reviews: {len(pending_review)}
+- Pending reviews: {review_counts['pending']}
+- Accepted reviews: {review_counts['accepted']}
+- Rejected reviews: {review_counts['rejected']}
+- Deferred reviews: {review_counts['deferred']}
+
+### Review counts by type
 {type_lines}
+
+### Recent decisions
+{recent_lines}
 
 ## Recent Changelog
 - Entity delta: {changelog['entity_delta']}
 - Relation delta: {changelog['relation_delta']}
 - Event delta: {changelog['event_delta']}
+- Review items resolved: {changelog['review_outcomes']['review_items_resolved']}
+- Merges accepted: {changelog['review_outcomes']['merges_accepted']}
+- Aliases accepted: {changelog['review_outcomes']['aliases_accepted']}
+- Conflicts resolved: {changelog['review_outcomes']['conflicts_resolved']}
+- Schema promotions accepted: {changelog['review_outcomes']['schema_promotions_accepted']}
+- Placeholders deprecated: {changelog['review_outcomes']['placeholders_deprecated']}
+- Review items deferred: {changelog['review_outcomes']['review_items_deferred']}
 """
     (workspace / "reports" / "dashboard.md").write_text(md, encoding="utf-8")
     write_json(str(workspace / "visuals" / "knowledge_graph.json"), {"nodes": stats["entities"], "edges": stats["relations"]})
@@ -208,7 +287,8 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         workspace_id,
     )
     governance = build_governance(claims, canonical, schema_candidates, review_items, workspace_id, merge_policy)
-    changelog = _build_changelog(prev_canonical, canonical)
+    review_decisions = read_json(str(workspace / "governance" / "review_decisions.json"), default=[])
+    changelog = _build_changelog(prev_canonical, canonical, governance["review_queue"], review_decisions)
 
     validation_errors = []
     validation_errors.extend(
@@ -235,6 +315,7 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     write_json(str(workspace / "governance" / "schema_candidate_queue.json"), governance["schema_candidate_queue"])
     write_json(str(workspace / "governance" / "confidence_scoring_results.json"), governance["confidence_scoring_results"])
     write_json(str(workspace / "governance" / "review_queue.json"), governance["review_queue"])
+    write_json(str(workspace / "governance" / "review_decisions.json"), review_decisions)
 
     _record_snapshot(workspace, run_id, canonical, changelog)
 
@@ -247,7 +328,7 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         "events": len(canonical["events"]),
     }
 
-    _render_dashboard(workspace, run_id, stats, changelog, governance, intent)
+    _render_dashboard(workspace, run_id, stats, changelog, governance, intent, review_decisions)
     trace["events"].append({"stage": "render", "at": now_iso(), "stats": stats})
     write_json(str(workspace / "trace" / f"{run_id}.json"), trace)
 

@@ -230,3 +230,32 @@ Review item types:
 - conflict
 - schema_promotion
 - placeholder_relevance
+
+Review item lifecycle statuses:
+- pending
+- accepted
+- rejected
+- deferred
+
+### 14. ReviewDecision
+Represents an applied human decision for a review item.
+
+Fields:
+- id
+- review_item_id
+- workspace_id
+- decision
+- decided_at
+- decided_by
+- rationale
+- applied_effects
+- status
+
+Decision values:
+- accepted
+- rejected
+- deferred
+
+Storage artifacts:
+- governance/review_decisions.json
+- governance/review_outcomes.json

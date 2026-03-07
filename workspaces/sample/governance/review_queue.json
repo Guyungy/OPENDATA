@@ -1,12 +1,12 @@
 [
   {
-    "id": "rev_54b07a7addbf",
+    "id": "rev_c937bf9d2943",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
-    "status": "pending",
+    "status": "deferred",
     "priority": "medium",
     "target_ids": [
-      "ph_852fb477d3ee",
+      "ph_4e7943d027e6",
       "ent_d8408745ce45"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -15,17 +15,23 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
+      "clm_0cba55f1e8d9",
       "clm_197cc197fc8d",
       "clm_1d158d01422f",
       "clm_29702adfdab2",
       "clm_2eee4981e749",
+      "clm_3c3d733c2fce",
       "clm_3fd5336d08c8",
+      "clm_42d124fbffc4",
+      "clm_4d17adc77954",
+      "clm_676117b34594",
       "clm_75d6c917be8d",
       "clm_770a6cee1f3c",
       "clm_7a6ef4b3d37b",
       "clm_8fc547760405",
       "clm_aa8bb13cdfa6",
       "clm_aad35509b0ae",
+      "clm_b644f3a43296",
       "clm_cf7f45c2e8b3",
       "clm_e09ec3790d59",
       "clm_eaa56956e06e",
@@ -33,17 +39,19 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123654+00:00",
-    "updated_at": "2026-03-07T12:21:42.123654+00:00"
+    "created_at": "2026-03-07T12:50:35.642166+00:00",
+    "updated_at": "2026-03-07T12:50:47.421898+00:00",
+    "decided_at": "2026-03-07T12:50:47.421928+00:00",
+    "decided_by": "codex"
   },
   {
-    "id": "rev_3113148f18a8",
+    "id": "rev_56f2a543c3a7",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_af97aef79b09",
+      "ph_42c786277566",
       "ent_83bad3f17139"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -53,11 +61,15 @@
     ],
     "supporting_claims": [
       "clm_2eee4981e749",
+      "clm_3c3d733c2fce",
       "clm_3fd5336d08c8",
+      "clm_42d124fbffc4",
+      "clm_4d17adc77954",
       "clm_770a6cee1f3c",
       "clm_7a6ef4b3d37b",
       "clm_aa8bb13cdfa6",
       "clm_aad35509b0ae",
+      "clm_b644f3a43296",
       "clm_cf7f45c2e8b3",
       "clm_e09ec3790d59",
       "clm_eaa56956e06e",
@@ -65,17 +77,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123693+00:00",
-    "updated_at": "2026-03-07T12:21:42.123693+00:00"
+    "created_at": "2026-03-07T12:50:35.642209+00:00",
+    "updated_at": "2026-03-07T12:50:35.642209+00:00"
   },
   {
-    "id": "rev_64881bb19de6",
+    "id": "rev_8320828dd354",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_51a2eae8048f",
+      "ph_923ea889fd02",
       "ent_c0d11e2cd62c"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -86,12 +98,16 @@
     "supporting_claims": [
       "clm_24b1104d218a",
       "clm_2eee4981e749",
+      "clm_3c3d733c2fce",
       "clm_3fd5336d08c8",
+      "clm_42d124fbffc4",
+      "clm_4d17adc77954",
       "clm_770a6cee1f3c",
       "clm_7a6ef4b3d37b",
       "clm_9d53cb7fcf0e",
       "clm_aa8bb13cdfa6",
       "clm_aad35509b0ae",
+      "clm_b644f3a43296",
       "clm_bd575afdf995",
       "clm_cf7f45c2e8b3",
       "clm_e09ec3790d59",
@@ -100,17 +116,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123725+00:00",
-    "updated_at": "2026-03-07T12:21:42.123725+00:00"
+    "created_at": "2026-03-07T12:50:35.642228+00:00",
+    "updated_at": "2026-03-07T12:50:35.642228+00:00"
   },
   {
-    "id": "rev_cb76dd4558e5",
+    "id": "rev_724d4ab25093",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_33de23167a0d",
+      "ph_7f4fcf1b7516",
       "ent_af31fc3c8b7c"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -119,6 +135,7 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
+      "clm_0d7fcc73c0d1",
       "clm_30722430ebf2",
       "clm_a35453c2e75b",
       "clm_ae7aa836ece7",
@@ -126,21 +143,22 @@
       "clm_c55fdbb2174e",
       "clm_cd0d241f0cfe",
       "clm_cf953783d4fb",
+      "clm_eb6fbcc202fb",
       "clm_fa0768b441bc"
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123837+00:00",
-    "updated_at": "2026-03-07T12:21:42.123837+00:00"
+    "created_at": "2026-03-07T12:50:35.642265+00:00",
+    "updated_at": "2026-03-07T12:50:35.642265+00:00"
   },
   {
-    "id": "rev_08c9962aeb34",
+    "id": "rev_ce6c603ca0b6",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_09ddd83450b8",
+      "ph_cbb1058d040e",
       "ent_ba7c8a7f6785"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -155,17 +173,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123857+00:00",
-    "updated_at": "2026-03-07T12:21:42.123857+00:00"
+    "created_at": "2026-03-07T12:50:35.642285+00:00",
+    "updated_at": "2026-03-07T12:50:35.642285+00:00"
   },
   {
-    "id": "rev_dd75ab232ed5",
+    "id": "rev_1dbc4921ca6d",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_e1a87b84d508",
+      "ph_66153699ae04",
       "ent_3dcdf8779e04"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -180,17 +198,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123889+00:00",
-    "updated_at": "2026-03-07T12:21:42.123889+00:00"
+    "created_at": "2026-03-07T12:50:35.642303+00:00",
+    "updated_at": "2026-03-07T12:50:35.642303+00:00"
   },
   {
-    "id": "rev_af05f49208d2",
+    "id": "rev_c01b0877e593",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_91ce3b179b89",
+      "ph_e252bc47c796",
       "ent_4c99e54a0f1f"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -205,17 +223,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123914+00:00",
-    "updated_at": "2026-03-07T12:21:42.123914+00:00"
+    "created_at": "2026-03-07T12:50:35.642322+00:00",
+    "updated_at": "2026-03-07T12:50:35.642322+00:00"
   },
   {
-    "id": "rev_e16c2ffc5f36",
+    "id": "rev_ad003a3a1fc3",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_ac6eb7a105b5",
+      "ph_8acd32e36829",
       "ent_5d611c519fa7"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -224,25 +242,27 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
+      "clm_0d7fcc73c0d1",
       "clm_a35453c2e75b",
       "clm_ae7aa836ece7",
       "clm_ba4bebb5d6fc",
       "clm_c55fdbb2174e",
+      "clm_eb6fbcc202fb",
       "clm_fa0768b441bc"
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123933+00:00",
-    "updated_at": "2026-03-07T12:21:42.123933+00:00"
+    "created_at": "2026-03-07T12:50:35.642357+00:00",
+    "updated_at": "2026-03-07T12:50:35.642357+00:00"
   },
   {
-    "id": "rev_8dcf684ae0cd",
+    "id": "rev_211dd1066bca",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_efb47fd1cc64",
+      "ph_8ad1933b2314",
       "ent_456b584e915e"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -251,25 +271,27 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
+      "clm_0d7fcc73c0d1",
       "clm_a35453c2e75b",
       "clm_ae7aa836ece7",
       "clm_ba4bebb5d6fc",
       "clm_c55fdbb2174e",
+      "clm_eb6fbcc202fb",
       "clm_fa0768b441bc"
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-07T12:21:42.123951+00:00",
-    "updated_at": "2026-03-07T12:21:42.123951+00:00"
+    "created_at": "2026-03-07T12:50:35.642378+00:00",
+    "updated_at": "2026-03-07T12:50:35.642378+00:00"
   },
   {
-    "id": "rev_e9e04682a2bb",
+    "id": "rev_52b2f35c6a92",
     "type": "schema_promotion",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "schc_86e808deb293"
+      "schc_879f6fcb2616"
     ],
     "reason": "schema_candidate_requires_review",
     "supporting_artifacts": [
@@ -279,17 +301,17 @@
     "supporting_claims": [],
     "confidence": 0.5,
     "suggested_action": "Review schema candidate and approve or reject promotion.",
-    "created_at": "2026-03-07T12:21:42.123976+00:00",
-    "updated_at": "2026-03-07T12:21:42.123976+00:00"
+    "created_at": "2026-03-07T12:50:35.642402+00:00",
+    "updated_at": "2026-03-07T12:50:35.642402+00:00"
   },
   {
-    "id": "rev_65052238f68d",
+    "id": "rev_3343919c1740",
     "type": "schema_promotion",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "schc_84972f01d16e"
+      "schc_b8d44fe44247"
     ],
     "reason": "schema_candidate_requires_review",
     "supporting_artifacts": [
@@ -299,17 +321,17 @@
     "supporting_claims": [],
     "confidence": 0.5,
     "suggested_action": "Review schema candidate and approve or reject promotion.",
-    "created_at": "2026-03-07T12:21:42.123986+00:00",
-    "updated_at": "2026-03-07T12:21:42.123986+00:00"
+    "created_at": "2026-03-07T12:50:35.642432+00:00",
+    "updated_at": "2026-03-07T12:50:35.642432+00:00"
   },
   {
-    "id": "rev_f50f36cc5bad",
+    "id": "rev_354def1e1a89",
     "type": "schema_promotion",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "schc_379356b4c73c"
+      "schc_72ffa035ce8d"
     ],
     "reason": "schema_candidate_requires_review",
     "supporting_artifacts": [
@@ -319,7 +341,7 @@
     "supporting_claims": [],
     "confidence": 0.5,
     "suggested_action": "Review schema candidate and approve or reject promotion.",
-    "created_at": "2026-03-07T12:21:42.123995+00:00",
-    "updated_at": "2026-03-07T12:21:42.123995+00:00"
+    "created_at": "2026-03-07T12:50:35.642462+00:00",
+    "updated_at": "2026-03-07T12:50:35.642462+00:00"
   }
 ]

@@ -6,7 +6,7 @@ This repository implements a runnable incremental pipeline that separates:
 - `raw` (immutable source records)
 - `extracted` (claims and candidates)
 - `canonical` (resolved entities/relations/events/insights/schema/taxonomy)
-- `governance` (conflicts/placeholders/schema queue/review queue/confidence)
+- `governance` (conflicts/placeholders/schema queue/review queue/review decisions/confidence)
 
 ## Quick start
 
@@ -45,6 +45,9 @@ Each workspace can define merge policy in `config/merge_policy.json`:
 
 When policy requires review, unresolved low-confidence decisions are routed into
 `governance/review_queue.json` instead of being silently canonicalized.
+
+Review outcomes are persisted in `governance/review_decisions.json`, with applied effects
+fed back into canonical/governance artifacts and summarized in dashboard/changelog outputs.
 
 
 This produces workspace artifacts under:

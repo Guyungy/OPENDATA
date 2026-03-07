@@ -1,0 +1,34 @@
+[
+  {
+    "id": "rdec_720629929b04",
+    "review_item_id": "rev_929c696ba877",
+    "workspace_id": "sample",
+    "decision": "deferred",
+    "decided_at": "2026-03-07T12:49:00.883606+00:00",
+    "decided_by": "codex",
+    "rationale": "Need more evidence before placeholder action",
+    "applied_effects": [
+      {
+        "effect": "placeholder_deferred",
+        "placeholder_id": "ph_6b3b40b4ffc3"
+      }
+    ],
+    "status": "applied"
+  },
+  {
+    "id": "rdec_fbb7992ed691",
+    "review_item_id": "rev_c937bf9d2943",
+    "workspace_id": "sample",
+    "decision": "deferred",
+    "decided_at": "2026-03-07T12:50:47.422631+00:00",
+    "decided_by": "codex",
+    "rationale": "Need more evidence before placeholder action",
+    "applied_effects": [
+      {
+        "effect": "placeholder_deferred",
+        "placeholder_id": "ph_4e7943d027e6"
+      }
+    ],
+    "status": "applied"
+  }
+]
