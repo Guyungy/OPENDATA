@@ -1,12 +1,12 @@
 {
-  "run_id": "run_20260307_122142",
+  "run_id": "run_20260307_125035",
   "stats": {
     "sources": 3,
     "chunks": 8,
     "claims": 4,
     "entities": 9,
-    "relations": 10,
-    "events": 13
+    "relations": 14,
+    "events": 17
   },
   "intent": {
     "goal": "Build an organization-centric knowledge base for market and product updates.",

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from mindvault.pipeline import run_pipeline
+from mindvault.review import apply_review_decision
 
 
 def test_pipeline_generates_all_artifacts(tmp_path: Path) -> None:
@@ -32,6 +33,7 @@ def test_pipeline_generates_all_artifacts(tmp_path: Path) -> None:
         "canonical/current.json",
         "governance/conflicts.json",
         "governance/review_queue.json",
+        "governance/review_decisions.json",
         "snapshots",
         "reports/dashboard.md",
         "trace",
@@ -183,3 +185,249 @@ def test_schema_candidate_enters_review_queue(tmp_path: Path) -> None:
 
     review_queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
     assert any(item["type"] == "schema_promotion" for item in review_queue)
+
+
+def test_accept_entity_merge_updates_canonical_and_review_status(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+    (workspace / "extracted").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "extracted" / "entity_candidates.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "entc_1",
+                    "candidate_type": "organization",
+                    "candidate_name": "Acme",
+                    "aliases": [],
+                    "extracted_attributes": {},
+                    "supporting_claims": ["clm_1"],
+                    "confidence": 0.72,
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "rev_1",
+                    "type": "entity_merge",
+                    "workspace_id": "w",
+                    "status": "pending",
+                    "priority": "high",
+                    "target_ids": ["entc_1"],
+                    "reason": "low_confidence_entity_merge",
+                    "supporting_artifacts": [],
+                    "supporting_claims": ["clm_1"],
+                    "confidence": 0.72,
+                    "suggested_action": "review",
+                    "created_at": "2026-01-01T00:00:00+00:00",
+                    "updated_at": "2026-01-01T00:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_1", "accepted", "analyst", "looks right")
+
+    canonical = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
+    assert canonical["entities"][0]["name"] == "Acme"
+    queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert queue[0]["status"] == "accepted"
+
+
+def test_reject_alias_prevents_alias_application_and_records_decision(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+    (workspace / "extracted").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps(
+            {
+                "entities": [{"id": "ent_1", "name": "Acme", "aliases": [], "attributes": {}, "supporting_claims": []}],
+                "relations": [],
+                "events": [],
+                "insights": [],
+                "schema": {},
+                "taxonomy": {},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (workspace / "extracted" / "entity_candidates.json").write_text(
+        json.dumps([{"id": "entc_2", "aliases": ["ACME Corp"]}]),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "rev_2",
+                    "type": "alias",
+                    "workspace_id": "w",
+                    "status": "pending",
+                    "priority": "medium",
+                    "target_ids": ["ent_1", "entc_2"],
+                    "reason": "alias_update_requires_review",
+                    "supporting_artifacts": [],
+                    "supporting_claims": [],
+                    "confidence": 0.6,
+                    "suggested_action": "review",
+                    "created_at": "2026-01-01T00:00:00+00:00",
+                    "updated_at": "2026-01-01T00:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_2", "rejected", "analyst", "not same alias")
+
+    canonical = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
+    assert canonical["entities"][0]["aliases"] == []
+    alias_map = json.loads((workspace / "canonical" / "alias_map.json").read_text(encoding="utf-8"))
+    assert "acme corp" in alias_map["rejected_aliases"]
+
+
+def test_accept_schema_promotion_updates_canonical_schema(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [], "relations": [], "events": [], "insights": [], "schema": {"entity_types": [], "relation_types": [], "fields": []}, "taxonomy": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "schema_candidate_queue.json").write_text(
+        json.dumps([{"id": "schc_1", "candidate_kind": "relation", "candidate_name": "partnered_with", "status": "pending_review"}]),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "rev_3",
+                    "type": "schema_promotion",
+                    "workspace_id": "w",
+                    "status": "pending",
+                    "priority": "medium",
+                    "target_ids": ["schc_1"],
+                    "reason": "schema_candidate_requires_review",
+                    "supporting_artifacts": [],
+                    "supporting_claims": [],
+                    "confidence": 0.6,
+                    "suggested_action": "review",
+                    "created_at": "2026-01-01T00:00:00+00:00",
+                    "updated_at": "2026-01-01T00:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_3", "accepted", "analyst", "promote it")
+
+    schema = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))["schema"]
+    assert "partnered_with" in schema["relation_types"]
+
+
+def test_accept_conflict_review_updates_resolution(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps(
+            {
+                "entities": [{"id": "ent_1", "name": "acme", "attributes": {}, "aliases": [], "supporting_claims": [], "confidence": 0.8, "status": "active"}],
+                "relations": [],
+                "events": [],
+                "insights": [],
+                "schema": {},
+                "taxonomy": {},
+            }
+        ),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "conflicts.json").write_text(
+        json.dumps([{"id": "conf_1", "subject": "acme", "predicate": "valuation", "objects": ["10m", "20m"], "status": "open", "reason": "multiple_object_values"}]),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "rev_4",
+                    "type": "conflict",
+                    "workspace_id": "w",
+                    "status": "pending",
+                    "priority": "high",
+                    "target_ids": ["conf_1"],
+                    "reason": "multiple_object_values",
+                    "supporting_artifacts": [],
+                    "supporting_claims": [],
+                    "confidence": 0.5,
+                    "suggested_action": "review",
+                    "created_at": "2026-01-01T00:00:00+00:00",
+                    "updated_at": "2026-01-01T00:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_4", "accepted", "analyst", "pick conservative", resolution_value="10m")
+
+    conflicts = json.loads((workspace / "governance" / "conflicts.json").read_text(encoding="utf-8"))
+    assert conflicts[0]["status"] == "resolved"
+    canonical = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
+    assert canonical["entities"][0]["attributes"]["valuation"] == "10m"
+
+
+def test_deferred_decision_updates_review_status_without_canonical_mutation(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+
+    original = {"entities": [{"id": "ent_1", "name": "Acme", "aliases": []}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}
+    (workspace / "canonical" / "current.json").write_text(json.dumps(original), encoding="utf-8")
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "rev_5",
+                    "type": "entity_merge",
+                    "workspace_id": "w",
+                    "status": "pending",
+                    "priority": "high",
+                    "target_ids": ["missing_candidate"],
+                    "reason": "low_confidence_entity_merge",
+                    "supporting_artifacts": [],
+                    "supporting_claims": [],
+                    "confidence": 0.4,
+                    "suggested_action": "review",
+                    "created_at": "2026-01-01T00:00:00+00:00",
+                    "updated_at": "2026-01-01T00:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (workspace / "extracted" ).mkdir(parents=True)
+    (workspace / "extracted" / "entity_candidates.json").write_text("[]", encoding="utf-8")
+
+    apply_review_decision(str(workspace), "rev_5", "deferred", "analyst", "wait for more evidence")
+
+    queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert queue[0]["status"] == "deferred"
+    canonical_after = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
+    assert canonical_after == original
