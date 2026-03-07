@@ -1,0 +1,334 @@
+{
+  "run_id": "run_20260307_113359",
+  "created_at": "2026-03-07T11:33:59.271004+00:00",
+  "canonical": {
+    "entities": [
+      {
+        "id": "ent_d8408745ce45",
+        "type": "unknown",
+        "name": "Atlas",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_29702adfdab2",
+          "clm_2eee4981e749",
+          "clm_75d6c917be8d",
+          "clm_7a6ef4b3d37b",
+          "clm_aa8bb13cdfa6",
+          "clm_cf7f45c2e8b3"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022606+00:00",
+        "updated_at": "2026-03-07T11:33:59.260800+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_83bad3f17139",
+        "type": "unknown",
+        "name": "Labs",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_2eee4981e749",
+          "clm_7a6ef4b3d37b",
+          "clm_aa8bb13cdfa6",
+          "clm_cf7f45c2e8b3"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022648+00:00",
+        "updated_at": "2026-03-07T11:33:59.260814+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_c0d11e2cd62c",
+        "type": "unknown",
+        "name": "Nimbus",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_24b1104d218a",
+          "clm_2eee4981e749",
+          "clm_7a6ef4b3d37b",
+          "clm_9d53cb7fcf0e",
+          "clm_aa8bb13cdfa6",
+          "clm_cf7f45c2e8b3"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022674+00:00",
+        "updated_at": "2026-03-07T11:33:59.260821+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_af31fc3c8b7c",
+        "type": "unknown",
+        "name": "Orbit",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b",
+          "clm_cd0d241f0cfe",
+          "clm_cf953783d4fb",
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022689+00:00",
+        "updated_at": "2026-03-07T11:33:59.260827+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_ba7c8a7f6785",
+        "type": "unknown",
+        "name": "Maybe",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_6b751cec8929",
+          "clm_bfcc8dbd0113"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022793+00:00",
+        "updated_at": "2026-03-07T11:33:59.260832+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_3dcdf8779e04",
+        "type": "unknown",
+        "name": "Briefing",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_066c1440327f",
+          "clm_637d8d779a6d"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022809+00:00",
+        "updated_at": "2026-03-07T11:33:59.260837+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_4c99e54a0f1f",
+        "type": "unknown",
+        "name": "GlobalAlliance",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_24b1104d218a",
+          "clm_9d53cb7fcf0e"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022823+00:00",
+        "updated_at": "2026-03-07T11:33:59.260842+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_5d611c519fa7",
+        "type": "unknown",
+        "name": "Berlin",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b",
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022837+00:00",
+        "updated_at": "2026-03-07T11:33:59.260846+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_456b584e915e",
+        "type": "unknown",
+        "name": "The",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b",
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022852+00:00",
+        "updated_at": "2026-03-07T11:33:59.260851+00:00",
+        "status": "active"
+      }
+    ],
+    "relations": [
+      {
+        "id": "rel_a23155cea777",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_2eee4981e749"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_76f6db577860",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_4c99e54a0f1f",
+        "relation_type": "works_at",
+        "supporting_claims": [
+          "clm_9d53cb7fcf0e"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_9726a709153d",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_7a6ef4b3d37b"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      }
+    ],
+    "events": [
+      {
+        "id": "evt_57c0f7eaa0dd",
+        "event_type": "announcement",
+        "title": "I think the merger launched a new platform called Orbit",
+        "participants": [
+          "Orbit"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_cf953783d4fb"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_0b670cd24dd9",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_75d6c917be8d"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_972083cac876",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_a35453c2e75b"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_52d182657ffb",
+        "event_type": "announcement",
+        "title": "I think the merger launched a new platform called Orbit",
+        "participants": [
+          "Orbit"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_cd0d241f0cfe"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_256950bab4da",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_29702adfdab2"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_9d27eb124132",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      }
+    ],
+    "insights": [
+      {
+        "id": "ins_b5701cc0a69d",
+        "title": "Run summary",
+        "text": "Processed 8 claims and produced 6 events.",
+        "based_on": [
+          "clm_2eee4981e749",
+          "clm_cd0d241f0cfe",
+          "clm_6b751cec8929",
+          "clm_066c1440327f",
+          "clm_9d53cb7fcf0e",
+          "clm_29702adfdab2",
+          "clm_7a6ef4b3d37b",
+          "clm_fa0768b441bc"
+        ],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:59.260982+00:00"
+      }
+    ],
+    "schema": {
+      "entity_types": [],
+      "relation_types": [],
+      "fields": []
+    },
+    "taxonomy": {
+      "nodes": []
+    }
+  }
+}

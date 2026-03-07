@@ -1,0 +1,8 @@
+{
+  "workspace_id": "sample",
+  "source_type": "document_markdown",
+  "origin": "docs/briefing.md",
+  "author": "analyst",
+  "metadata": {"doc": "briefing"},
+  "text": "# Briefing\nNimbus works at GlobalAlliance according to one source.\nAtlas released an integration update."
+}

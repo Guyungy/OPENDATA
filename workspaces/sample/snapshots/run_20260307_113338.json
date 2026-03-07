@@ -1,0 +1,229 @@
+{
+  "run_id": "run_20260307_113338",
+  "created_at": "2026-03-07T11:33:38.030254+00:00",
+  "canonical": {
+    "entities": [
+      {
+        "id": "ent_d8408745ce45",
+        "type": "unknown",
+        "name": "Atlas",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_aa8bb13cdfa6",
+          "clm_75d6c917be8d",
+          "clm_cf7f45c2e8b3"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022606+00:00",
+        "updated_at": "2026-03-07T11:33:38.022617+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_83bad3f17139",
+        "type": "unknown",
+        "name": "Labs",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_aa8bb13cdfa6",
+          "clm_cf7f45c2e8b3"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022648+00:00",
+        "updated_at": "2026-03-07T11:33:38.022656+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_c0d11e2cd62c",
+        "type": "unknown",
+        "name": "Nimbus",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_aa8bb13cdfa6",
+          "clm_24b1104d218a",
+          "clm_cf7f45c2e8b3"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022674+00:00",
+        "updated_at": "2026-03-07T11:33:38.022677+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_af31fc3c8b7c",
+        "type": "unknown",
+        "name": "Orbit",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_cf953783d4fb",
+          "clm_a35453c2e75b"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022689+00:00",
+        "updated_at": "2026-03-07T11:33:38.022769+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_ba7c8a7f6785",
+        "type": "unknown",
+        "name": "Maybe",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_bfcc8dbd0113"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022793+00:00",
+        "updated_at": "2026-03-07T11:33:38.022797+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_3dcdf8779e04",
+        "type": "unknown",
+        "name": "Briefing",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_637d8d779a6d"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022809+00:00",
+        "updated_at": "2026-03-07T11:33:38.022812+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_4c99e54a0f1f",
+        "type": "unknown",
+        "name": "GlobalAlliance",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_24b1104d218a"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022823+00:00",
+        "updated_at": "2026-03-07T11:33:38.022826+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_5d611c519fa7",
+        "type": "unknown",
+        "name": "Berlin",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022837+00:00",
+        "updated_at": "2026-03-07T11:33:38.022841+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_456b584e915e",
+        "type": "unknown",
+        "name": "The",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022852+00:00",
+        "updated_at": "2026-03-07T11:33:38.022855+00:00",
+        "status": "active"
+      }
+    ],
+    "relations": [],
+    "events": [
+      {
+        "id": "evt_57c0f7eaa0dd",
+        "event_type": "announcement",
+        "title": "I think the merger launched a new platform called Orbit",
+        "participants": [
+          "Orbit"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_cf953783d4fb"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_0b670cd24dd9",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_75d6c917be8d"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_972083cac876",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_a35453c2e75b"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      }
+    ],
+    "insights": [
+      {
+        "id": "ins_45e83f769a4d",
+        "title": "Run summary",
+        "text": "Processed 8 claims and produced 3 events.",
+        "based_on": [
+          "clm_aa8bb13cdfa6",
+          "clm_cf953783d4fb",
+          "clm_bfcc8dbd0113",
+          "clm_637d8d779a6d",
+          "clm_24b1104d218a",
+          "clm_75d6c917be8d",
+          "clm_cf7f45c2e8b3",
+          "clm_a35453c2e75b"
+        ],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022895+00:00"
+      }
+    ],
+    "schema": {
+      "entity_types": [],
+      "relation_types": [],
+      "fields": []
+    },
+    "taxonomy": {
+      "nodes": []
+    }
+  }
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "entc_1a152067f7ef",
+    "candidate_type": "unknown",
+    "candidate_name": "Atlas",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_2eee4981e749",
+      "clm_29702adfdab2",
+      "clm_7a6ef4b3d37b"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_a2149ac1996f",
+    "candidate_type": "unknown",
+    "candidate_name": "Labs",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_2eee4981e749",
+      "clm_7a6ef4b3d37b"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_23319afe6211",
+    "candidate_type": "unknown",
+    "candidate_name": "Nimbus",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_2eee4981e749",
+      "clm_9d53cb7fcf0e",
+      "clm_7a6ef4b3d37b"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_92443804b4aa",
+    "candidate_type": "unknown",
+    "candidate_name": "Orbit",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_cd0d241f0cfe",
+      "clm_fa0768b441bc"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_7582d2ae7cf3",
+    "candidate_type": "unknown",
+    "candidate_name": "Maybe",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_6b751cec8929"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_93f27da8c78f",
+    "candidate_type": "unknown",
+    "candidate_name": "Briefing",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_066c1440327f"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_dd58ed0266c6",
+    "candidate_type": "unknown",
+    "candidate_name": "GlobalAlliance",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_9d53cb7fcf0e"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_53a0c2d03936",
+    "candidate_type": "unknown",
+    "candidate_name": "Berlin",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_fa0768b441bc"
+    ],
+    "confidence": 0.6
+  },
+  {
+    "id": "entc_e0bd45be7e71",
+    "candidate_type": "unknown",
+    "candidate_name": "The",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_fa0768b441bc"
+    ],
+    "confidence": 0.6
+  }
+]

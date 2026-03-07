@@ -1,0 +1,32 @@
+[
+  {
+    "id": "relc_22e8dc51f910",
+    "from_candidate": "Nimbus",
+    "to_candidate": "Atlas",
+    "relation_type": "acquired",
+    "supporting_claims": [
+      "clm_2eee4981e749"
+    ],
+    "confidence": 0.7
+  },
+  {
+    "id": "relc_b1680c802222",
+    "from_candidate": "Nimbus",
+    "to_candidate": "GlobalAlliance",
+    "relation_type": "works_at",
+    "supporting_claims": [
+      "clm_9d53cb7fcf0e"
+    ],
+    "confidence": 0.7
+  },
+  {
+    "id": "relc_443b584f936e",
+    "from_candidate": "Nimbus",
+    "to_candidate": "Atlas",
+    "relation_type": "acquired",
+    "supporting_claims": [
+      "clm_7a6ef4b3d37b"
+    ],
+    "confidence": 0.7
+  }
+]

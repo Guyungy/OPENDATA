@@ -1,0 +1,46 @@
+[
+  {
+    "id": "evc_1b81902c5f0c",
+    "event_type": "announcement",
+    "title": "I think the merger launched a new platform called Orbit",
+    "participants": [
+      "Orbit"
+    ],
+    "time_range": "unknown",
+    "location": "unknown",
+    "supporting_claims": [
+      "clm_cd0d241f0cfe"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "id": "evc_65a6ad060d76",
+    "event_type": "announcement",
+    "title": "Atlas released an integration update",
+    "participants": [
+      "Atlas"
+    ],
+    "time_range": "unknown",
+    "location": "unknown",
+    "supporting_claims": [
+      "clm_29702adfdab2"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "id": "evc_649763b516f2",
+    "event_type": "announcement",
+    "title": "The company announced Orbit in Berlin during the annual summit",
+    "participants": [
+      "Berlin",
+      "Orbit",
+      "The"
+    ],
+    "time_range": "unknown",
+    "location": "unknown",
+    "supporting_claims": [
+      "clm_fa0768b441bc"
+    ],
+    "confidence": 0.65
+  }
+]

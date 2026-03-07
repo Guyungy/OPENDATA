@@ -1,0 +1,82 @@
+[
+  {
+    "id": "chk_99a780945912",
+    "source_id": "src_0dae9ad1da11",
+    "chunk_type": "chat_turn",
+    "text": "Nimbus acquired Atlas Labs in 2025.",
+    "context_hints": {
+      "speaker": "Alice"
+    },
+    "sequence_index": 0
+  },
+  {
+    "id": "chk_cba1a42a70f5",
+    "source_id": "src_0dae9ad1da11",
+    "chunk_type": "chat_turn",
+    "text": "I think the merger launched a new platform called Orbit.",
+    "context_hints": {
+      "speaker": "Bob"
+    },
+    "sequence_index": 1
+  },
+  {
+    "id": "chk_9d5156055bc5",
+    "source_id": "src_0dae9ad1da11",
+    "chunk_type": "chat_turn",
+    "text": "Maybe the timeline is uncertain.",
+    "context_hints": {
+      "speaker": "Cara"
+    },
+    "sequence_index": 2
+  },
+  {
+    "id": "chk_fc6ccdef9461",
+    "source_id": "src_2cbf0333cb11",
+    "chunk_type": "heading",
+    "text": "Briefing",
+    "context_hints": {
+      "markdown": true
+    },
+    "sequence_index": 0
+  },
+  {
+    "id": "chk_d2488edebb07",
+    "source_id": "src_2cbf0333cb11",
+    "chunk_type": "doc_line",
+    "text": "Nimbus works at GlobalAlliance according to one source.",
+    "context_hints": {
+      "markdown": true
+    },
+    "sequence_index": 1
+  },
+  {
+    "id": "chk_cc90d53e9a57",
+    "source_id": "src_2cbf0333cb11",
+    "chunk_type": "doc_line",
+    "text": "Atlas released an integration update.",
+    "context_hints": {
+      "markdown": true
+    },
+    "sequence_index": 2
+  },
+  {
+    "id": "chk_92ac1df455f9",
+    "source_id": "src_526cb7967e8e",
+    "chunk_type": "web_paragraph",
+    "text": "Nimbus acquired Atlas Labs to expand enterprise AI capabilities.",
+    "context_hints": {
+      "format": "paragraph"
+    },
+    "sequence_index": 0
+  },
+  {
+    "id": "chk_34f8a4fcfc21",
+    "source_id": "src_526cb7967e8e",
+    "chunk_type": "web_paragraph",
+    "text": "The company announced Orbit in Berlin during the annual summit.",
+    "context_hints": {
+      "format": "paragraph"
+    },
+    "sequence_index": 1
+  }
+]

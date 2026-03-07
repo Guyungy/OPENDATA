@@ -1,0 +1,32 @@
+{
+  "run_id": "run_20260307_113338",
+  "events": [
+    {
+      "stage": "ingress",
+      "count": 3,
+      "at": "2026-03-07T11:33:38.019644+00:00"
+    },
+    {
+      "stage": "adapter",
+      "count": 8,
+      "at": "2026-03-07T11:33:38.020451+00:00"
+    },
+    {
+      "stage": "extraction",
+      "count": 8,
+      "at": "2026-03-07T11:33:38.022432+00:00"
+    },
+    {
+      "stage": "render",
+      "at": "2026-03-07T11:33:38.031730+00:00",
+      "stats": {
+        "sources": 3,
+        "chunks": 8,
+        "claims": 8,
+        "entities": 9,
+        "relations": 0,
+        "events": 3
+      }
+    }
+  ]
+}

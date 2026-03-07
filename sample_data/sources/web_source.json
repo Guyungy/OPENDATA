@@ -1,0 +1,8 @@
+{
+  "workspace_id": "sample",
+  "source_type": "webpage_text",
+  "origin": "https://example.com/news",
+  "author": "web_crawler",
+  "metadata": {"title": "Company News"},
+  "text": "Nimbus acquired Atlas Labs to expand enterprise AI capabilities.\n\nThe company announced Orbit in Berlin during the annual summit."
+}
