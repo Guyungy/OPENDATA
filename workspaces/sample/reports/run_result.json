@@ -1,12 +1,12 @@
 {
-  "run_id": "run_20260307_113359",
+  "run_id": "run_20260307_115245",
   "stats": {
     "sources": 3,
     "chunks": 8,
     "claims": 8,
     "entities": 9,
-    "relations": 3,
-    "events": 6
+    "relations": 6,
+    "events": 9
   },
   "validation_errors": []
 }

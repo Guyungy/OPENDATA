@@ -1,15 +1,15 @@
 # MindVault Dashboard
 
-- Run ID: `run_20260307_113359`
-- Timestamp: 2026-03-07T11:33:59.272380+00:00
+- Run ID: `run_20260307_115245`
+- Timestamp: 2026-03-07T11:52:45.262934+00:00
 
 ## Knowledge State
 - Sources: 3
 - Chunks: 8
 - Claims: 8
 - Entities: 9
-- Relations: 3
-- Events: 6
+- Relations: 6
+- Events: 9
 
 ## Governance State
 - Conflicts: 1
