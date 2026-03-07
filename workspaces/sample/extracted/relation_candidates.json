@@ -1,31 +1,21 @@
 [
   {
-    "id": "relc_e0a919a5d090",
+    "id": "relc_3ef78bbf6ed4",
     "from_candidate": "Nimbus",
     "to_candidate": "Atlas",
     "relation_type": "acquired",
     "supporting_claims": [
-      "clm_ec900e94e7d0"
+      "clm_eaa56956e06e"
     ],
     "confidence": 0.7
   },
   {
-    "id": "relc_c66931102f1c",
-    "from_candidate": "Nimbus",
-    "to_candidate": "GlobalAlliance",
-    "relation_type": "works_at",
-    "supporting_claims": [
-      "clm_bd575afdf995"
-    ],
-    "confidence": 0.7
-  },
-  {
-    "id": "relc_f9568056f477",
+    "id": "relc_00123d3f824a",
     "from_candidate": "Nimbus",
     "to_candidate": "Atlas",
     "relation_type": "acquired",
     "supporting_claims": [
-      "clm_e09ec3790d59"
+      "clm_aad35509b0ae"
     ],
     "confidence": 0.7
   }

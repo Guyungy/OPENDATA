@@ -10,13 +10,15 @@ def _ts() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def merge_canonical(claims, entity_candidates, relation_candidates, event_candidates, previous_canonical):
+def merge_canonical(claims, entity_candidates, relation_candidates, event_candidates, previous_canonical, intent):
     entities = {e["name"].lower(): e for e in previous_canonical.get("entities", [])}
     relations = previous_canonical.get("relations", [])
     events = previous_canonical.get("events", [])
+    preferred_entity_types = set(intent.get("preferred_entity_types", []))
 
     for candidate in entity_candidates:
         key = candidate.candidate_name.lower()
+        intent_aligned = candidate.candidate_type in preferred_entity_types if preferred_entity_types else True
         if key not in entities:
             entities[key] = {
                 "id": make_id("ent"),
@@ -30,12 +32,20 @@ def merge_canonical(claims, entity_candidates, relation_candidates, event_candid
                 "created_at": _ts(),
                 "updated_at": _ts(),
                 "status": "active",
+                "intent_alignment": {
+                    "goal": intent.get("goal", ""),
+                    "preferred_type_match": intent_aligned,
+                },
             }
         else:
             entities[key]["supporting_claims"] = sorted(
                 set(entities[key].get("supporting_claims", [])) | set(candidate.supporting_claims)
             )
             entities[key]["updated_at"] = _ts()
+            entities[key]["intent_alignment"] = {
+                "goal": intent.get("goal", ""),
+                "preferred_type_match": intent_aligned,
+            }
 
     for relation in relation_candidates:
         from_entity = entities.get(relation.from_candidate.lower())
@@ -76,7 +86,10 @@ def merge_canonical(claims, entity_candidates, relation_candidates, event_candid
         {
             "id": make_id("ins"),
             "title": "Run summary",
-            "text": f"Processed {len(claims)} claims and produced {len(events)} events.",
+            "text": (
+                f"Goal: {intent.get('goal', 'general')} | Processed {len(claims)} claims "
+                f"and produced {len(events)} events."
+            ),
             "based_on": [c.id for c in claims[:10]],
             "confidence": 0.6,
             "created_at": _ts(),

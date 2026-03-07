@@ -14,6 +14,22 @@ This repository implements a runnable incremental pipeline that separates:
 python -m mindvault run --workspace workspaces/sample --input-dir sample_data/sources
 ```
 
+Each workspace can define intent in `config/intent.json`:
+
+```json
+{
+  "goal": "Track acquisitions and launches",
+  "focus": ["acquired", "announced"],
+  "ignore": ["opinion", "ad"],
+  "preferred_entity_types": ["organization", "product"],
+  "preferred_relation_types": ["acquired"],
+  "report_preferences": {"include_intent_summary": true}
+}
+```
+
+The runtime reads this file and uses it in extraction, canonical merge alignment metadata,
+and dashboard/report generation. If missing, the pipeline writes a default intent file.
+
 This produces workspace artifacts under:
 
 - `raw/`
@@ -50,6 +66,12 @@ pytest
 
 - Inputs: `sample_data/sources/*.json`
 - Example run outputs: `workspaces/sample/`
+
+To create a new workspace with its own intent:
+
+1. Create `workspaces/<id>/config/intent.json` using the schema above.
+2. Run `python -m mindvault run --workspace workspaces/<id> --input-dir sample_data/sources`.
+3. Inspect `reports/dashboard.md` and `canonical/current.json` for intent-aware outputs.
 
 ## Notes
 

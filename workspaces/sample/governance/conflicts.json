@@ -1,13 +1,1 @@
-[
-  {
-    "id": "conf_e958d7f7ee7c",
-    "subject": "nimbus",
-    "predicate": "mentions",
-    "objects": [
-      "acquired atlas labs",
-      "works at globalalliance"
-    ],
-    "status": "open",
-    "reason": "multiple_object_values"
-  }
-]
+[]

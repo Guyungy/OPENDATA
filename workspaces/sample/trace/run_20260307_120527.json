@@ -1,0 +1,37 @@
+{
+  "run_id": "run_20260307_120527",
+  "events": [
+    {
+      "stage": "intent",
+      "at": "2026-03-07T12:05:27.675312+00:00",
+      "goal": "Build an organization-centric knowledge base for market and product updates."
+    },
+    {
+      "stage": "ingress",
+      "count": 3,
+      "at": "2026-03-07T12:05:27.675865+00:00"
+    },
+    {
+      "stage": "adapter",
+      "count": 8,
+      "at": "2026-03-07T12:05:27.676492+00:00"
+    },
+    {
+      "stage": "extraction",
+      "count": 4,
+      "at": "2026-03-07T12:05:27.677241+00:00"
+    },
+    {
+      "stage": "render",
+      "at": "2026-03-07T12:05:27.684069+00:00",
+      "stats": {
+        "sources": 3,
+        "chunks": 8,
+        "claims": 4,
+        "entities": 9,
+        "relations": 8,
+        "events": 11
+      }
+    }
+  ]
+}
