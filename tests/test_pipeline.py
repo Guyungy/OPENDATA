@@ -26,10 +26,12 @@ def test_pipeline_generates_all_artifacts(tmp_path: Path) -> None:
 
     for required in [
         "config/intent.json",
+        "config/merge_policy.json",
         "raw/sources.json",
         "extracted/claims.json",
         "canonical/current.json",
         "governance/conflicts.json",
+        "governance/review_queue.json",
         "snapshots",
         "reports/dashboard.md",
         "trace",
@@ -101,3 +103,83 @@ def test_intent_changes_canonical_outputs(tmp_path: Path) -> None:
     dashboard_a = (workspace_a / "reports" / "dashboard.md").read_text(encoding="utf-8")
     assert "## Workspace Intent" in dashboard_a
     assert "Track M&A events" in dashboard_a
+
+
+def test_low_confidence_entity_merge_enters_review_queue(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    (workspace / "config").mkdir(parents=True)
+    input_dir.mkdir()
+
+    (workspace / "config" / "merge_policy.json").write_text(
+        json.dumps({"entity_merge_min_confidence": 0.8, "review_low_confidence_entity_merge": True}),
+        encoding="utf-8",
+    )
+    (input_dir / "one.json").write_text(
+        json.dumps(
+            {
+                "workspace_id": "w-review",
+                "source_type": "chat_text",
+                "text": "Acme announced Beta partnership.",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    canonical = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
+    assert canonical["entities"] == []
+
+    review_queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert any(item["type"] == "entity_merge" and item["status"] == "pending" for item in review_queue)
+
+
+def test_conflict_generates_review_item(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+
+    (input_dir / "one.json").write_text(
+        json.dumps(
+            {
+                "workspace_id": "w-conflict",
+                "source_type": "chat_text",
+                "text": "Acme valuation 10M. Acme valuation 20M.",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    conflicts = json.loads((workspace / "governance" / "conflicts.json").read_text(encoding="utf-8"))
+    assert conflicts
+
+    review_queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert any(item["type"] == "conflict" for item in review_queue)
+
+
+def test_schema_candidate_enters_review_queue(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+
+    (input_dir / "one.json").write_text(
+        json.dumps(
+            {
+                "workspace_id": "w-schema",
+                "source_type": "chat_text",
+                "text": "Acme acquired Beta.",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    schema_queue = json.loads((workspace / "governance" / "schema_candidate_queue.json").read_text(encoding="utf-8"))
+    assert schema_queue
+
+    review_queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert any(item["type"] == "schema_promotion" for item in review_queue)

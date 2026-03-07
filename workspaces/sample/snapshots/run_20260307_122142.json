@@ -1,0 +1,598 @@
+{
+  "run_id": "run_20260307_122142",
+  "created_at": "2026-03-07T12:21:42.129790+00:00",
+  "canonical": {
+    "entities": [
+      {
+        "id": "ent_d8408745ce45",
+        "type": "unknown",
+        "name": "Atlas",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_197cc197fc8d",
+          "clm_1d158d01422f",
+          "clm_29702adfdab2",
+          "clm_2eee4981e749",
+          "clm_3fd5336d08c8",
+          "clm_75d6c917be8d",
+          "clm_770a6cee1f3c",
+          "clm_7a6ef4b3d37b",
+          "clm_8fc547760405",
+          "clm_aa8bb13cdfa6",
+          "clm_aad35509b0ae",
+          "clm_cf7f45c2e8b3",
+          "clm_e09ec3790d59",
+          "clm_eaa56956e06e",
+          "clm_ec900e94e7d0"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022606+00:00",
+        "updated_at": "2026-03-07T12:21:42.123487+00:00",
+        "status": "active",
+        "intent_alignment": {
+          "goal": "Build an organization-centric knowledge base for market and product updates.",
+          "preferred_type_match": true
+        }
+      },
+      {
+        "id": "ent_83bad3f17139",
+        "type": "unknown",
+        "name": "Labs",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_2eee4981e749",
+          "clm_3fd5336d08c8",
+          "clm_770a6cee1f3c",
+          "clm_7a6ef4b3d37b",
+          "clm_aa8bb13cdfa6",
+          "clm_aad35509b0ae",
+          "clm_cf7f45c2e8b3",
+          "clm_e09ec3790d59",
+          "clm_eaa56956e06e",
+          "clm_ec900e94e7d0"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022648+00:00",
+        "updated_at": "2026-03-07T12:21:42.123502+00:00",
+        "status": "active",
+        "intent_alignment": {
+          "goal": "Build an organization-centric knowledge base for market and product updates.",
+          "preferred_type_match": true
+        }
+      },
+      {
+        "id": "ent_c0d11e2cd62c",
+        "type": "unknown",
+        "name": "Nimbus",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_24b1104d218a",
+          "clm_2eee4981e749",
+          "clm_3fd5336d08c8",
+          "clm_770a6cee1f3c",
+          "clm_7a6ef4b3d37b",
+          "clm_9d53cb7fcf0e",
+          "clm_aa8bb13cdfa6",
+          "clm_aad35509b0ae",
+          "clm_bd575afdf995",
+          "clm_cf7f45c2e8b3",
+          "clm_e09ec3790d59",
+          "clm_eaa56956e06e",
+          "clm_ec900e94e7d0"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022674+00:00",
+        "updated_at": "2026-03-07T12:21:42.123509+00:00",
+        "status": "active",
+        "intent_alignment": {
+          "goal": "Build an organization-centric knowledge base for market and product updates.",
+          "preferred_type_match": true
+        }
+      },
+      {
+        "id": "ent_af31fc3c8b7c",
+        "type": "unknown",
+        "name": "Orbit",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_30722430ebf2",
+          "clm_a35453c2e75b",
+          "clm_ae7aa836ece7",
+          "clm_ba4bebb5d6fc",
+          "clm_c55fdbb2174e",
+          "clm_cd0d241f0cfe",
+          "clm_cf953783d4fb",
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022689+00:00",
+        "updated_at": "2026-03-07T12:21:42.123522+00:00",
+        "status": "active",
+        "intent_alignment": {
+          "goal": "Build an organization-centric knowledge base for market and product updates.",
+          "preferred_type_match": true
+        }
+      },
+      {
+        "id": "ent_ba7c8a7f6785",
+        "type": "unknown",
+        "name": "Maybe",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_3017cf4b8137",
+          "clm_6b751cec8929",
+          "clm_bfcc8dbd0113"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022793+00:00",
+        "updated_at": "2026-03-07T11:52:45.257976+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_3dcdf8779e04",
+        "type": "unknown",
+        "name": "Briefing",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_066c1440327f",
+          "clm_17f7e70fbc4f",
+          "clm_637d8d779a6d"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022809+00:00",
+        "updated_at": "2026-03-07T11:52:45.257979+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_4c99e54a0f1f",
+        "type": "unknown",
+        "name": "GlobalAlliance",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_24b1104d218a",
+          "clm_9d53cb7fcf0e",
+          "clm_bd575afdf995"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022823+00:00",
+        "updated_at": "2026-03-07T11:52:45.257982+00:00",
+        "status": "active"
+      },
+      {
+        "id": "ent_5d611c519fa7",
+        "type": "unknown",
+        "name": "Berlin",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b",
+          "clm_ae7aa836ece7",
+          "clm_ba4bebb5d6fc",
+          "clm_c55fdbb2174e",
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022837+00:00",
+        "updated_at": "2026-03-07T12:21:42.123515+00:00",
+        "status": "active",
+        "intent_alignment": {
+          "goal": "Build an organization-centric knowledge base for market and product updates.",
+          "preferred_type_match": true
+        }
+      },
+      {
+        "id": "ent_456b584e915e",
+        "type": "unknown",
+        "name": "The",
+        "aliases": [],
+        "attributes": {},
+        "supporting_claims": [
+          "clm_a35453c2e75b",
+          "clm_ae7aa836ece7",
+          "clm_ba4bebb5d6fc",
+          "clm_c55fdbb2174e",
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T11:33:38.022852+00:00",
+        "updated_at": "2026-03-07T12:21:42.123527+00:00",
+        "status": "active",
+        "intent_alignment": {
+          "goal": "Build an organization-centric knowledge base for market and product updates.",
+          "preferred_type_match": true
+        }
+      }
+    ],
+    "relations": [
+      {
+        "id": "rel_a23155cea777",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_2eee4981e749"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_76f6db577860",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_4c99e54a0f1f",
+        "relation_type": "works_at",
+        "supporting_claims": [
+          "clm_9d53cb7fcf0e"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_9726a709153d",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_7a6ef4b3d37b"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_d89699e5c341",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_ec900e94e7d0"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_0997d93ea397",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_4c99e54a0f1f",
+        "relation_type": "works_at",
+        "supporting_claims": [
+          "clm_bd575afdf995"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_368470a58e0c",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_e09ec3790d59"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_c5474009185d",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_eaa56956e06e"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_a213e3066cad",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_aad35509b0ae"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_528c28cdee3f",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_3fd5336d08c8"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      },
+      {
+        "id": "rel_ec9bd4bca13d",
+        "from_entity_id": "ent_c0d11e2cd62c",
+        "to_entity_id": "ent_d8408745ce45",
+        "relation_type": "acquired",
+        "supporting_claims": [
+          "clm_770a6cee1f3c"
+        ],
+        "source_refs": [],
+        "confidence": 0.7,
+        "valid_time": "unknown",
+        "status": "active"
+      }
+    ],
+    "events": [
+      {
+        "id": "evt_57c0f7eaa0dd",
+        "event_type": "announcement",
+        "title": "I think the merger launched a new platform called Orbit",
+        "participants": [
+          "Orbit"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_cf953783d4fb"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_0b670cd24dd9",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_75d6c917be8d"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_972083cac876",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_a35453c2e75b"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_52d182657ffb",
+        "event_type": "announcement",
+        "title": "I think the merger launched a new platform called Orbit",
+        "participants": [
+          "Orbit"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_cd0d241f0cfe"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_256950bab4da",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_29702adfdab2"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_9d27eb124132",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_fa0768b441bc"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_341fe701875f",
+        "event_type": "announcement",
+        "title": "I think the merger launched a new platform called Orbit",
+        "participants": [
+          "Orbit"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_30722430ebf2"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_21602b95ccb7",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_197cc197fc8d"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_0b55e3671cd6",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_c55fdbb2174e"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_536bb71fb882",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_1d158d01422f"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_a23d8ac5eda4",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_ba4bebb5d6fc"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_a9e434f944f1",
+        "event_type": "announcement",
+        "title": "Atlas released an integration update",
+        "participants": [
+          "Atlas"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_8fc547760405"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      },
+      {
+        "id": "evt_68caa85e3246",
+        "event_type": "announcement",
+        "title": "The company announced Orbit in Berlin during the annual summit",
+        "participants": [
+          "Berlin",
+          "Orbit",
+          "The"
+        ],
+        "time_range": "unknown",
+        "location": "unknown",
+        "supporting_claims": [
+          "clm_ae7aa836ece7"
+        ],
+        "source_refs": [],
+        "confidence": 0.65,
+        "status": "active"
+      }
+    ],
+    "insights": [
+      {
+        "id": "ins_12a06c8f4c68",
+        "title": "Run summary",
+        "text": "Goal: Build an organization-centric knowledge base for market and product updates. | Processed 4 claims and produced 13 events.",
+        "based_on": [
+          "clm_3fd5336d08c8",
+          "clm_8fc547760405",
+          "clm_770a6cee1f3c",
+          "clm_ae7aa836ece7"
+        ],
+        "confidence": 0.6,
+        "created_at": "2026-03-07T12:21:42.123614+00:00"
+      }
+    ],
+    "schema": {
+      "entity_types": [],
+      "relation_types": [],
+      "fields": []
+    },
+    "taxonomy": {
+      "nodes": []
+    }
+  }
+}

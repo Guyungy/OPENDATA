@@ -1,23 +1,32 @@
 [
   {
-    "id": "schc_6bd4423eb8d4",
+    "id": "schc_86e808deb293",
     "candidate_kind": "entity",
     "candidate_name": "organization",
     "evidence_count": 10,
+    "source_count": 8,
+    "proposed_value_type": "string",
+    "similarity_to_existing": 0.2,
     "status": "pending_review"
   },
   {
-    "id": "schc_2a4f24b4a41c",
+    "id": "schc_84972f01d16e",
     "candidate_kind": "relation",
     "candidate_name": "acquired",
     "evidence_count": 2,
+    "source_count": 8,
+    "proposed_value_type": "string",
+    "similarity_to_existing": 0.2,
     "status": "pending_review"
   },
   {
-    "id": "schc_4b313ed58d53",
+    "id": "schc_379356b4c73c",
     "candidate_kind": "event",
     "candidate_name": "announcement",
     "evidence_count": 2,
+    "source_count": 8,
+    "proposed_value_type": "string",
+    "similarity_to_existing": 0.2,
     "status": "pending_review"
   }
 ]

@@ -1,7 +1,7 @@
 # MindVault Dashboard
 
-- Run ID: `run_20260307_120527`
-- Timestamp: 2026-03-07T12:05:27.683778+00:00
+- Run ID: `run_20260307_122142`
+- Timestamp: 2026-03-07T12:21:42.131061+00:00
 
 ## Workspace Intent
 - Goal: Build an organization-centric knowledge base for market and product updates.
@@ -15,14 +15,19 @@
 - Chunks: 8
 - Claims: 4
 - Entities: 9
-- Relations: 8
-- Events: 11
+- Relations: 10
+- Events: 13
 
 ## Governance State
 - Conflicts: 0
 - Placeholders: 9
 - Schema Queue: 3
 - Claim confidence (avg): 0.8
+
+## Review Summary
+- Pending reviews: 12
+- placeholder_relevance: 9
+- schema_promotion: 3
 
 ## Recent Changelog
 - Entity delta: 0
