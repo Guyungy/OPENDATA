@@ -31,9 +31,12 @@ def test_pipeline_generates_all_artifacts(tmp_path: Path) -> None:
         "raw/sources.json",
         "extracted/claims.json",
         "canonical/current.json",
+        "canonical/alias_map.json",
         "governance/conflicts.json",
         "governance/review_queue.json",
         "governance/review_decisions.json",
+        "governance/identity_candidates.json",
+        "governance/merge_blocks.json",
         "snapshots",
         "reports/dashboard.md",
         "trace",
@@ -295,7 +298,9 @@ def test_reject_alias_prevents_alias_application_and_records_decision(tmp_path: 
     canonical = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
     assert canonical["entities"][0]["aliases"] == []
     alias_map = json.loads((workspace / "canonical" / "alias_map.json").read_text(encoding="utf-8"))
-    assert "acme corp" in alias_map["rejected_aliases"]
+    assert alias_map["aliases"] == []
+    merge_blocks = json.loads((workspace / "governance" / "merge_blocks.json").read_text(encoding="utf-8"))
+    assert merge_blocks
 
 
 def test_accept_schema_promotion_updates_canonical_schema(tmp_path: Path) -> None:
@@ -398,7 +403,7 @@ def test_deferred_decision_updates_review_status_without_canonical_mutation(tmp_
     (workspace / "governance").mkdir(parents=True)
     (workspace / "canonical").mkdir(parents=True)
 
-    original = {"entities": [{"id": "ent_1", "name": "Acme", "aliases": []}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}
+    original = {"entities": [{"id": "ent_1", "type": "organization", "name": "Acme", "aliases": [], "supporting_claims": [], "confidence": 0.8, "status": "active"}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}
     (workspace / "canonical" / "current.json").write_text(json.dumps(original), encoding="utf-8")
     (workspace / "governance" / "review_queue.json").write_text(
         json.dumps(
@@ -431,3 +436,130 @@ def test_deferred_decision_updates_review_status_without_canonical_mutation(tmp_
     assert queue[0]["status"] == "deferred"
     canonical_after = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
     assert canonical_after == original
+
+
+def test_accepted_alias_review_updates_alias_map(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+    (workspace / "extracted").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [{"id": "ent_1", "type": "organization", "name": "Acme", "aliases": [], "supporting_claims": [], "confidence": 0.8, "status": "active"}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "extracted" / "entity_candidates.json").write_text(
+        json.dumps([{"id": "entc_1", "aliases": ["ACME Corp"], "candidate_name": "Acme", "candidate_type": "organization", "supporting_claims": []}]),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps([{"id": "rev_alias", "type": "alias", "workspace_id": "w", "status": "pending", "priority": "medium", "target_ids": ["ent_1", "entc_1"], "reason": "alias_update_requires_review", "supporting_artifacts": [], "supporting_claims": [], "confidence": 0.7, "suggested_action": "review", "created_at": "2026-01-01T00:00:00+00:00", "updated_at": "2026-01-01T00:00:00+00:00", "blocked_candidate_names": ["Acme"]}]),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_alias", "accepted", "analyst", "same entity")
+    alias_map = json.loads((workspace / "canonical" / "alias_map.json").read_text(encoding="utf-8"))
+    assert alias_map["aliases"][0]["canonical_entity_id"] == "ent_1"
+    assert "ACME Corp" in alias_map["aliases"][0]["aliases"]
+
+
+def test_rejected_entity_merge_creates_merge_block_and_prevents_silent_merge(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    input_dir = tmp_path / "inputs"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+    (workspace / "extracted").mkdir(parents=True)
+    (workspace / "config").mkdir(parents=True)
+    input_dir.mkdir()
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [{"id": "ent_1", "type": "organization", "name": "Acme", "aliases": [], "supporting_claims": [], "confidence": 0.8, "status": "active"}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "extracted" / "entity_candidates.json").write_text(
+        json.dumps([{"id": "entc_1", "candidate_name": "Acme", "candidate_type": "organization", "aliases": ["ACME Corp"], "extracted_attributes": {}, "supporting_claims": [], "confidence": 0.8}]),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps([{"id": "rev_merge", "type": "entity_merge", "workspace_id": "w", "status": "pending", "priority": "high", "target_ids": ["ent_1", "entc_1"], "reason": "manual", "supporting_artifacts": [], "supporting_claims": [], "confidence": 0.7, "suggested_action": "review", "created_at": "2026-01-01T00:00:00+00:00", "updated_at": "2026-01-01T00:00:00+00:00", "blocked_candidate_names": ["Acme"]}]),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_merge", "rejected", "analyst", "not same")
+    merge_blocks = json.loads((workspace / "governance" / "merge_blocks.json").read_text(encoding="utf-8"))
+    assert any(set(block["blocked_entity_ids"]) == {"ent_1", "entc_1"} for block in merge_blocks)
+
+    (workspace / "config" / "merge_policy.json").write_text(json.dumps({"entity_merge_min_confidence": 0.5}), encoding="utf-8")
+    (workspace / "canonical" / "alias_map.json").write_text(json.dumps({"aliases": []}), encoding="utf-8")
+    (workspace / "governance" / "identity_candidates.json").write_text("[]", encoding="utf-8")
+    (input_dir / "one.json").write_text(json.dumps({"workspace_id": "w", "source_type": "chat_text", "text": "Acme signed deal."}), encoding="utf-8")
+
+    run_pipeline(str(workspace), str(input_dir))
+    queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert any(item["reason"] == "merge_blocked_pair_requires_review" for item in queue)
+
+
+def test_identity_candidate_generated_for_unresolved_ambiguity(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+    (workspace / "config").mkdir(parents=True)
+    (workspace / "config" / "merge_policy.json").write_text(
+        json.dumps({"entity_merge_min_confidence": 0.95, "review_low_confidence_entity_merge": True}),
+        encoding="utf-8",
+    )
+    (input_dir / "one.json").write_text(json.dumps({"workspace_id": "w", "source_type": "chat_text", "text": "Acme announced product."}), encoding="utf-8")
+
+    run_pipeline(str(workspace), str(input_dir))
+    identity_candidates = json.loads((workspace / "governance" / "identity_candidates.json").read_text(encoding="utf-8"))
+    assert identity_candidates
+    assert identity_candidates[0]["status"] == "pending"
+
+
+def test_alias_map_consulted_in_later_run_for_resolution(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+    (workspace / "canonical").mkdir(parents=True)
+    (workspace / "governance").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [{"id": "ent_1", "type": "organization", "name": "Acme", "aliases": [], "supporting_claims": [], "confidence": 0.8, "status": "active"}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "canonical" / "alias_map.json").write_text(
+        json.dumps({"aliases": [{"canonical_entity_id": "ent_1", "canonical_name": "Acme", "aliases": ["ACME Corp"], "source_refs": ["seed"], "confidence": 0.8, "updated_at": "2026-01-01T00:00:00+00:00"}]}),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "merge_blocks.json").write_text("[]", encoding="utf-8")
+    (workspace / "governance" / "identity_candidates.json").write_text("[]", encoding="utf-8")
+
+    (input_dir / "one.json").write_text(json.dumps({"workspace_id": "w", "source_type": "chat_text", "text": "ACME Corp acquired Beta."}), encoding="utf-8")
+    run_pipeline(str(workspace), str(input_dir))
+    canonical = json.loads((workspace / "canonical" / "current.json").read_text(encoding="utf-8"))
+    acme = next(e for e in canonical["entities"] if e["id"] == "ent_1")
+    assert acme.get("aliases", [])
+
+
+def test_merge_block_avoids_direct_auto_merge(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    input_dir = tmp_path / "inputs"
+    input_dir.mkdir()
+    (workspace / "canonical").mkdir(parents=True)
+    (workspace / "governance").mkdir(parents=True)
+
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [{"id": "ent_1", "type": "organization", "name": "Acme", "aliases": [], "supporting_claims": [], "confidence": 0.9, "status": "active"}], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "canonical" / "alias_map.json").write_text(json.dumps({"aliases": []}), encoding="utf-8")
+    (workspace / "governance" / "identity_candidates.json").write_text("[]", encoding="utf-8")
+    (workspace / "governance" / "merge_blocks.json").write_text(
+        json.dumps([{"id": "mblk_1", "workspace_id": "w", "blocked_entity_ids": ["ent_1", "entc_blocked"], "reason": "prior reject", "created_from_review_item": "rev_x", "created_at": "2026-01-01T00:00:00+00:00", "updated_at": "2026-01-01T00:00:00+00:00", "blocked_candidate_names": ["Acme"]}]),
+        encoding="utf-8",
+    )
+    (input_dir / "one.json").write_text(json.dumps({"workspace_id": "w", "source_type": "chat_text", "text": "Acme announced launch."}), encoding="utf-8")
+
+    run_pipeline(str(workspace), str(input_dir))
+    queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
+    assert any(item["reason"] == "merge_blocked_pair_requires_review" for item in queue)

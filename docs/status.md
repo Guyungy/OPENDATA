@@ -2,34 +2,29 @@
 
 ## Current milestone
 
-**Milestone focus:** P0-3 Review Queue Consumption + Decision Feedback Loop.
+**Milestone focus:** P1-1 Identity / Alias Memory Layer.
 
 Implemented in this update:
-- Added actionable review decision loop via CLI (`python -m mindvault review ...`) with explicit `accepted`/`rejected`/`deferred` outcomes.
-- Added decision artifact persistence in `governance/review_decisions.json` with required contract fields (`id`, `review_item_id`, `workspace_id`, `decision`, `decided_at`, `decided_by`, `rationale`, `applied_effects`, `status`).
-- Added review lifecycle state transitions on `governance/review_queue.json` (`pending` -> `accepted|rejected|deferred`) including decision metadata and timestamp updates.
-- Added decision effect application into canonical/governance artifacts by review type:
-  - `entity_merge`: accepted decisions create/merge canonical entities.
-  - `alias`: accepted decisions update canonical aliases and `canonical/alias_map.json`; rejected decisions record blocked aliases.
-  - `conflict`: accepted decisions resolve governance conflicts and update canonical selected value.
-  - `schema_promotion`: accepted/rejected/deferred decisions update canonical schema and schema candidate status.
-  - `placeholder_relevance`: accepted/rejected/deferred decisions update placeholder lifecycle behavior.
-- Added review outcome summary artifact at `governance/review_outcomes.json`.
-- Updated changelog generation and dashboard rendering to include review outcome counters and recent decision summaries.
-- Regenerated sample workspace and applied a sample deferred decision to validate end-to-end feedback loop artifacts.
+- Added canonical alias memory artifact at `canonical/alias_map.json` with canonical entity keyed alias entries (`canonical_entity_id`, `canonical_name`, `aliases`, `source_refs`, `confidence`, `updated_at`).
+- Added identity hypothesis artifact at `governance/identity_candidates.json` with lifecycle statuses (`pending|accepted|rejected|deferred`) and evidence-backed candidate links.
+- Added explicit merge-block memory artifact at `governance/merge_blocks.json` for rejected identity decisions and retry suppression.
+- Updated canonical merge resolution to consult alias memory and merge blocks before auto-merge, and to emit unresolved identity candidates when ambiguity remains.
+- Updated review decision application to feed accepted/rejected `entity_merge` and `alias` outcomes back into alias map, identity candidates, and merge blocks.
+- Extended dashboard summaries with identity memory counts and recent identity decision context.
+- Regenerated sample workspace artifacts and applied identity-affecting review decisions to validate persisted feedback loop behavior.
 
 ## Validation status
 
-- `PYTHONPATH=src pytest -q` passes, including behavior tests for:
-  - accepting `entity_merge` review items,
-  - rejecting `alias` review items,
-  - accepting `schema_promotion` review items,
-  - accepting `conflict` review items,
-  - deferring review items without canonical mutation.
-- Sample pipeline run and review command application validated on `workspaces/sample` artifacts.
+- `PYTHONPATH=src pytest -q` passes, including identity memory behavior tests for:
+  - accepted alias updating alias map,
+  - rejected entity merge creating merge-block memory,
+  - unresolved ambiguity producing identity candidates,
+  - alias map reuse in later run resolution,
+  - merge-block driven downgrade from auto-merge to review.
+- Sample pipeline and review loop run completed on `workspaces/sample` with updated identity artifacts and dashboard summary sections.
 
 ## Next tasks
 
-1. Preserve review identity continuity across reruns (stable review-item keys) so previously decided items are never re-opened as new IDs.
-2. Add reviewer assignment/escalation metadata in merge policy and queue artifacts.
-3. Expand governance dashboards with decision trends over time (windowed snapshots).
+1. Add stable identity-candidate correlation keys across reruns to reduce duplicate hypotheses.
+2. Add richer reviewer-facing merge-block rationale templates for faster adjudication.
+3. Add trend views for identity memory growth/closure across snapshots.

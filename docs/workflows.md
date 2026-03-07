@@ -77,3 +77,23 @@ The governance loop is closed through explicit review decisions:
 
 This flow is available through CLI:
 - `python -m mindvault review --workspace <workspace> --review-item <id> --decision <accepted|rejected|deferred> --decided-by <actor> --rationale <text>`
+
+
+## Identity memory workflow
+
+Identity continuity is persisted across runs using three explicit artifacts:
+- `canonical/alias_map.json`
+- `governance/identity_candidates.json`
+- `governance/merge_blocks.json`
+
+Resolution behavior:
+1. read alias map, identity candidates, and merge blocks at run start
+2. use alias map matches to improve canonical entity matching
+3. if confidence is insufficient, add/refresh identity candidates instead of silently canonicalizing
+4. if a merge block applies, downgrade automatic merge into review item (`merge_blocked_pair_requires_review`)
+5. persist updated identity artifacts every run
+
+Review consumption behavior:
+- accepted `entity_merge` and `alias` decisions resolve matching identity candidates
+- accepted `alias` decisions update canonical alias map entries
+- rejected `entity_merge`/`alias` decisions can create merge blocks to prevent repeated silent retries

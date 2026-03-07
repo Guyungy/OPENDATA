@@ -1,0 +1,18 @@
+{
+  "created_at": "2026-03-07T13:07:00.284211+00:00",
+  "entity_delta": 0,
+  "relation_delta": 0,
+  "event_delta": 0,
+  "review_outcomes": {
+    "review_items_resolved": 0,
+    "merges_accepted": 0,
+    "aliases_accepted": 0,
+    "conflicts_resolved": 0,
+    "schema_promotions_accepted": 0,
+    "placeholders_deprecated": 0,
+    "review_items_deferred": 2,
+    "merge_blocks_created": 0,
+    "identity_candidates_resolved": 0
+  },
+  "summary": "Canonical layer updated from extracted candidates and governance checks."
+}
