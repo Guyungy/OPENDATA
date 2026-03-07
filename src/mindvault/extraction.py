@@ -32,20 +32,48 @@ def _extract_entities(text: str) -> list[str]:
     return sorted(set(candidates))
 
 
-def extract_from_chunks(workspace_id: str, chunks: list[Chunk]):
+def _matches_intent_focus(text: str, intent: dict) -> bool:
+    focus_terms = [item.lower() for item in intent.get("focus", []) if item]
+    if not focus_terms:
+        return True
+    lower = text.lower()
+    return any(term in lower for term in focus_terms)
+
+
+def _matches_intent_ignore(text: str, intent: dict) -> bool:
+    ignore_terms = [item.lower() for item in intent.get("ignore", []) if item]
+    if not ignore_terms:
+        return False
+    lower = text.lower()
+    return any(term in lower for term in ignore_terms)
+
+
+def extract_from_chunks(workspace_id: str, chunks: list[Chunk], intent: dict):
     claims: list[Claim] = []
     entity_candidates: dict[str, EntityCandidate] = {}
     relation_candidates: list[RelationCandidate] = []
     event_candidates: list[EventCandidate] = []
     schema_counter: Counter[str] = Counter()
+    preferred_entity_types = intent.get("preferred_entity_types", [])
+    preferred_relation_types = set(intent.get("preferred_relation_types", []))
 
     for chunk in chunks:
         sentence_parts = [p.strip() for p in re.split(r"[.!?]", chunk.text) if p.strip()]
         for part in sentence_parts:
+            if _matches_intent_ignore(part, intent):
+                continue
+            if not _matches_intent_focus(part, intent):
+                continue
+
             tokens = part.split()
             subject = tokens[0] if tokens else "unknown"
             predicate = "mentions"
             obj = " ".join(tokens[1:4]) if len(tokens) > 1 else ""
+
+            base_confidence = 0.5 if "uncertain" in part.lower() else 0.75
+            if intent.get("focus") and _matches_intent_focus(part, intent):
+                base_confidence = min(0.95, base_confidence + 0.05)
+
             claim = Claim(
                 id=make_id("clm"),
                 workspace_id=workspace_id,
@@ -57,7 +85,7 @@ def extract_from_chunks(workspace_id: str, chunks: list[Chunk]):
                 source_ref={"source_id": chunk.source_id, "chunk_id": chunk.id},
                 speaker=chunk.context_hints.get("speaker", "unknown"),
                 claim_time=now_iso(),
-                confidence=0.5 if "uncertain" in part.lower() else 0.75,
+                confidence=base_confidence,
                 verdict="unverified",
                 status="active",
             )
@@ -65,18 +93,23 @@ def extract_from_chunks(workspace_id: str, chunks: list[Chunk]):
             for name in _extract_entities(part):
                 existing = entity_candidates.get(name.lower())
                 if existing is None:
+                    inferred_type = "organization" if name.endswith("Inc") else "unknown"
+                    if preferred_entity_types and inferred_type == "unknown":
+                        inferred_type = preferred_entity_types[0]
                     existing = EntityCandidate(
                         id=make_id("entc"),
-                        candidate_type="organization" if name.endswith("Inc") else "unknown",
+                        candidate_type=inferred_type,
                         candidate_name=name,
                         confidence=0.6,
                     )
                     entity_candidates[name.lower()] = existing
                 existing.supporting_claims.append(claim.id)
-                schema_counter["entity:unknown"] += 1
+                schema_counter[f"entity:{existing.candidate_type}"] += 1
 
             for phrase, relation_type in RELATION_TRIGGERS:
                 if phrase in part:
+                    if preferred_relation_types and relation_type not in preferred_relation_types:
+                        continue
                     left, right = part.split(phrase, 1)
                     a = left.strip().split()[-1]
                     b = right.strip().split()[0]

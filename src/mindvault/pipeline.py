@@ -11,6 +11,7 @@ from .extraction import extract_from_chunks
 from .resolution import build_governance, merge_canonical
 
 REQUIRED_DIRS = [
+    "config",
     "raw",
     "extracted",
     "canonical",
@@ -20,6 +21,17 @@ REQUIRED_DIRS = [
     "visuals",
     "trace",
 ]
+
+DEFAULT_INTENT = {
+    "goal": "Build a balanced general-purpose knowledge base for this workspace.",
+    "focus": [],
+    "ignore": [],
+    "preferred_entity_types": [],
+    "preferred_relation_types": [],
+    "report_preferences": {
+        "include_intent_summary": True,
+    },
+}
 
 
 def _ensure_dirs(workspace: Path) -> None:
@@ -33,6 +45,16 @@ def _load_sources(input_dir: Path) -> list[dict]:
         with open(path, "r", encoding="utf-8") as f:
             sources.append(json.load(f))
     return sources
+
+
+def _load_workspace_intent(workspace: Path) -> dict:
+    intent_path = workspace / "config" / "intent.json"
+    existing = read_json(str(intent_path), default={})
+    merged = {**DEFAULT_INTENT, **existing}
+    if not isinstance(merged.get("report_preferences"), dict):
+        merged["report_preferences"] = dict(DEFAULT_INTENT["report_preferences"])
+    write_json(str(intent_path), merged)
+    return merged
 
 
 def _record_snapshot(workspace: Path, run_id: str, canonical: dict, changelog: dict) -> None:
@@ -55,8 +77,20 @@ def _build_changelog(prev: dict, curr: dict) -> dict:
     }
 
 
-def _render_dashboard(workspace: Path, run_id: str, stats: dict, changelog: dict, governance: dict) -> None:
-    md = f"""# MindVault Dashboard\n\n- Run ID: `{run_id}`\n- Timestamp: {datetime.now(timezone.utc).isoformat()}\n\n## Knowledge State\n- Sources: {stats['sources']}\n- Chunks: {stats['chunks']}\n- Claims: {stats['claims']}\n- Entities: {stats['entities']}\n- Relations: {stats['relations']}\n- Events: {stats['events']}\n\n## Governance State\n- Conflicts: {len(governance['conflicts'])}\n- Placeholders: {len(governance['placeholders'])}\n- Schema Queue: {len(governance['schema_candidate_queue'])}\n- Claim confidence (avg): {governance['confidence_scoring_results']['claims_avg']}\n\n## Recent Changelog\n- Entity delta: {changelog['entity_delta']}\n- Relation delta: {changelog['relation_delta']}\n- Event delta: {changelog['event_delta']}\n"""
+def _render_dashboard(workspace: Path, run_id: str, stats: dict, changelog: dict, governance: dict, intent: dict) -> None:
+    intent_section = ""
+    if intent.get("report_preferences", {}).get("include_intent_summary", True):
+        intent_section = (
+            "\n## Workspace Intent\n"
+            f"- Goal: {intent['goal']}\n"
+            f"- Focus: {', '.join(intent['focus']) or 'none'}\n"
+            f"- Ignore: {', '.join(intent['ignore']) or 'none'}\n"
+            f"- Preferred entity types: {', '.join(intent['preferred_entity_types']) or 'none'}\n"
+            f"- Preferred relation types: {', '.join(intent['preferred_relation_types']) or 'none'}\n"
+        )
+
+    md = f"""# MindVault Dashboard\n\n- Run ID: `{run_id}`\n- Timestamp: {datetime.now(timezone.utc).isoformat()}\n{intent_section}
+## Knowledge State\n- Sources: {stats['sources']}\n- Chunks: {stats['chunks']}\n- Claims: {stats['claims']}\n- Entities: {stats['entities']}\n- Relations: {stats['relations']}\n- Events: {stats['events']}\n\n## Governance State\n- Conflicts: {len(governance['conflicts'])}\n- Placeholders: {len(governance['placeholders'])}\n- Schema Queue: {len(governance['schema_candidate_queue'])}\n- Claim confidence (avg): {governance['confidence_scoring_results']['claims_avg']}\n\n## Recent Changelog\n- Entity delta: {changelog['entity_delta']}\n- Relation delta: {changelog['relation_delta']}\n- Event delta: {changelog['event_delta']}\n"""
     (workspace / "reports" / "dashboard.md").write_text(md, encoding="utf-8")
     write_json(str(workspace / "visuals" / "knowledge_graph.json"), {"nodes": stats["entities"], "edges": stats["relations"]})
 
@@ -70,6 +104,8 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         "run_id": run_id,
         "events": [],
     }
+    intent = _load_workspace_intent(workspace)
+    trace["events"].append({"stage": "intent", "at": now_iso(), "goal": intent["goal"]})
 
     sources_raw = _load_sources(Path(input_dir))
     trace["events"].append({"stage": "ingress", "count": len(sources_raw), "at": now_iso()})
@@ -100,13 +136,13 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
 
     typed_chunks = [Chunk(**chunk) for chunk in chunks]
     claims, entity_candidates, relation_candidates, event_candidates, schema_candidates = extract_from_chunks(
-        workspace_id="sample", chunks=typed_chunks
+        workspace_id="sample", chunks=typed_chunks, intent=intent
     )
 
     trace["events"].append({"stage": "extraction", "count": len(claims), "at": now_iso()})
 
     prev_canonical = read_json(str(workspace / "canonical" / "current.json"), default={})
-    canonical = merge_canonical(claims, entity_candidates, relation_candidates, event_candidates, prev_canonical)
+    canonical = merge_canonical(claims, entity_candidates, relation_candidates, event_candidates, prev_canonical, intent)
     governance = build_governance(claims, canonical, schema_candidates)
     changelog = _build_changelog(prev_canonical, canonical)
 
@@ -147,13 +183,14 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         "events": len(canonical["events"]),
     }
 
-    _render_dashboard(workspace, run_id, stats, changelog, governance)
+    _render_dashboard(workspace, run_id, stats, changelog, governance, intent)
     trace["events"].append({"stage": "render", "at": now_iso(), "stats": stats})
     write_json(str(workspace / "trace" / f"{run_id}.json"), trace)
 
     result = {
         "run_id": run_id,
         "stats": stats,
+        "intent": intent,
         "validation_errors": validation_errors,
     }
     write_json(str(workspace / "reports" / "run_result.json"), result)

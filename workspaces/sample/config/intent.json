@@ -1,0 +1,23 @@
+{
+  "goal": "Build an organization-centric knowledge base for market and product updates.",
+  "focus": [
+    "acquired",
+    "announced",
+    "released"
+  ],
+  "ignore": [
+    "opinion",
+    "ad"
+  ],
+  "preferred_entity_types": [
+    "organization",
+    "product"
+  ],
+  "preferred_relation_types": [
+    "acquired",
+    "works_at"
+  ],
+  "report_preferences": {
+    "include_intent_summary": true
+  }
+}
