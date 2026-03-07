@@ -1,0 +1,8 @@
+{
+  "workspace_id": "sample",
+  "source_type": "chat_text",
+  "origin": "support_channel",
+  "author": "team_chat",
+  "metadata": {"channel": "#ops"},
+  "text": "Alice: Nimbus acquired Atlas Labs in 2025.\nBob: I think the merger launched a new platform called Orbit.\nCara: Maybe the timeline is uncertain."
+}
