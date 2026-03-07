@@ -1,0 +1,7 @@
+{
+  "review_low_confidence_entity_merge": true,
+  "entity_merge_min_confidence": 0.65,
+  "review_aliases": true,
+  "placeholder_review_enabled": true,
+  "schema_auto_promote_min_evidence": 99
+}

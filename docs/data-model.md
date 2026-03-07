@@ -204,3 +204,29 @@ Candidate kinds:
 Only resolved and accepted knowledge may enter canonical storage.
 
 Everything else remains in extracted or governance layers.
+
+
+### 13. ReviewItem
+Represents a governance decision requiring human steering.
+
+Fields:
+- id
+- type
+- workspace_id
+- status
+- priority
+- target_ids
+- reason
+- supporting_artifacts
+- supporting_claims
+- confidence
+- suggested_action
+- created_at
+- updated_at
+
+Review item types:
+- entity_merge
+- alias
+- conflict
+- schema_promotion
+- placeholder_relevance

@@ -6,19 +6,92 @@ from datetime import datetime, timezone
 from .contracts import make_id
 
 
+REVIEW_FIELDS = [
+    "id",
+    "type",
+    "workspace_id",
+    "status",
+    "priority",
+    "target_ids",
+    "reason",
+    "supporting_artifacts",
+    "supporting_claims",
+    "confidence",
+    "suggested_action",
+    "created_at",
+    "updated_at",
+]
+
+
 def _ts() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def merge_canonical(claims, entity_candidates, relation_candidates, event_candidates, previous_canonical, intent):
+def _new_review_item(
+    review_type: str,
+    workspace_id: str,
+    priority: str,
+    target_ids: list[str],
+    reason: str,
+    supporting_artifacts: list[str],
+    supporting_claims: list[str],
+    confidence: float,
+    suggested_action: str,
+) -> dict:
+    ts = _ts()
+    return {
+        "id": make_id("rev"),
+        "type": review_type,
+        "workspace_id": workspace_id,
+        "status": "pending",
+        "priority": priority,
+        "target_ids": target_ids,
+        "reason": reason,
+        "supporting_artifacts": supporting_artifacts,
+        "supporting_claims": supporting_claims,
+        "confidence": round(confidence, 3),
+        "suggested_action": suggested_action,
+        "created_at": ts,
+        "updated_at": ts,
+    }
+
+
+def merge_canonical(
+    claims,
+    entity_candidates,
+    relation_candidates,
+    event_candidates,
+    previous_canonical,
+    intent,
+    merge_policy,
+    workspace_id,
+):
     entities = {e["name"].lower(): e for e in previous_canonical.get("entities", [])}
     relations = previous_canonical.get("relations", [])
     events = previous_canonical.get("events", [])
     preferred_entity_types = set(intent.get("preferred_entity_types", []))
+    review_items: list[dict] = []
 
     for candidate in entity_candidates:
         key = candidate.candidate_name.lower()
         intent_aligned = candidate.candidate_type in preferred_entity_types if preferred_entity_types else True
+        requires_review = candidate.confidence < merge_policy.get("entity_merge_min_confidence", 0.6)
+        if requires_review and merge_policy.get("review_low_confidence_entity_merge", True):
+            review_items.append(
+                _new_review_item(
+                    review_type="entity_merge",
+                    workspace_id=workspace_id,
+                    priority="high",
+                    target_ids=[candidate.id],
+                    reason="low_confidence_entity_merge",
+                    supporting_artifacts=["extracted/entity_candidates.json", "canonical/current.json"],
+                    supporting_claims=list(candidate.supporting_claims),
+                    confidence=candidate.confidence,
+                    suggested_action="Require human review before canonicalizing entity merge.",
+                )
+            )
+            continue
+
         if key not in entities:
             entities[key] = {
                 "id": make_id("ent"),
@@ -46,6 +119,20 @@ def merge_canonical(claims, entity_candidates, relation_candidates, event_candid
                 "goal": intent.get("goal", ""),
                 "preferred_type_match": intent_aligned,
             }
+            if candidate.aliases and merge_policy.get("review_aliases", True):
+                review_items.append(
+                    _new_review_item(
+                        review_type="alias",
+                        workspace_id=workspace_id,
+                        priority="medium",
+                        target_ids=[entities[key]["id"], candidate.id],
+                        reason="alias_update_requires_review",
+                        supporting_artifacts=["canonical/current.json", "extracted/entity_candidates.json"],
+                        supporting_claims=list(candidate.supporting_claims),
+                        confidence=min(entities[key].get("confidence", 0.5), candidate.confidence),
+                        suggested_action="Review alias list before applying to canonical entity.",
+                    )
+                )
 
     for relation in relation_candidates:
         from_entity = entities.get(relation.from_candidate.lower())
@@ -103,20 +190,23 @@ def merge_canonical(claims, entity_candidates, relation_candidates, event_candid
         "insights": insights,
         "schema": previous_canonical.get("schema", {"entity_types": [], "relation_types": [], "fields": []}),
         "taxonomy": previous_canonical.get("taxonomy", {"nodes": []}),
-    }
+    }, review_items
 
 
-def build_governance(claims, canonical, schema_candidates):
+def build_governance(claims, canonical, schema_candidates, review_items, workspace_id, merge_policy):
     conflicts = []
     buckets = defaultdict(set)
+    conflict_claim_ids = defaultdict(list)
     for claim in claims:
         key = (claim.subject.lower(), claim.predicate.lower())
         buckets[key].add(claim.object.lower())
+        conflict_claim_ids[key].append(claim.id)
     for (subject, predicate), objs in buckets.items():
         if len(objs) > 1:
+            conflict_id = make_id("conf")
             conflicts.append(
                 {
-                    "id": make_id("conf"),
+                    "id": conflict_id,
                     "subject": subject,
                     "predicate": predicate,
                     "objects": sorted(objs),
@@ -124,23 +214,49 @@ def build_governance(claims, canonical, schema_candidates):
                     "reason": "multiple_object_values",
                 }
             )
+            review_items.append(
+                _new_review_item(
+                    review_type="conflict",
+                    workspace_id=workspace_id,
+                    priority="high",
+                    target_ids=[conflict_id],
+                    reason="multiple_object_values",
+                    supporting_artifacts=["governance/conflicts.json", "extracted/claims.json"],
+                    supporting_claims=conflict_claim_ids[(subject, predicate)],
+                    confidence=0.4,
+                    suggested_action="Resolve conflicting claim objects and set canonical verdict.",
+                )
+            )
 
     placeholders = []
     for entity in canonical["entities"]:
         if entity["type"] == "unknown":
-            placeholders.append(
-                {
-                    "id": make_id("ph"),
-                    "target_type": "entity",
-                    "target_id": entity["id"],
-                    "field": "type",
-                    "status": "missing",
-                    "first_detected_at": _ts(),
-                    "last_updated_at": _ts(),
-                    "fill_confidence": 0.2,
-                    "supporting_claims": entity.get("supporting_claims", []),
-                }
-            )
+            placeholder = {
+                "id": make_id("ph"),
+                "target_type": "entity",
+                "target_id": entity["id"],
+                "field": "type",
+                "status": "missing",
+                "first_detected_at": _ts(),
+                "last_updated_at": _ts(),
+                "fill_confidence": 0.2,
+                "supporting_claims": entity.get("supporting_claims", []),
+            }
+            placeholders.append(placeholder)
+            if merge_policy.get("placeholder_review_enabled", True):
+                review_items.append(
+                    _new_review_item(
+                        review_type="placeholder_relevance",
+                        workspace_id=workspace_id,
+                        priority="medium",
+                        target_ids=[placeholder["id"], entity["id"]],
+                        reason="placeholder_aging_or_missing_core_field",
+                        supporting_artifacts=["governance/placeholders.json", "canonical/current.json"],
+                        supporting_claims=placeholder["supporting_claims"],
+                        confidence=placeholder["fill_confidence"],
+                        suggested_action="Confirm placeholder is still relevant and prioritize enrichment.",
+                    )
+                )
 
     confidence_results = {
         "claims_avg": round(sum(c.confidence for c in claims) / max(1, len(claims)), 3),
@@ -158,14 +274,35 @@ def build_governance(claims, canonical, schema_candidates):
             "candidate_kind": c.candidate_kind,
             "candidate_name": c.candidate_name,
             "evidence_count": c.evidence_count,
+            "source_count": c.source_count,
+            "proposed_value_type": c.proposed_value_type,
+            "similarity_to_existing": c.similarity_to_existing,
             "status": "pending_review",
         }
         for c in schema_candidates
     ]
+
+    for schema_candidate in schema_queue:
+        if schema_candidate["evidence_count"] >= merge_policy.get("schema_auto_promote_min_evidence", 99):
+            continue
+        review_items.append(
+            _new_review_item(
+                review_type="schema_promotion",
+                workspace_id=workspace_id,
+                priority="medium",
+                target_ids=[schema_candidate["id"]],
+                reason="schema_candidate_requires_review",
+                supporting_artifacts=["extracted/schema_candidates.json", "governance/schema_candidate_queue.json"],
+                supporting_claims=[],
+                confidence=0.5,
+                suggested_action="Review schema candidate and approve or reject promotion.",
+            )
+        )
 
     return {
         "conflicts": conflicts,
         "placeholders": placeholders,
         "schema_candidate_queue": schema_queue,
         "confidence_scoring_results": confidence_results,
+        "review_queue": review_items,
     }

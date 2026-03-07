@@ -100,9 +100,11 @@ def extract_from_chunks(workspace_id: str, chunks: list[Chunk], intent: dict):
                         id=make_id("entc"),
                         candidate_type=inferred_type,
                         candidate_name=name,
-                        confidence=0.6,
+                        confidence=max(0.35, round(base_confidence - 0.1, 2)),
                     )
                     entity_candidates[name.lower()] = existing
+                else:
+                    existing.confidence = round((existing.confidence + max(0.35, base_confidence - 0.1)) / 2, 2)
                 existing.supporting_claims.append(claim.id)
                 schema_counter[f"entity:{existing.candidate_type}"] += 1
 

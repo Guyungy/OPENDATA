@@ -8,7 +8,7 @@ import json
 from .adapters import route_adapter
 from .contracts import make_id, now_iso, read_json, sha256_text, to_jsonable, validate_required, write_json
 from .extraction import extract_from_chunks
-from .resolution import build_governance, merge_canonical
+from .resolution import REVIEW_FIELDS, build_governance, merge_canonical
 
 REQUIRED_DIRS = [
     "config",
@@ -33,6 +33,14 @@ DEFAULT_INTENT = {
     },
 }
 
+DEFAULT_MERGE_POLICY = {
+    "review_low_confidence_entity_merge": True,
+    "entity_merge_min_confidence": 0.65,
+    "review_aliases": True,
+    "placeholder_review_enabled": True,
+    "schema_auto_promote_min_evidence": 99,
+}
+
 
 def _ensure_dirs(workspace: Path) -> None:
     for dirname in REQUIRED_DIRS:
@@ -54,6 +62,14 @@ def _load_workspace_intent(workspace: Path) -> dict:
     if not isinstance(merged.get("report_preferences"), dict):
         merged["report_preferences"] = dict(DEFAULT_INTENT["report_preferences"])
     write_json(str(intent_path), merged)
+    return merged
+
+
+def _load_merge_policy(workspace: Path) -> dict:
+    policy_path = workspace / "config" / "merge_policy.json"
+    existing = read_json(str(policy_path), default={})
+    merged = {**DEFAULT_MERGE_POLICY, **existing}
+    write_json(str(policy_path), merged)
     return merged
 
 
@@ -89,8 +105,42 @@ def _render_dashboard(workspace: Path, run_id: str, stats: dict, changelog: dict
             f"- Preferred relation types: {', '.join(intent['preferred_relation_types']) or 'none'}\n"
         )
 
-    md = f"""# MindVault Dashboard\n\n- Run ID: `{run_id}`\n- Timestamp: {datetime.now(timezone.utc).isoformat()}\n{intent_section}
-## Knowledge State\n- Sources: {stats['sources']}\n- Chunks: {stats['chunks']}\n- Claims: {stats['claims']}\n- Entities: {stats['entities']}\n- Relations: {stats['relations']}\n- Events: {stats['events']}\n\n## Governance State\n- Conflicts: {len(governance['conflicts'])}\n- Placeholders: {len(governance['placeholders'])}\n- Schema Queue: {len(governance['schema_candidate_queue'])}\n- Claim confidence (avg): {governance['confidence_scoring_results']['claims_avg']}\n\n## Recent Changelog\n- Entity delta: {changelog['entity_delta']}\n- Relation delta: {changelog['relation_delta']}\n- Event delta: {changelog['event_delta']}\n"""
+    pending_review = [item for item in governance["review_queue"] if item["status"] == "pending"]
+    review_type_counts: dict[str, int] = {}
+    for item in pending_review:
+        review_type_counts[item["type"]] = review_type_counts.get(item["type"], 0) + 1
+    type_lines = "\n".join([f"- {review_type}: {count}" for review_type, count in sorted(review_type_counts.items())])
+    if not type_lines:
+        type_lines = "- none"
+
+    md = f"""# MindVault Dashboard
+
+- Run ID: `{run_id}`
+- Timestamp: {datetime.now(timezone.utc).isoformat()}
+{intent_section}
+## Knowledge State
+- Sources: {stats['sources']}
+- Chunks: {stats['chunks']}
+- Claims: {stats['claims']}
+- Entities: {stats['entities']}
+- Relations: {stats['relations']}
+- Events: {stats['events']}
+
+## Governance State
+- Conflicts: {len(governance['conflicts'])}
+- Placeholders: {len(governance['placeholders'])}
+- Schema Queue: {len(governance['schema_candidate_queue'])}
+- Claim confidence (avg): {governance['confidence_scoring_results']['claims_avg']}
+
+## Review Summary
+- Pending reviews: {len(pending_review)}
+{type_lines}
+
+## Recent Changelog
+- Entity delta: {changelog['entity_delta']}
+- Relation delta: {changelog['relation_delta']}
+- Event delta: {changelog['event_delta']}
+"""
     (workspace / "reports" / "dashboard.md").write_text(md, encoding="utf-8")
     write_json(str(workspace / "visuals" / "knowledge_graph.json"), {"nodes": stats["entities"], "edges": stats["relations"]})
 
@@ -105,7 +155,11 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         "events": [],
     }
     intent = _load_workspace_intent(workspace)
+    merge_policy = _load_merge_policy(workspace)
     trace["events"].append({"stage": "intent", "at": now_iso(), "goal": intent["goal"]})
+    trace["events"].append(
+        {"stage": "policy", "at": now_iso(), "entity_merge_min_confidence": merge_policy["entity_merge_min_confidence"]}
+    )
 
     sources_raw = _load_sources(Path(input_dir))
     trace["events"].append({"stage": "ingress", "count": len(sources_raw), "at": now_iso()})
@@ -135,15 +189,25 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     from .contracts import Chunk
 
     typed_chunks = [Chunk(**chunk) for chunk in chunks]
+    workspace_id = source_records[0]["workspace_id"] if source_records else "sample"
     claims, entity_candidates, relation_candidates, event_candidates, schema_candidates = extract_from_chunks(
-        workspace_id="sample", chunks=typed_chunks, intent=intent
+        workspace_id=workspace_id, chunks=typed_chunks, intent=intent
     )
 
     trace["events"].append({"stage": "extraction", "count": len(claims), "at": now_iso()})
 
     prev_canonical = read_json(str(workspace / "canonical" / "current.json"), default={})
-    canonical = merge_canonical(claims, entity_candidates, relation_candidates, event_candidates, prev_canonical, intent)
-    governance = build_governance(claims, canonical, schema_candidates)
+    canonical, review_items = merge_canonical(
+        claims,
+        entity_candidates,
+        relation_candidates,
+        event_candidates,
+        prev_canonical,
+        intent,
+        merge_policy,
+        workspace_id,
+    )
+    governance = build_governance(claims, canonical, schema_candidates, review_items, workspace_id, merge_policy)
     changelog = _build_changelog(prev_canonical, canonical)
 
     validation_errors = []
@@ -153,9 +217,8 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     validation_errors.extend(
         validate_required(canonical["entities"], ["id", "name", "supporting_claims", "confidence", "status"], "entities")
     )
-    validation_errors.extend(
-        validate_required(governance["conflicts"], ["id", "status", "reason"], "conflicts")
-    )
+    validation_errors.extend(validate_required(governance["conflicts"], ["id", "status", "reason"], "conflicts"))
+    validation_errors.extend(validate_required(governance["review_queue"], REVIEW_FIELDS, "review_queue"))
 
     write_json(str(workspace / "raw" / "sources.json"), source_records)
     write_json(str(workspace / "extracted" / "chunks.json"), chunks)
@@ -171,6 +234,7 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     write_json(str(workspace / "governance" / "placeholders.json"), governance["placeholders"])
     write_json(str(workspace / "governance" / "schema_candidate_queue.json"), governance["schema_candidate_queue"])
     write_json(str(workspace / "governance" / "confidence_scoring_results.json"), governance["confidence_scoring_results"])
+    write_json(str(workspace / "governance" / "review_queue.json"), governance["review_queue"])
 
     _record_snapshot(workspace, run_id, canonical, changelog)
 

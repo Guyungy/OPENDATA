@@ -6,7 +6,7 @@ This repository implements a runnable incremental pipeline that separates:
 - `raw` (immutable source records)
 - `extracted` (claims and candidates)
 - `canonical` (resolved entities/relations/events/insights/schema/taxonomy)
-- `governance` (conflicts/placeholders/schema queue/confidence)
+- `governance` (conflicts/placeholders/schema queue/review queue/confidence)
 
 ## Quick start
 
@@ -30,7 +30,26 @@ Each workspace can define intent in `config/intent.json`:
 The runtime reads this file and uses it in extraction, canonical merge alignment metadata,
 and dashboard/report generation. If missing, the pipeline writes a default intent file.
 
+
+Each workspace can define merge policy in `config/merge_policy.json`:
+
+```json
+{
+  "review_low_confidence_entity_merge": true,
+  "entity_merge_min_confidence": 0.65,
+  "review_aliases": true,
+  "placeholder_review_enabled": true,
+  "schema_auto_promote_min_evidence": 99
+}
+```
+
+When policy requires review, unresolved low-confidence decisions are routed into
+`governance/review_queue.json` instead of being silently canonicalized.
+
+
 This produces workspace artifacts under:
+
+- `config/merge_policy.json`
 
 - `raw/`
 - `extracted/`
@@ -47,7 +66,7 @@ This produces workspace artifacts under:
 2. Route to source adapters (`chat`, `webpage`, `document`) to normalize chunks.
 3. Extract claims and candidate artifacts from chunks.
 4. Resolve candidates into canonical entities/relations/events.
-5. Run governance checks (confidence, conflicts, placeholders, schema queue).
+5. Run governance checks (confidence, conflicts, placeholders, schema queue, review queue).
 6. Write snapshot and changelog for each run.
 7. Render dashboard summary and graph export artifacts.
 

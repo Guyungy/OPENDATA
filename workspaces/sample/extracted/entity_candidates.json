@@ -1,72 +1,72 @@
 [
   {
-    "id": "entc_6cbd3f6892a2",
+    "id": "entc_ce8aae4535e8",
     "candidate_type": "organization",
     "candidate_name": "Atlas",
     "aliases": [],
     "extracted_attributes": {},
     "supporting_claims": [
-      "clm_eaa56956e06e",
-      "clm_1d158d01422f",
-      "clm_aad35509b0ae"
+      "clm_3fd5336d08c8",
+      "clm_8fc547760405",
+      "clm_770a6cee1f3c"
     ],
-    "confidence": 0.6
+    "confidence": 0.7
   },
   {
-    "id": "entc_7d589219acd8",
+    "id": "entc_22c177d065ea",
     "candidate_type": "organization",
     "candidate_name": "Labs",
     "aliases": [],
     "extracted_attributes": {},
     "supporting_claims": [
-      "clm_eaa56956e06e",
-      "clm_aad35509b0ae"
+      "clm_3fd5336d08c8",
+      "clm_770a6cee1f3c"
     ],
-    "confidence": 0.6
+    "confidence": 0.7
   },
   {
-    "id": "entc_115d531c599f",
+    "id": "entc_6eebd7b315e9",
     "candidate_type": "organization",
     "candidate_name": "Nimbus",
     "aliases": [],
     "extracted_attributes": {},
     "supporting_claims": [
-      "clm_eaa56956e06e",
-      "clm_aad35509b0ae"
+      "clm_3fd5336d08c8",
+      "clm_770a6cee1f3c"
     ],
-    "confidence": 0.6
+    "confidence": 0.7
   },
   {
-    "id": "entc_76db26648102",
+    "id": "entc_308dfb2fa603",
     "candidate_type": "organization",
     "candidate_name": "Berlin",
     "aliases": [],
     "extracted_attributes": {},
     "supporting_claims": [
-      "clm_ba4bebb5d6fc"
+      "clm_ae7aa836ece7"
     ],
-    "confidence": 0.6
+    "confidence": 0.7
   },
   {
-    "id": "entc_dd1119a04edf",
+    "id": "entc_ad544cb74494",
     "candidate_type": "organization",
     "candidate_name": "Orbit",
     "aliases": [],
     "extracted_attributes": {},
     "supporting_claims": [
-      "clm_ba4bebb5d6fc"
+      "clm_ae7aa836ece7"
     ],
-    "confidence": 0.6
+    "confidence": 0.7
   },
   {
-    "id": "entc_7ce2f1048b58",
+    "id": "entc_b5f10ea37283",
     "candidate_type": "organization",
     "candidate_name": "The",
     "aliases": [],
     "extracted_attributes": {},
     "supporting_claims": [
-      "clm_ba4bebb5d6fc"
+      "clm_ae7aa836ece7"
     ],
-    "confidence": 0.6
+    "confidence": 0.7
   }
 ]
