@@ -49,6 +49,11 @@ When policy requires review, unresolved low-confidence decisions are routed into
 Review outcomes are persisted in `governance/review_decisions.json`, with applied effects
 fed back into canonical/governance artifacts and summarized in dashboard/changelog outputs.
 
+Identity memory artifacts are also persisted and reused across runs:
+- `canonical/alias_map.json`
+- `governance/identity_candidates.json`
+- `governance/merge_blocks.json`
+
 
 This produces workspace artifacts under:
 
@@ -71,7 +76,7 @@ This produces workspace artifacts under:
 4. Resolve candidates into canonical entities/relations/events.
 5. Run governance checks (confidence, conflicts, placeholders, schema queue, review queue).
 6. Write snapshot and changelog for each run.
-7. Render dashboard summary and graph export artifacts.
+7. Render dashboard summary (including identity-memory metrics) and graph export artifacts.
 
 ## Validation and tests
 

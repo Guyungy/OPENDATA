@@ -259,3 +259,57 @@ Decision values:
 Storage artifacts:
 - governance/review_decisions.json
 - governance/review_outcomes.json
+
+
+### 15. AliasMapEntry
+Represents canonical alias memory for one canonical entity.
+
+Fields:
+- canonical_entity_id
+- canonical_name
+- aliases
+- source_refs
+- confidence
+- updated_at
+
+Storage artifact:
+- canonical/alias_map.json
+
+### 16. IdentityCandidate
+Represents unresolved or resolved identity hypotheses tracked across runs.
+
+Fields:
+- id
+- workspace_id
+- status
+- candidate_entity_ids
+- possible_canonical_entity_ids
+- evidence
+- supporting_claims
+- confidence
+- created_at
+- updated_at
+
+IdentityCandidate statuses:
+- pending
+- accepted
+- rejected
+- deferred
+
+Storage artifact:
+- governance/identity_candidates.json
+
+### 17. MergeBlock
+Represents explicit do-not-auto-merge memory for identity decisions.
+
+Fields:
+- id
+- workspace_id
+- blocked_entity_ids
+- reason
+- created_from_review_item
+- created_at
+- updated_at
+
+Storage artifact:
+- governance/merge_blocks.json

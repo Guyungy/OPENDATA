@@ -1,21 +1,21 @@
 [
   {
-    "id": "relc_e94608d55472",
+    "id": "relc_620a1823e464",
     "from_candidate": "Nimbus",
     "to_candidate": "Atlas",
     "relation_type": "acquired",
     "supporting_claims": [
-      "clm_b644f3a43296"
+      "clm_37d9b9b0d867"
     ],
     "confidence": 0.7
   },
   {
-    "id": "relc_e5daf05ea0dd",
+    "id": "relc_857f18816e8e",
     "from_candidate": "Nimbus",
     "to_candidate": "Atlas",
     "relation_type": "acquired",
     "supporting_claims": [
-      "clm_4d17adc77954"
+      "clm_c1c4b61450fa"
     ],
     "confidence": 0.7
   }

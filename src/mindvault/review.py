@@ -34,46 +34,172 @@ def _write_workspace_json(workspace: Path, relative_path: str, payload) -> None:
 
 
 def _get_or_create_alias_map(workspace: Path) -> dict:
-    return _read_workspace_json(
-        workspace,
-        "canonical/alias_map.json",
-        default={"aliases": {}, "rejected_aliases": {}},
-    )
+    alias_map = _read_workspace_json(workspace, "canonical/alias_map.json", default={"aliases": []})
+    alias_map.setdefault("aliases", [])
+    return alias_map
+
+
+def _get_or_create_identity_candidates(workspace: Path) -> list[dict]:
+    return _read_workspace_json(workspace, "governance/identity_candidates.json", default=[])
+
+
+def _get_or_create_merge_blocks(workspace: Path) -> list[dict]:
+    return _read_workspace_json(workspace, "governance/merge_blocks.json", default=[])
 
 
 def _upsert_canonical_schema_files(workspace: Path, canonical: dict) -> None:
     _write_workspace_json(workspace, "canonical/schema.json", canonical.get("schema", {}))
 
 
-def _apply_entity_merge_decision(workspace: Path, review_item: dict, decision: str) -> list[dict]:
-    if decision != "accepted":
-        return [{"effect": "entity_merge_skipped", "reason": f"decision={decision}"}]
+def _resolve_identity_candidates(
+    candidates: list[dict],
+    workspace_id: str,
+    candidate_ids: list[str],
+    canonical_entity_id: str | None,
+    status: str,
+) -> list[str]:
+    resolved_ids: list[str] = []
+    if not candidate_ids:
+        return resolved_ids
+    candidate_id_set = set(candidate_ids)
+    for item in candidates:
+        if item.get("workspace_id") != workspace_id:
+            continue
+        if item.get("status") not in {"pending", "deferred"}:
+            continue
+        ids = set(item.get("candidate_entity_ids", []))
+        if not ids.intersection(candidate_id_set):
+            continue
+        if canonical_entity_id and canonical_entity_id not in item.get("possible_canonical_entity_ids", []):
+            item["possible_canonical_entity_ids"] = sorted(
+                set(item.get("possible_canonical_entity_ids", [])) | {canonical_entity_id}
+            )
+        item["status"] = status
+        item["updated_at"] = _ts()
+        resolved_ids.append(item["id"])
+    return resolved_ids
 
+
+def _upsert_alias_entry(
+    alias_map: dict,
+    canonical_entity_id: str,
+    canonical_name: str,
+    aliases: list[str],
+    source_ref: str,
+    confidence: float,
+) -> None:
+    entry = next((a for a in alias_map["aliases"] if a.get("canonical_entity_id") == canonical_entity_id), None)
+    if entry is None:
+        entry = {
+            "canonical_entity_id": canonical_entity_id,
+            "canonical_name": canonical_name,
+            "aliases": [],
+            "source_refs": [],
+            "confidence": round(confidence, 3),
+            "updated_at": _ts(),
+        }
+        alias_map["aliases"].append(entry)
+
+    entry["canonical_name"] = canonical_name
+    entry["aliases"] = sorted(set(entry.get("aliases", [])) | set(aliases))
+    entry["source_refs"] = sorted(set(entry.get("source_refs", [])) | {source_ref})
+    entry["confidence"] = round(max(entry.get("confidence", 0.0), confidence), 3)
+    entry["updated_at"] = _ts()
+
+
+def _create_merge_block(
+    merge_blocks: list[dict],
+    workspace_id: str,
+    blocked_entity_ids: list[str],
+    reason: str,
+    review_item_id: str,
+    blocked_candidate_names: list[str] | None = None,
+) -> dict:
+    block_key = tuple(sorted(blocked_entity_ids))
+    blocked_candidate_names = blocked_candidate_names or []
+    existing = next((b for b in merge_blocks if tuple(sorted(b.get("blocked_entity_ids", []))) == block_key), None)
+    if existing:
+        existing["reason"] = reason
+        existing["updated_at"] = _ts()
+        existing["blocked_candidate_names"] = sorted(
+            set(existing.get("blocked_candidate_names", [])) | set(blocked_candidate_names)
+        )
+        return existing
+
+    block = {
+        "id": make_id("mblk"),
+        "workspace_id": workspace_id,
+        "blocked_entity_ids": sorted(blocked_entity_ids),
+        "reason": reason,
+        "created_from_review_item": review_item_id,
+        "blocked_candidate_names": sorted(blocked_candidate_names),
+        "created_at": _ts(),
+        "updated_at": _ts(),
+    }
+    merge_blocks.append(block)
+    return block
+
+
+def _apply_entity_merge_decision(workspace: Path, review_item: dict, decision: str) -> list[dict]:
     entity_candidates = _read_workspace_json(workspace, "extracted/entity_candidates.json", default=[])
     canonical = _read_workspace_json(workspace, "canonical/current.json", default={})
     entities = canonical.get("entities", [])
-    candidate = next((item for item in entity_candidates if item["id"] in review_item["target_ids"]), None)
+    identity_candidates = _get_or_create_identity_candidates(workspace)
+    merge_blocks = _get_or_create_merge_blocks(workspace)
+    workspace_id = review_item.get("workspace_id", "unknown")
+
+    candidate = next((item for item in entity_candidates if item["id"] in review_item.get("target_ids", [])), None)
+
+    if decision != "accepted":
+        blocked_ids = [target for target in review_item.get("target_ids", []) if target.startswith("ent")]
+        if candidate:
+            blocked_ids.append(candidate["id"])
+        blocked_ids = sorted(set(blocked_ids))
+        if len(blocked_ids) >= 2:
+            block = _create_merge_block(
+                merge_blocks,
+                workspace_id,
+                blocked_ids,
+                reason="rejected_entity_merge",
+                review_item_id=review_item["id"],
+                blocked_candidate_names=[candidate.get("candidate_name", "")] if candidate else [],
+            )
+            rejected = _resolve_identity_candidates(
+                identity_candidates,
+                workspace_id,
+                [candidate["id"]] if candidate else [],
+                None,
+                "rejected",
+            )
+            _write_workspace_json(workspace, "governance/identity_candidates.json", identity_candidates)
+            _write_workspace_json(workspace, "governance/merge_blocks.json", merge_blocks)
+            effects = [{"effect": "merge_block_created", "merge_block_id": block["id"]}]
+            if rejected:
+                effects.append({"effect": "identity_candidate_rejected", "identity_candidate_ids": rejected})
+            return effects
+        return [{"effect": "entity_merge_skipped", "reason": f"decision={decision}"}]
+
     if candidate is None:
         return [{"effect": "entity_merge_missing_candidate"}]
 
     key = candidate["candidate_name"].lower()
     existing = next((entity for entity in entities if entity["name"].lower() == key), None)
     if existing is None:
-        entities.append(
-            {
-                "id": make_id("ent"),
-                "type": candidate["candidate_type"],
-                "name": candidate["candidate_name"],
-                "aliases": list(candidate.get("aliases", [])),
-                "attributes": dict(candidate.get("extracted_attributes", {})),
-                "supporting_claims": list(candidate.get("supporting_claims", [])),
-                "source_refs": [],
-                "confidence": round(candidate.get("confidence", 0.0), 2),
-                "created_at": _ts(),
-                "updated_at": _ts(),
-                "status": "active",
-            }
-        )
+        created = {
+            "id": make_id("ent"),
+            "type": candidate["candidate_type"],
+            "name": candidate["candidate_name"],
+            "aliases": list(candidate.get("aliases", [])),
+            "attributes": dict(candidate.get("extracted_attributes", {})),
+            "supporting_claims": list(candidate.get("supporting_claims", [])),
+            "source_refs": [],
+            "confidence": round(candidate.get("confidence", 0.0), 2),
+            "created_at": _ts(),
+            "updated_at": _ts(),
+            "status": "active",
+        }
+        entities.append(created)
+        canonical_entity_id = created["id"]
         effect = "entity_created_from_review"
     else:
         existing["supporting_claims"] = sorted(
@@ -81,11 +207,37 @@ def _apply_entity_merge_decision(workspace: Path, review_item: dict, decision: s
         )
         existing["aliases"] = sorted(set(existing.get("aliases", [])) | set(candidate.get("aliases", [])))
         existing["updated_at"] = _ts()
+        canonical_entity_id = existing["id"]
         effect = "entity_merged_from_review"
+
+    alias_map = _get_or_create_alias_map(workspace)
+    if candidate.get("aliases"):
+        _upsert_alias_entry(
+            alias_map,
+            canonical_entity_id,
+            candidate["candidate_name"],
+            list(candidate.get("aliases", [])),
+            source_ref=f"review:{review_item['id']}",
+            confidence=round(candidate.get("confidence", 0.0), 3),
+        )
+
+    resolved = _resolve_identity_candidates(
+        identity_candidates,
+        workspace_id,
+        [candidate["id"]],
+        canonical_entity_id,
+        "accepted",
+    )
 
     canonical["entities"] = entities
     _write_workspace_json(workspace, "canonical/current.json", canonical)
-    return [{"effect": effect, "candidate_id": candidate["id"]}]
+    _write_workspace_json(workspace, "canonical/alias_map.json", alias_map)
+    _write_workspace_json(workspace, "governance/identity_candidates.json", identity_candidates)
+    _write_workspace_json(workspace, "governance/merge_blocks.json", merge_blocks)
+    effects = [{"effect": effect, "candidate_id": candidate["id"]}]
+    if resolved:
+        effects.append({"effect": "identity_candidate_resolved", "identity_candidate_ids": resolved})
+    return effects
 
 
 def _apply_alias_decision(workspace: Path, review_item: dict, decision: str) -> list[dict]:
@@ -99,26 +251,60 @@ def _apply_alias_decision(workspace: Path, review_item: dict, decision: str) -> 
     candidate = next((item for item in entity_candidates if item["id"] in review_item["target_ids"]), None)
     aliases = list(candidate.get("aliases", [])) if candidate else []
     alias_map = _get_or_create_alias_map(workspace)
+    identity_candidates = _get_or_create_identity_candidates(workspace)
+    merge_blocks = _get_or_create_merge_blocks(workspace)
+    workspace_id = review_item.get("workspace_id", "unknown")
 
+    effects: list[dict] = []
     if decision == "accepted":
         entity["aliases"] = sorted(set(entity.get("aliases", [])) | set(aliases))
-        for alias in aliases:
-            alias_map["aliases"][alias.lower()] = entity["id"]
-        effect = "alias_accepted"
+        _upsert_alias_entry(
+            alias_map,
+            entity["id"],
+            entity.get("name", "unknown"),
+            aliases,
+            source_ref=f"review:{review_item['id']}",
+            confidence=review_item.get("confidence", 0.5),
+        )
+        resolved = _resolve_identity_candidates(
+            identity_candidates,
+            workspace_id,
+            [candidate["id"]] if candidate else [],
+            entity["id"],
+            "accepted",
+        )
+        effects.append({"effect": "alias_accepted", "aliases": aliases})
+        if resolved:
+            effects.append({"effect": "identity_candidate_resolved", "identity_candidate_ids": resolved})
     elif decision == "rejected":
-        for alias in aliases:
-            alias_map["rejected_aliases"][alias.lower()] = {
-                "entity_id": entity["id"],
-                "rejected_at": _ts(),
-                "reason": review_item.get("reason", "review_rejected"),
-            }
-        effect = "alias_rejected_recorded"
+        blocked_ids = sorted(set([entity["id"]] + ([candidate["id"]] if candidate else [])))
+        block = _create_merge_block(
+            merge_blocks,
+            workspace_id,
+            blocked_ids,
+            reason="rejected_alias_review",
+            review_item_id=review_item["id"],
+            blocked_candidate_names=[candidate.get("candidate_name", "")] if candidate else [],
+        )
+        rejected = _resolve_identity_candidates(
+            identity_candidates,
+            workspace_id,
+            [candidate["id"]] if candidate else [],
+            entity["id"],
+            "rejected",
+        )
+        effects.append({"effect": "alias_rejected_recorded", "aliases": aliases})
+        effects.append({"effect": "merge_block_created", "merge_block_id": block["id"]})
+        if rejected:
+            effects.append({"effect": "identity_candidate_rejected", "identity_candidate_ids": rejected})
     else:
-        effect = "alias_deferred"
+        effects.append({"effect": "alias_deferred", "aliases": aliases})
 
     _write_workspace_json(workspace, "canonical/current.json", canonical)
     _write_workspace_json(workspace, "canonical/alias_map.json", alias_map)
-    return [{"effect": effect, "aliases": aliases}]
+    _write_workspace_json(workspace, "governance/identity_candidates.json", identity_candidates)
+    _write_workspace_json(workspace, "governance/merge_blocks.json", merge_blocks)
+    return effects
 
 
 def _apply_conflict_decision(workspace: Path, review_item: dict, decision: str, resolution_value: str | None) -> list[dict]:
@@ -165,9 +351,7 @@ def _apply_schema_decision(workspace: Path, review_item: dict, decision: str) ->
         if kind == "entity":
             schema["entity_types"] = sorted(set(schema.get("entity_types", [])) | {candidate["candidate_name"]})
         elif kind == "relation":
-            schema["relation_types"] = sorted(
-                set(schema.get("relation_types", [])) | {candidate["candidate_name"]}
-            )
+            schema["relation_types"] = sorted(set(schema.get("relation_types", [])) | {candidate["candidate_name"]})
         else:
             schema["fields"] = sorted(set(schema.get("fields", [])) | {candidate["candidate_name"]})
         effect = "schema_promoted"
@@ -219,10 +403,19 @@ def _build_review_outcome_counts(review_queue: list[dict], decisions: list[dict]
         if status in counts:
             counts[status] += 1
         by_type[item["type"]] = by_type.get(item["type"], 0) + 1
+    recent_identity_decisions = [
+        decision
+        for decision in decisions
+        if any(
+            effect.get("effect") in {"alias_accepted", "alias_rejected_recorded", "merge_block_created"}
+            for effect in decision.get("applied_effects", [])
+        )
+    ][-5:]
     return {
         "counts": counts,
         "by_type": by_type,
         "recent_decisions": decisions[-5:],
+        "recent_identity_decisions": recent_identity_decisions,
     }
 
 
@@ -235,6 +428,11 @@ def _update_review_outputs(workspace: Path, review_queue: list[dict], decisions:
         existing = dashboard_path.read_text(encoding="utf-8")
     else:
         existing = "# MindVault Dashboard\n"
+
+    alias_map = _get_or_create_alias_map(workspace)
+    identity_candidates = _get_or_create_identity_candidates(workspace)
+    merge_blocks = _get_or_create_merge_blocks(workspace)
+
     section = [
         "\n## Review Decision Outcomes",
         f"- Pending: {summary['counts']['pending']}",
@@ -246,6 +444,20 @@ def _update_review_outputs(workspace: Path, review_queue: list[dict], decisions:
     for item in summary["recent_decisions"]:
         section.append(f"- {item['decided_at']}: {item['review_item_id']} -> {item['decision']} ({item['status']})")
     if not summary["recent_decisions"]:
+        section.append("- none")
+
+    section.extend(
+        [
+            "\n## Identity Memory Summary",
+            f"- Alias entries: {len(alias_map.get('aliases', []))}",
+            f"- Unresolved identity candidates: {len([c for c in identity_candidates if c.get('status') == 'pending'])}",
+            f"- Merge blocks: {len(merge_blocks)}",
+            "\n### Recent identity decisions",
+        ]
+    )
+    for item in summary["recent_identity_decisions"]:
+        section.append(f"- {item['decided_at']}: {item['review_item_id']} -> {item['decision']}")
+    if not summary["recent_identity_decisions"]:
         section.append("- none")
 
     marker = "\n## Review Decision Outcomes"

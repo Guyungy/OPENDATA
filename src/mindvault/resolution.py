@@ -65,17 +65,66 @@ def merge_canonical(
     intent,
     merge_policy,
     workspace_id,
+    alias_map,
+    identity_candidates,
+    merge_blocks,
 ):
     entities = {e["name"].lower(): e for e in previous_canonical.get("entities", [])}
+    entities_by_id = {e["id"]: e for e in previous_canonical.get("entities", [])}
     relations = previous_canonical.get("relations", [])
     events = previous_canonical.get("events", [])
     preferred_entity_types = set(intent.get("preferred_entity_types", []))
     review_items: list[dict] = []
+    identity_candidate_items = list(identity_candidates)
+
+    canonical_aliases: dict[str, dict] = {}
+    for entry in alias_map.get("aliases", []):
+        canonical_aliases[entry.get("canonical_name", "").lower()] = entry
+        for alias in entry.get("aliases", []):
+            canonical_aliases[alias.lower()] = entry
+
+    blocked_pairs = {
+        tuple(sorted(block.get("blocked_entity_ids", [])))
+        for block in merge_blocks
+        if len(block.get("blocked_entity_ids", [])) >= 2
+    }
+    blocked_by_name: dict[str, set[str]] = {}
+    for block in merge_blocks:
+        block_ids = block.get("blocked_entity_ids", [])
+        candidate_names = {name.lower() for name in block.get("blocked_candidate_names", []) if name}
+        for block_id in block_ids:
+            if block_id.startswith("ent_") and candidate_names:
+                blocked_by_name.setdefault(block_id, set()).update(candidate_names)
 
     for candidate in entity_candidates:
         key = candidate.candidate_name.lower()
         intent_aligned = candidate.candidate_type in preferred_entity_types if preferred_entity_types else True
+        alias_hit = canonical_aliases.get(key)
+        matched_entity = entities.get(key)
+        if matched_entity is None and alias_hit:
+            canonical_entity_id = alias_hit.get("canonical_entity_id")
+            matched_entity = entities_by_id.get(canonical_entity_id)
+
         requires_review = candidate.confidence < merge_policy.get("entity_merge_min_confidence", 0.6)
+        if matched_entity and matched_entity.get("id") != candidate.id:
+            pair_key = tuple(sorted([matched_entity["id"], candidate.id]))
+            blocked_name_match = candidate.candidate_name.lower() in blocked_by_name.get(matched_entity["id"], set())
+            if pair_key in blocked_pairs or blocked_name_match:
+                review_items.append(
+                    _new_review_item(
+                        review_type="entity_merge",
+                        workspace_id=workspace_id,
+                        priority="high",
+                        target_ids=[matched_entity["id"], candidate.id],
+                        reason="merge_blocked_pair_requires_review",
+                        supporting_artifacts=["governance/merge_blocks.json", "extracted/entity_candidates.json"],
+                        supporting_claims=list(candidate.supporting_claims),
+                        confidence=min(candidate.confidence, matched_entity.get("confidence", 0.5)),
+                        suggested_action="Previous merge was blocked; require explicit review before any merge.",
+                    )
+                )
+                continue
+
         if requires_review and merge_policy.get("review_low_confidence_entity_merge", True):
             review_items.append(
                 _new_review_item(
@@ -90,9 +139,31 @@ def merge_canonical(
                     suggested_action="Require human review before canonicalizing entity merge.",
                 )
             )
+            possible_ids = []
+            if matched_entity:
+                possible_ids.append(matched_entity["id"])
+            elif alias_hit:
+                possible_ids.append(alias_hit.get("canonical_entity_id"))
+            identity_candidate_items.append(
+                {
+                    "id": make_id("idcand"),
+                    "workspace_id": workspace_id,
+                    "status": "pending",
+                    "candidate_entity_ids": [candidate.id],
+                    "possible_canonical_entity_ids": [cid for cid in possible_ids if cid],
+                    "evidence": {
+                        "reason": "low_confidence_entity_merge",
+                        "candidate_name": candidate.candidate_name,
+                    },
+                    "supporting_claims": list(candidate.supporting_claims),
+                    "confidence": round(candidate.confidence, 3),
+                    "created_at": _ts(),
+                    "updated_at": _ts(),
+                }
+            )
             continue
 
-        if key not in entities:
+        if matched_entity is None:
             entities[key] = {
                 "id": make_id("ent"),
                 "type": candidate.candidate_type,
@@ -111,27 +182,52 @@ def merge_canonical(
                 },
             }
         else:
-            entities[key]["supporting_claims"] = sorted(
-                set(entities[key].get("supporting_claims", [])) | set(candidate.supporting_claims)
+            matched_entity["supporting_claims"] = sorted(
+                set(matched_entity.get("supporting_claims", [])) | set(candidate.supporting_claims)
             )
-            entities[key]["updated_at"] = _ts()
-            entities[key]["intent_alignment"] = {
+            matched_entity["updated_at"] = _ts()
+            matched_entity["intent_alignment"] = {
                 "goal": intent.get("goal", ""),
                 "preferred_type_match": intent_aligned,
             }
+            if alias_hit and alias_hit.get("canonical_name"):
+                candidate_alias = candidate.candidate_name
+                if candidate_alias not in matched_entity.get("aliases", []):
+                    matched_entity["aliases"] = sorted(set(matched_entity.get("aliases", [])) | {candidate_alias})
             if candidate.aliases and merge_policy.get("review_aliases", True):
                 review_items.append(
                     _new_review_item(
                         review_type="alias",
                         workspace_id=workspace_id,
                         priority="medium",
-                        target_ids=[entities[key]["id"], candidate.id],
+                        target_ids=[matched_entity["id"], candidate.id],
                         reason="alias_update_requires_review",
                         supporting_artifacts=["canonical/current.json", "extracted/entity_candidates.json"],
                         supporting_claims=list(candidate.supporting_claims),
-                        confidence=min(entities[key].get("confidence", 0.5), candidate.confidence),
+                        confidence=min(matched_entity.get("confidence", 0.5), candidate.confidence),
                         suggested_action="Review alias list before applying to canonical entity.",
                     )
+                )
+
+            if matched_entity["id"] != candidate.id:
+                identity_candidate_items.append(
+                    {
+                        "id": make_id("idcand"),
+                        "workspace_id": workspace_id,
+                        "status": "accepted" if alias_hit else "pending",
+                        "candidate_entity_ids": [candidate.id],
+                        "possible_canonical_entity_ids": [matched_entity["id"]],
+                        "evidence": {
+                            "reason": "name_or_alias_match",
+                            "candidate_name": candidate.candidate_name,
+                            "matched_name": matched_entity.get("name"),
+                            "from_alias_map": bool(alias_hit),
+                        },
+                        "supporting_claims": list(candidate.supporting_claims),
+                        "confidence": round(min(matched_entity.get("confidence", 0.5), candidate.confidence), 3),
+                        "created_at": _ts(),
+                        "updated_at": _ts(),
+                    }
                 )
 
     for relation in relation_candidates:
@@ -190,7 +286,7 @@ def merge_canonical(
         "insights": insights,
         "schema": previous_canonical.get("schema", {"entity_types": [], "relation_types": [], "fields": []}),
         "taxonomy": previous_canonical.get("taxonomy", {"nodes": []}),
-    }, review_items
+    }, review_items, identity_candidate_items
 
 
 def build_governance(claims, canonical, schema_candidates, review_items, workspace_id, merge_policy):

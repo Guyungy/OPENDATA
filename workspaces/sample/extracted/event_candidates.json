@@ -1,6 +1,6 @@
 [
   {
-    "id": "evc_a7c1754c8e58",
+    "id": "evc_70ca38eaa001",
     "event_type": "announcement",
     "title": "Atlas released an integration update",
     "participants": [
@@ -9,12 +9,12 @@
     "time_range": "unknown",
     "location": "unknown",
     "supporting_claims": [
-      "clm_676117b34594"
+      "clm_5b3fa65603c2"
     ],
     "confidence": 0.65
   },
   {
-    "id": "evc_9a94c97df40c",
+    "id": "evc_c36ae15cbef1",
     "event_type": "announcement",
     "title": "The company announced Orbit in Berlin during the annual summit",
     "participants": [
@@ -25,7 +25,7 @@
     "time_range": "unknown",
     "location": "unknown",
     "supporting_claims": [
-      "clm_0d7fcc73c0d1"
+      "clm_940f34bd6797"
     ],
     "confidence": 0.65
   }

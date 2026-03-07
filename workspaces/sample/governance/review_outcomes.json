@@ -1,11 +1,12 @@
 {
   "counts": {
-    "pending": 11,
-    "accepted": 0,
-    "rejected": 0,
-    "deferred": 1
+    "pending": 16,
+    "accepted": 1,
+    "rejected": 1,
+    "deferred": 0
   },
   "by_type": {
+    "entity_merge": 6,
     "placeholder_relevance": 9,
     "schema_promotion": 3
   },
@@ -41,6 +42,45 @@
         }
       ],
       "status": "applied"
+    },
+    {
+      "id": "rdec_e59057b96dd6",
+      "review_item_id": "rev_797d8ccc384f",
+      "workspace_id": "sample",
+      "decision": "rejected",
+      "decided_at": "2026-03-07T13:07:17.889753+00:00",
+      "decided_by": "analyst",
+      "rationale": "Not enough evidence to merge",
+      "applied_effects": [
+        {
+          "effect": "entity_merge_skipped",
+          "reason": "decision=rejected"
+        }
+      ],
+      "status": "applied"
+    },
+    {
+      "id": "rdec_078d49dbfc4d",
+      "review_item_id": "rev_74860c4c1bdb",
+      "workspace_id": "sample",
+      "decision": "accepted",
+      "decided_at": "2026-03-07T13:07:28.771046+00:00",
+      "decided_by": "analyst",
+      "rationale": "Confirmed match",
+      "applied_effects": [
+        {
+          "effect": "entity_merged_from_review",
+          "candidate_id": "entc_75b6e8240608"
+        },
+        {
+          "effect": "identity_candidate_resolved",
+          "identity_candidate_ids": [
+            "idcand_11b0445f6054"
+          ]
+        }
+      ],
+      "status": "applied"
     }
-  ]
+  ],
+  "recent_identity_decisions": []
 }

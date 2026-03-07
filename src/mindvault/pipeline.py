@@ -73,6 +73,22 @@ def _load_merge_policy(workspace: Path) -> dict:
     return merged
 
 
+def _get_or_create_alias_map(workspace: Path) -> dict:
+    alias_map = read_json(str(workspace / "canonical" / "alias_map.json"), default={})
+    if not alias_map:
+        alias_map = {"aliases": []}
+    alias_map.setdefault("aliases", [])
+    return alias_map
+
+
+def _get_or_create_identity_candidates(workspace: Path) -> list[dict]:
+    return read_json(str(workspace / "governance" / "identity_candidates.json"), default=[])
+
+
+def _get_or_create_merge_blocks(workspace: Path) -> list[dict]:
+    return read_json(str(workspace / "governance" / "merge_blocks.json"), default=[])
+
+
 def _record_snapshot(workspace: Path, run_id: str, canonical: dict, changelog: dict) -> None:
     snapshot = {
         "run_id": run_id,
@@ -100,6 +116,8 @@ def _decision_summary(review_queue: list[dict], review_decisions: list[dict]) ->
         "schema_promotions_accepted": 0,
         "placeholders_deprecated": 0,
         "review_items_deferred": 0,
+        "merge_blocks_created": 0,
+        "identity_candidates_resolved": 0,
     }
     for decision in review_decisions:
         value = decision.get("decision")
@@ -119,6 +137,10 @@ def _decision_summary(review_queue: list[dict], review_decisions: list[dict]) ->
                 effect_counts["schema_promotions_accepted"] += 1
             elif name == "placeholder_deprecated":
                 effect_counts["placeholders_deprecated"] += 1
+            elif name == "merge_block_created":
+                effect_counts["merge_blocks_created"] += 1
+            elif name in {"identity_candidate_resolved", "identity_candidate_rejected"}:
+                effect_counts["identity_candidates_resolved"] += 1
 
     return {"queue_counts": queue_counts, "by_type": by_type, "effects": effect_counts}
 
@@ -143,6 +165,9 @@ def _render_dashboard(
     governance: dict,
     intent: dict,
     review_decisions: list[dict],
+    alias_map: dict,
+    identity_candidates: list[dict],
+    merge_blocks: list[dict],
 ) -> None:
     intent_section = ""
     if intent.get("report_preferences", {}).get("include_intent_summary", True):
@@ -208,6 +233,11 @@ def _render_dashboard(
 ### Recent decisions
 {recent_lines}
 
+## Identity Memory
+- Alias entries: {len(alias_map.get('aliases', []))}
+- Unresolved identity candidates: {len([c for c in identity_candidates if c.get('status') == 'pending'])}
+- Merge blocks: {len(merge_blocks)}
+
 ## Recent Changelog
 - Entity delta: {changelog['entity_delta']}
 - Relation delta: {changelog['relation_delta']}
@@ -219,6 +249,8 @@ def _render_dashboard(
 - Schema promotions accepted: {changelog['review_outcomes']['schema_promotions_accepted']}
 - Placeholders deprecated: {changelog['review_outcomes']['placeholders_deprecated']}
 - Review items deferred: {changelog['review_outcomes']['review_items_deferred']}
+- Merge blocks created: {changelog['review_outcomes']['merge_blocks_created']}
+- Identity candidates resolved: {changelog['review_outcomes']['identity_candidates_resolved']}
 """
     (workspace / "reports" / "dashboard.md").write_text(md, encoding="utf-8")
     write_json(str(workspace / "visuals" / "knowledge_graph.json"), {"nodes": stats["entities"], "edges": stats["relations"]})
@@ -276,7 +308,11 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     trace["events"].append({"stage": "extraction", "count": len(claims), "at": now_iso()})
 
     prev_canonical = read_json(str(workspace / "canonical" / "current.json"), default={})
-    canonical, review_items = merge_canonical(
+    alias_map = _get_or_create_alias_map(workspace)
+    identity_candidates = _get_or_create_identity_candidates(workspace)
+    merge_blocks = _get_or_create_merge_blocks(workspace)
+
+    canonical, review_items, identity_candidates = merge_canonical(
         claims,
         entity_candidates,
         relation_candidates,
@@ -285,6 +321,9 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         intent,
         merge_policy,
         workspace_id,
+        alias_map,
+        identity_candidates,
+        merge_blocks,
     )
     governance = build_governance(claims, canonical, schema_candidates, review_items, workspace_id, merge_policy)
     review_decisions = read_json(str(workspace / "governance" / "review_decisions.json"), default=[])
@@ -309,6 +348,7 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     write_json(str(workspace / "extracted" / "schema_candidates.json"), to_jsonable(schema_candidates))
 
     write_json(str(workspace / "canonical" / "current.json"), canonical)
+    write_json(str(workspace / "canonical" / "alias_map.json"), alias_map)
 
     write_json(str(workspace / "governance" / "conflicts.json"), governance["conflicts"])
     write_json(str(workspace / "governance" / "placeholders.json"), governance["placeholders"])
@@ -316,6 +356,8 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     write_json(str(workspace / "governance" / "confidence_scoring_results.json"), governance["confidence_scoring_results"])
     write_json(str(workspace / "governance" / "review_queue.json"), governance["review_queue"])
     write_json(str(workspace / "governance" / "review_decisions.json"), review_decisions)
+    write_json(str(workspace / "governance" / "identity_candidates.json"), identity_candidates)
+    write_json(str(workspace / "governance" / "merge_blocks.json"), merge_blocks)
 
     _record_snapshot(workspace, run_id, canonical, changelog)
 
@@ -326,9 +368,23 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         "entities": len(canonical["entities"]),
         "relations": len(canonical["relations"]),
         "events": len(canonical["events"]),
+        "alias_entries": len(alias_map.get("aliases", [])),
+        "identity_candidates": len(identity_candidates),
+        "merge_blocks": len(merge_blocks),
     }
 
-    _render_dashboard(workspace, run_id, stats, changelog, governance, intent, review_decisions)
+    _render_dashboard(
+        workspace,
+        run_id,
+        stats,
+        changelog,
+        governance,
+        intent,
+        review_decisions,
+        alias_map,
+        identity_candidates,
+        merge_blocks,
+    )
     trace["events"].append({"stage": "render", "at": now_iso(), "stats": stats})
     write_json(str(workspace / "trace" / f"{run_id}.json"), trace)
 
