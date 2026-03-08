@@ -368,6 +368,51 @@ def _apply_schema_decision(workspace: Path, review_item: dict, decision: str) ->
     return [{"effect": effect, "schema_candidate_id": candidate["id"]}]
 
 
+def _apply_taxonomy_decision(workspace: Path, review_item: dict, decision: str) -> list[dict]:
+    taxonomy_candidates = _read_workspace_json(workspace, "governance/taxonomy_candidates.json", default=[])
+    candidate = next((item for item in taxonomy_candidates if item["id"] in review_item.get("target_ids", [])), None)
+    if candidate is None:
+        return [{"effect": "taxonomy_candidate_missing"}]
+
+    canonical = _read_workspace_json(workspace, "canonical/current.json", default={})
+    taxonomy = _read_workspace_json(workspace, "canonical/taxonomy.json", default={"nodes": []})
+    ontology = _read_workspace_json(workspace, "canonical/ontology.json", default={"entries": []})
+
+    if decision == "accepted":
+        candidate["status"] = "accepted"
+        candidate["updated_at"] = _ts()
+        effect = "taxonomy_candidate_promoted"
+        if candidate.get("candidate_kind") == "ontology_pattern" and candidate.get("proposed_entry"):
+            proposed = candidate["proposed_entry"]
+            existing_ids = {entry.get("id") for entry in ontology.get("entries", [])}
+            if proposed.get("id") not in existing_ids:
+                proposed = {**proposed, "created_at": _ts(), "updated_at": _ts()}
+                ontology.setdefault("entries", []).append(proposed)
+        elif candidate.get("proposed_node"):
+            proposed = candidate["proposed_node"]
+            existing_ids = {node.get("id") for node in taxonomy.get("nodes", [])}
+            if proposed.get("id") not in existing_ids:
+                proposed = {**proposed, "created_at": _ts(), "updated_at": _ts()}
+                taxonomy.setdefault("nodes", []).append(proposed)
+    elif decision == "rejected":
+        candidate["status"] = "rejected"
+        candidate["updated_at"] = _ts()
+        effect = "taxonomy_candidate_rejected"
+    else:
+        candidate["status"] = "deferred"
+        candidate["updated_at"] = _ts()
+        effect = "taxonomy_candidate_deferred"
+
+    canonical["taxonomy"] = taxonomy
+    canonical["ontology"] = ontology
+
+    _write_workspace_json(workspace, "canonical/current.json", canonical)
+    _write_workspace_json(workspace, "canonical/taxonomy.json", taxonomy)
+    _write_workspace_json(workspace, "canonical/ontology.json", ontology)
+    _write_workspace_json(workspace, "governance/taxonomy_candidates.json", taxonomy_candidates)
+    return [{"effect": effect, "taxonomy_candidate_id": candidate["id"]}]
+
+
 def _apply_placeholder_decision(workspace: Path, review_item: dict, decision: str) -> list[dict]:
     placeholders = _read_workspace_json(workspace, "governance/placeholders.json", default=[])
     placeholder = next((item for item in placeholders if item["id"] in review_item["target_ids"]), None)
@@ -496,6 +541,8 @@ def apply_review_decision(
         applied_effects = _apply_conflict_decision(workspace, review_item, decision, resolution_value)
     elif review_type == "schema_promotion":
         applied_effects = _apply_schema_decision(workspace, review_item, decision)
+    elif review_type == "taxonomy_promotion":
+        applied_effects = _apply_taxonomy_decision(workspace, review_item, decision)
     elif review_type == "placeholder_relevance":
         applied_effects = _apply_placeholder_decision(workspace, review_item, decision)
     else:

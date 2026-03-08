@@ -5,8 +5,8 @@ MindVault is an AI-first, artifact-driven knowledge operating system.
 This repository implements a runnable incremental pipeline that separates:
 - `raw` (immutable source records)
 - `extracted` (claims and candidates)
-- `canonical` (resolved entities/relations/events/insights/schema/taxonomy)
-- `governance` (conflicts/placeholders/schema queue/review queue/review decisions/confidence)
+- `canonical` (resolved entities/relations/events/insights/schema/taxonomy/ontology)
+- `governance` (conflicts/placeholders/schema queue/taxonomy candidates/review queue/review decisions/confidence)
 
 ## Quick start
 
@@ -49,6 +49,14 @@ When policy requires review, unresolved low-confidence decisions are routed into
 Review outcomes are persisted in `governance/review_decisions.json`, with applied effects
 fed back into canonical/governance artifacts and summarized in dashboard/changelog outputs.
 
+Taxonomy/ontology growth is persisted in:
+- `canonical/taxonomy.json`
+- `canonical/ontology.json`
+- `governance/taxonomy_candidates.json`
+
+Uncertain taxonomy and ontology additions are routed to taxonomy candidates + `taxonomy_promotion`
+review items instead of direct canonical promotion.
+
 Identity memory artifacts are also persisted and reused across runs:
 - `canonical/alias_map.json`
 - `governance/identity_candidates.json`
@@ -74,9 +82,10 @@ This produces workspace artifacts under:
 2. Route to source adapters (`chat`, `webpage`, `document`) to normalize chunks.
 3. Extract claims and candidate artifacts from chunks.
 4. Resolve candidates into canonical entities/relations/events.
-5. Run governance checks (confidence, conflicts, placeholders, schema queue, review queue).
-6. Write snapshot and changelog for each run.
-7. Render dashboard summary (including identity-memory metrics) and graph export artifacts.
+5. Build taxonomy + ontology artifacts and route uncertain additions to taxonomy candidate governance.
+6. Run governance checks (confidence, conflicts, placeholders, schema queue, review queue).
+7. Write snapshot and changelog for each run (including taxonomy/ontology growth deltas).
+8. Render dashboard summary (including identity-memory and taxonomy/ontology metrics) and graph export artifacts.
 
 ## Validation and tests
 
