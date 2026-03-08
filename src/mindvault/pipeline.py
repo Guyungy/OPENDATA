@@ -9,6 +9,7 @@ from .adapters import route_adapter
 from .contracts import make_id, now_iso, read_json, sha256_text, to_jsonable, validate_required, write_json
 from .extraction import extract_from_chunks
 from .resolution import REVIEW_FIELDS, build_governance, merge_canonical
+from .taxonomy import build_taxonomy_ontology
 
 REQUIRED_DIRS = [
     "config",
@@ -118,6 +119,8 @@ def _decision_summary(review_queue: list[dict], review_decisions: list[dict]) ->
         "review_items_deferred": 0,
         "merge_blocks_created": 0,
         "identity_candidates_resolved": 0,
+        "taxonomy_candidates_promoted": 0,
+        "taxonomy_candidates_rejected": 0,
     }
     for decision in review_decisions:
         value = decision.get("decision")
@@ -141,11 +144,21 @@ def _decision_summary(review_queue: list[dict], review_decisions: list[dict]) ->
                 effect_counts["merge_blocks_created"] += 1
             elif name in {"identity_candidate_resolved", "identity_candidate_rejected"}:
                 effect_counts["identity_candidates_resolved"] += 1
+            elif name == "taxonomy_candidate_promoted":
+                effect_counts["taxonomy_candidates_promoted"] += 1
+            elif name == "taxonomy_candidate_rejected":
+                effect_counts["taxonomy_candidates_rejected"] += 1
 
     return {"queue_counts": queue_counts, "by_type": by_type, "effects": effect_counts}
 
 
-def _build_changelog(prev: dict, curr: dict, review_queue: list[dict], review_decisions: list[dict]) -> dict:
+def _build_changelog(
+    prev: dict,
+    curr: dict,
+    review_queue: list[dict],
+    review_decisions: list[dict],
+    taxonomy_metrics: dict,
+) -> dict:
     review_summary = _decision_summary(review_queue, review_decisions)
     return {
         "created_at": now_iso(),
@@ -153,6 +166,11 @@ def _build_changelog(prev: dict, curr: dict, review_queue: list[dict], review_de
         "relation_delta": len(curr.get("relations", [])) - len(prev.get("relations", [])),
         "event_delta": len(curr.get("events", [])) - len(prev.get("events", [])),
         "review_outcomes": review_summary["effects"],
+        "taxonomy_nodes_added": taxonomy_metrics.get("taxonomy_nodes_added", 0),
+        "ontology_patterns_added": taxonomy_metrics.get("ontology_patterns_added", 0),
+        "taxonomy_candidates_created": taxonomy_metrics.get("taxonomy_candidates_created", 0),
+        "taxonomy_candidates_promoted": review_summary["effects"].get("taxonomy_candidates_promoted", 0),
+        "taxonomy_candidates_rejected": review_summary["effects"].get("taxonomy_candidates_rejected", 0),
         "summary": "Canonical layer updated from extracted candidates and governance checks.",
     }
 
@@ -168,6 +186,9 @@ def _render_dashboard(
     alias_map: dict,
     identity_candidates: list[dict],
     merge_blocks: list[dict],
+    taxonomy: dict,
+    ontology: dict,
+    taxonomy_candidates: list[dict],
 ) -> None:
     intent_section = ""
     if intent.get("report_preferences", {}).get("include_intent_summary", True):
@@ -238,6 +259,12 @@ def _render_dashboard(
 - Unresolved identity candidates: {len([c for c in identity_candidates if c.get('status') == 'pending'])}
 - Merge blocks: {len(merge_blocks)}
 
+## Taxonomy & Ontology
+- Taxonomy nodes: {len(taxonomy.get('nodes', []))}
+- Ontology patterns: {len(ontology.get('entries', []))}
+- Pending taxonomy candidates: {len([item for item in taxonomy_candidates if item.get('status') == 'pending'])}
+- Recently promoted taxonomy candidates: {len([item for item in taxonomy_candidates if item.get('status') == 'accepted'])}
+
 ## Recent Changelog
 - Entity delta: {changelog['entity_delta']}
 - Relation delta: {changelog['relation_delta']}
@@ -251,6 +278,11 @@ def _render_dashboard(
 - Review items deferred: {changelog['review_outcomes']['review_items_deferred']}
 - Merge blocks created: {changelog['review_outcomes']['merge_blocks_created']}
 - Identity candidates resolved: {changelog['review_outcomes']['identity_candidates_resolved']}
+- Taxonomy nodes added: {changelog['taxonomy_nodes_added']}
+- Ontology patterns added: {changelog['ontology_patterns_added']}
+- Taxonomy candidates created: {changelog['taxonomy_candidates_created']}
+- Taxonomy candidates promoted: {changelog['taxonomy_candidates_promoted']}
+- Taxonomy candidates rejected: {changelog['taxonomy_candidates_rejected']}
 """
     (workspace / "reports" / "dashboard.md").write_text(md, encoding="utf-8")
     write_json(str(workspace / "visuals" / "knowledge_graph.json"), {"nodes": stats["entities"], "edges": stats["relations"]})
@@ -325,9 +357,32 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         identity_candidates,
         merge_blocks,
     )
+    existing_taxonomy = read_json(str(workspace / "canonical" / "taxonomy.json"), default={"nodes": []})
+    existing_ontology = read_json(str(workspace / "canonical" / "ontology.json"), default={"entries": []})
+    existing_taxonomy_candidates = read_json(str(workspace / "governance" / "taxonomy_candidates.json"), default=[])
+
+    taxonomy, ontology, taxonomy_candidates, taxonomy_review_items, taxonomy_metrics = build_taxonomy_ontology(
+        canonical,
+        claims,
+        schema_candidates,
+        existing_taxonomy,
+        existing_ontology,
+        existing_taxonomy_candidates,
+        workspace_id,
+    )
+    canonical["taxonomy"] = taxonomy
+    canonical["ontology"] = ontology
+
     governance = build_governance(claims, canonical, schema_candidates, review_items, workspace_id, merge_policy)
+    governance["review_queue"].extend(taxonomy_review_items)
     review_decisions = read_json(str(workspace / "governance" / "review_decisions.json"), default=[])
-    changelog = _build_changelog(prev_canonical, canonical, governance["review_queue"], review_decisions)
+    changelog = _build_changelog(
+        prev_canonical,
+        canonical,
+        governance["review_queue"],
+        review_decisions,
+        taxonomy_metrics,
+    )
 
     validation_errors = []
     validation_errors.extend(
@@ -338,6 +393,19 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     )
     validation_errors.extend(validate_required(governance["conflicts"], ["id", "status", "reason"], "conflicts"))
     validation_errors.extend(validate_required(governance["review_queue"], REVIEW_FIELDS, "review_queue"))
+    validation_errors.extend(
+        validate_required(taxonomy.get("nodes", []), ["id", "name", "node_type", "status", "created_at", "updated_at"], "taxonomy")
+    )
+    validation_errors.extend(
+        validate_required(ontology.get("entries", []), ["id", "subject_type", "relation_type", "object_type", "status"], "ontology")
+    )
+    validation_errors.extend(
+        validate_required(
+            taxonomy_candidates,
+            ["id", "candidate_kind", "candidate_name", "evidence_count", "source_count", "status", "created_at", "updated_at"],
+            "taxonomy_candidates",
+        )
+    )
 
     write_json(str(workspace / "raw" / "sources.json"), source_records)
     write_json(str(workspace / "extracted" / "chunks.json"), chunks)
@@ -348,6 +416,8 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     write_json(str(workspace / "extracted" / "schema_candidates.json"), to_jsonable(schema_candidates))
 
     write_json(str(workspace / "canonical" / "current.json"), canonical)
+    write_json(str(workspace / "canonical" / "taxonomy.json"), taxonomy)
+    write_json(str(workspace / "canonical" / "ontology.json"), ontology)
     write_json(str(workspace / "canonical" / "alias_map.json"), alias_map)
 
     write_json(str(workspace / "governance" / "conflicts.json"), governance["conflicts"])
@@ -356,6 +426,7 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
     write_json(str(workspace / "governance" / "confidence_scoring_results.json"), governance["confidence_scoring_results"])
     write_json(str(workspace / "governance" / "review_queue.json"), governance["review_queue"])
     write_json(str(workspace / "governance" / "review_decisions.json"), review_decisions)
+    write_json(str(workspace / "governance" / "taxonomy_candidates.json"), taxonomy_candidates)
     write_json(str(workspace / "governance" / "identity_candidates.json"), identity_candidates)
     write_json(str(workspace / "governance" / "merge_blocks.json"), merge_blocks)
 
@@ -371,6 +442,9 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         "alias_entries": len(alias_map.get("aliases", [])),
         "identity_candidates": len(identity_candidates),
         "merge_blocks": len(merge_blocks),
+        "taxonomy_nodes": len(taxonomy.get("nodes", [])),
+        "ontology_patterns": len(ontology.get("entries", [])),
+        "pending_taxonomy_candidates": len([item for item in taxonomy_candidates if item.get("status") == "pending"]),
     }
 
     _render_dashboard(
@@ -384,6 +458,9 @@ def run_pipeline(workspace_dir: str, input_dir: str) -> dict:
         alias_map,
         identity_candidates,
         merge_blocks,
+        taxonomy,
+        ontology,
+        taxonomy_candidates,
     )
     trace["events"].append({"stage": "render", "at": now_iso(), "stats": stats})
     write_json(str(workspace / "trace" / f"{run_id}.json"), trace)

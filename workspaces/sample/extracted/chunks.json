@@ -1,7 +1,7 @@
 [
   {
-    "id": "chk_31002318f74a",
-    "source_id": "src_98cbdc572f78",
+    "id": "chk_f1c9d5f53520",
+    "source_id": "src_0aa51d154da7",
     "chunk_type": "chat_turn",
     "text": "Nimbus acquired Atlas Labs in 2025.",
     "context_hints": {
@@ -10,8 +10,8 @@
     "sequence_index": 0
   },
   {
-    "id": "chk_06b380640235",
-    "source_id": "src_98cbdc572f78",
+    "id": "chk_77d5adad5c80",
+    "source_id": "src_0aa51d154da7",
     "chunk_type": "chat_turn",
     "text": "I think the merger launched a new platform called Orbit.",
     "context_hints": {
@@ -20,8 +20,8 @@
     "sequence_index": 1
   },
   {
-    "id": "chk_08d8175dd927",
-    "source_id": "src_98cbdc572f78",
+    "id": "chk_417ee57dcafc",
+    "source_id": "src_0aa51d154da7",
     "chunk_type": "chat_turn",
     "text": "Maybe the timeline is uncertain.",
     "context_hints": {
@@ -30,8 +30,8 @@
     "sequence_index": 2
   },
   {
-    "id": "chk_d65c80fc7d77",
-    "source_id": "src_57adbe1a776c",
+    "id": "chk_e4e7e4db0551",
+    "source_id": "src_27fc4fad697b",
     "chunk_type": "heading",
     "text": "Briefing",
     "context_hints": {
@@ -40,8 +40,8 @@
     "sequence_index": 0
   },
   {
-    "id": "chk_55322bdc9a7d",
-    "source_id": "src_57adbe1a776c",
+    "id": "chk_b0df9fb821d8",
+    "source_id": "src_27fc4fad697b",
     "chunk_type": "doc_line",
     "text": "Nimbus works at GlobalAlliance according to one source.",
     "context_hints": {
@@ -50,8 +50,8 @@
     "sequence_index": 1
   },
   {
-    "id": "chk_526894d15aca",
-    "source_id": "src_57adbe1a776c",
+    "id": "chk_2842456f571c",
+    "source_id": "src_27fc4fad697b",
     "chunk_type": "doc_line",
     "text": "Atlas released an integration update.",
     "context_hints": {
@@ -60,8 +60,8 @@
     "sequence_index": 2
   },
   {
-    "id": "chk_423b59bbfaf2",
-    "source_id": "src_a27235147302",
+    "id": "chk_a8799d4692c1",
+    "source_id": "src_0a7c8fa4eb1a",
     "chunk_type": "web_paragraph",
     "text": "Nimbus acquired Atlas Labs to expand enterprise AI capabilities.",
     "context_hints": {
@@ -70,8 +70,8 @@
     "sequence_index": 0
   },
   {
-    "id": "chk_b0936c700ae0",
-    "source_id": "src_a27235147302",
+    "id": "chk_d426c3b9d74e",
+    "source_id": "src_0a7c8fa4eb1a",
     "chunk_type": "web_paragraph",
     "text": "The company announced Orbit in Berlin during the annual summit.",
     "context_hints": {

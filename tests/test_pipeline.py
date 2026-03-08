@@ -32,9 +32,12 @@ def test_pipeline_generates_all_artifacts(tmp_path: Path) -> None:
         "extracted/claims.json",
         "canonical/current.json",
         "canonical/alias_map.json",
+        "canonical/taxonomy.json",
+        "canonical/ontology.json",
         "governance/conflicts.json",
         "governance/review_queue.json",
         "governance/review_decisions.json",
+        "governance/taxonomy_candidates.json",
         "governance/identity_candidates.json",
         "governance/merge_blocks.json",
         "snapshots",
@@ -563,3 +566,139 @@ def test_merge_block_avoids_direct_auto_merge(tmp_path: Path) -> None:
     run_pipeline(str(workspace), str(input_dir))
     queue = json.loads((workspace / "governance" / "review_queue.json").read_text(encoding="utf-8"))
     assert any(item["reason"] == "merge_blocked_pair_requires_review" for item in queue)
+
+
+def test_pipeline_generates_taxonomy_nodes(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+    (input_dir / "one.json").write_text(
+        json.dumps({"workspace_id": "w-tax", "source_type": "chat_text", "text": "Acme acquired Beta. Acme acquired Gamma."}),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    taxonomy = json.loads((workspace / "canonical" / "taxonomy.json").read_text(encoding="utf-8"))
+    assert taxonomy["nodes"]
+    assert any(node["node_type"] == "entity_type" for node in taxonomy["nodes"])
+
+
+def test_uncertain_taxonomy_additions_create_candidates(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+    (input_dir / "one.json").write_text(
+        json.dumps({"workspace_id": "w-tax-cand", "source_type": "chat_text", "text": "Acme acquired Beta."}),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    taxonomy_candidates = json.loads((workspace / "governance" / "taxonomy_candidates.json").read_text(encoding="utf-8"))
+    assert taxonomy_candidates
+    assert any(item["status"] == "pending" for item in taxonomy_candidates)
+
+
+def test_accept_taxonomy_review_promotes_candidate(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    (workspace / "governance").mkdir(parents=True)
+    (workspace / "canonical").mkdir(parents=True)
+
+    candidate = {
+        "id": "taxcand_1",
+        "candidate_kind": "category",
+        "candidate_name": "market_signal",
+        "proposed_parent": None,
+        "evidence_count": 1,
+        "source_count": 1,
+        "confidence": 0.6,
+        "status": "pending",
+        "supporting_refs": ["clm_1"],
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "updated_at": "2026-01-01T00:00:00+00:00",
+        "proposed_node": {
+            "id": "tax_category_market_signal",
+            "name": "market_signal",
+            "node_type": "category",
+            "parent_id": None,
+            "source_refs": ["clm_1"],
+            "confidence": 0.6,
+            "status": "active",
+        },
+    }
+    (workspace / "governance" / "taxonomy_candidates.json").write_text(json.dumps([candidate]), encoding="utf-8")
+    (workspace / "canonical" / "taxonomy.json").write_text(json.dumps({"nodes": []}), encoding="utf-8")
+    (workspace / "canonical" / "ontology.json").write_text(json.dumps({"entries": []}), encoding="utf-8")
+    (workspace / "canonical" / "current.json").write_text(
+        json.dumps({"entities": [], "relations": [], "events": [], "insights": [], "schema": {}, "taxonomy": {}, "ontology": {}}),
+        encoding="utf-8",
+    )
+    (workspace / "governance" / "review_queue.json").write_text(
+        json.dumps(
+            [
+                {
+                    "id": "rev_tax_1",
+                    "type": "taxonomy_promotion",
+                    "workspace_id": "w",
+                    "status": "pending",
+                    "priority": "medium",
+                    "target_ids": ["taxcand_1"],
+                    "reason": "taxonomy_candidate_requires_review",
+                    "supporting_artifacts": [],
+                    "supporting_claims": ["clm_1"],
+                    "confidence": 0.6,
+                    "suggested_action": "review",
+                    "created_at": "2026-01-01T00:00:00+00:00",
+                    "updated_at": "2026-01-01T00:00:00+00:00",
+                }
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    apply_review_decision(str(workspace), "rev_tax_1", "accepted", "analyst", "looks good")
+
+    taxonomy = json.loads((workspace / "canonical" / "taxonomy.json").read_text(encoding="utf-8"))
+    assert any(node["id"] == "tax_category_market_signal" for node in taxonomy["nodes"])
+    updated_candidates = json.loads((workspace / "governance" / "taxonomy_candidates.json").read_text(encoding="utf-8"))
+    assert updated_candidates[0]["status"] == "accepted"
+
+
+def test_ontology_artifact_generated_from_relation_patterns(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+    (input_dir / "one.json").write_text(
+        json.dumps(
+            {
+                "workspace_id": "w-ont",
+                "source_type": "chat_text",
+                "text": "Acme acquired Beta. Gamma acquired Delta.",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    ontology = json.loads((workspace / "canonical" / "ontology.json").read_text(encoding="utf-8"))
+    assert ontology["entries"]
+    assert ontology["entries"][0]["relation_type"] == "acquired"
+
+
+def test_dashboard_includes_taxonomy_metrics(tmp_path: Path) -> None:
+    input_dir = tmp_path / "inputs"
+    workspace = tmp_path / "workspace"
+    input_dir.mkdir()
+    (input_dir / "one.json").write_text(
+        json.dumps({"workspace_id": "w-dashboard", "source_type": "chat_text", "text": "Acme acquired Beta."}),
+        encoding="utf-8",
+    )
+
+    run_pipeline(str(workspace), str(input_dir))
+
+    dashboard = (workspace / "reports" / "dashboard.md").read_text(encoding="utf-8")
+    assert "## Taxonomy & Ontology" in dashboard
+    assert "Taxonomy nodes:" in dashboard
+    assert "Ontology patterns:" in dashboard

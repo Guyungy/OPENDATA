@@ -71,6 +71,7 @@ The governance loop is closed through explicit review decisions:
    - `alias`: update alias map on acceptance, persist rejection blocks on reject
    - `conflict`: resolve conflict and selected canonical value when accepted
    - `schema_promotion`: promote or reject schema candidate lifecycle state
+   - `taxonomy_promotion`: promote or reject taxonomy/ontology candidate lifecycle state
    - `placeholder_relevance`: apply placeholder lifecycle action or preserve/defer
 6. write review outcome summary artifact (`governance/review_outcomes.json`)
 7. reflect outcomes in dashboard/changelog artifacts

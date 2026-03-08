@@ -230,6 +230,7 @@ Review item types:
 - conflict
 - schema_promotion
 - placeholder_relevance
+- taxonomy_promotion
 
 Review item lifecycle statuses:
 - pending
@@ -313,3 +314,81 @@ Fields:
 
 Storage artifact:
 - governance/merge_blocks.json
+
+
+### 18. TaxonomyNode
+Represents a canonical taxonomy node used to organize entity/relation/category structure.
+
+Fields:
+- id
+- name
+- node_type
+- parent_id
+- source_refs
+- confidence
+- status
+- created_at
+- updated_at
+
+Node types:
+- entity_type
+- relation_group
+- category
+- tag_cluster
+
+Node statuses:
+- active
+- candidate
+- deprecated
+
+Storage artifact:
+- canonical/taxonomy.json
+
+### 19. OntologyEntry
+Represents a promoted type-level semantic edge pattern across canonical knowledge.
+
+Fields:
+- id
+- subject_type
+- relation_type
+- object_type
+- supporting_refs
+- confidence
+- status
+- created_at
+- updated_at
+
+Storage artifact:
+- canonical/ontology.json
+
+### 20. TaxonomyCandidate
+Represents a proposed taxonomy/ontology addition pending governance review.
+
+Fields:
+- id
+- candidate_kind
+- candidate_name
+- proposed_parent
+- evidence_count
+- source_count
+- confidence
+- status
+- supporting_refs
+- created_at
+- updated_at
+
+Candidate kinds:
+- entity_type
+- relation_group
+- category
+- tag_cluster
+- ontology_pattern
+
+Candidate statuses:
+- pending
+- accepted
+- rejected
+- deferred
+
+Storage artifact:
+- governance/taxonomy_candidates.json
