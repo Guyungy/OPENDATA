@@ -1,0 +1,12 @@
+[
+  {
+    "id": "schc_8cf0adf43f5f",
+    "candidate_kind": "entity",
+    "candidate_name": "unknown",
+    "evidence_count": 3,
+    "source_count": 72,
+    "proposed_value_type": "string",
+    "similarity_to_existing": 0.2,
+    "status": "pending_review"
+  }
+]

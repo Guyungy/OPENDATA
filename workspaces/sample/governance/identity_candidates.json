@@ -400,5 +400,135 @@
     "confidence": 0.7,
     "created_at": "2026-03-08T03:27:01.008277+00:00",
     "updated_at": "2026-03-08T03:27:01.008280+00:00"
+  },
+  {
+    "id": "idcand_e6f0120e8dfd",
+    "workspace_id": "sample",
+    "status": "pending",
+    "candidate_entity_ids": [
+      "entc_64da4bf0d9b2"
+    ],
+    "possible_canonical_entity_ids": [
+      "ent_d8408745ce45"
+    ],
+    "evidence": {
+      "reason": "low_confidence_entity_merge",
+      "candidate_name": "Atlas"
+    },
+    "supporting_claims": [
+      "clm_3601ab981494",
+      "clm_b1cc801a10ae",
+      "clm_fee95a85e9bf"
+    ],
+    "confidence": 0.7,
+    "created_at": "2026-03-08T03:50:43.392382+00:00",
+    "updated_at": "2026-03-08T03:50:43.392385+00:00"
+  },
+  {
+    "id": "idcand_9242a61dcdee",
+    "workspace_id": "sample",
+    "status": "pending",
+    "candidate_entity_ids": [
+      "entc_19800fed9a26"
+    ],
+    "possible_canonical_entity_ids": [
+      "ent_83bad3f17139"
+    ],
+    "evidence": {
+      "reason": "low_confidence_entity_merge",
+      "candidate_name": "Labs"
+    },
+    "supporting_claims": [
+      "clm_3601ab981494",
+      "clm_fee95a85e9bf"
+    ],
+    "confidence": 0.7,
+    "created_at": "2026-03-08T03:50:43.392405+00:00",
+    "updated_at": "2026-03-08T03:50:43.392406+00:00"
+  },
+  {
+    "id": "idcand_10831d6bdd1a",
+    "workspace_id": "sample",
+    "status": "pending",
+    "candidate_entity_ids": [
+      "entc_3d2c9faee448"
+    ],
+    "possible_canonical_entity_ids": [
+      "ent_c0d11e2cd62c"
+    ],
+    "evidence": {
+      "reason": "low_confidence_entity_merge",
+      "candidate_name": "Nimbus"
+    },
+    "supporting_claims": [
+      "clm_3601ab981494",
+      "clm_fee95a85e9bf"
+    ],
+    "confidence": 0.7,
+    "created_at": "2026-03-08T03:50:43.392424+00:00",
+    "updated_at": "2026-03-08T03:50:43.392425+00:00"
+  },
+  {
+    "id": "idcand_2dd445ddce51",
+    "workspace_id": "sample",
+    "status": "pending",
+    "candidate_entity_ids": [
+      "entc_7410528ed8d7"
+    ],
+    "possible_canonical_entity_ids": [
+      "ent_5d611c519fa7"
+    ],
+    "evidence": {
+      "reason": "low_confidence_entity_merge",
+      "candidate_name": "Berlin"
+    },
+    "supporting_claims": [
+      "clm_d0b11974ba46"
+    ],
+    "confidence": 0.7,
+    "created_at": "2026-03-08T03:50:43.392440+00:00",
+    "updated_at": "2026-03-08T03:50:43.392442+00:00"
+  },
+  {
+    "id": "idcand_5823dfd18173",
+    "workspace_id": "sample",
+    "status": "pending",
+    "candidate_entity_ids": [
+      "entc_a854b7fbc389"
+    ],
+    "possible_canonical_entity_ids": [
+      "ent_af31fc3c8b7c"
+    ],
+    "evidence": {
+      "reason": "low_confidence_entity_merge",
+      "candidate_name": "Orbit"
+    },
+    "supporting_claims": [
+      "clm_d0b11974ba46"
+    ],
+    "confidence": 0.7,
+    "created_at": "2026-03-08T03:50:43.392455+00:00",
+    "updated_at": "2026-03-08T03:50:43.392457+00:00"
+  },
+  {
+    "id": "idcand_a1cec1145a89",
+    "workspace_id": "sample",
+    "status": "pending",
+    "candidate_entity_ids": [
+      "entc_1471e858daa5"
+    ],
+    "possible_canonical_entity_ids": [
+      "ent_456b584e915e"
+    ],
+    "evidence": {
+      "reason": "low_confidence_entity_merge",
+      "candidate_name": "The"
+    },
+    "supporting_claims": [
+      "clm_d0b11974ba46"
+    ],
+    "confidence": 0.7,
+    "created_at": "2026-03-08T03:50:43.392471+00:00",
+    "updated_at": "2026-03-08T03:50:43.392472+00:00"
   }
 ]

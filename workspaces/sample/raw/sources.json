@@ -1,10 +1,10 @@
 [
   {
-    "id": "src_0aa51d154da7",
+    "id": "src_b3c8f0a84f0b",
     "workspace_id": "sample",
     "source_type": "chat_text",
     "origin": "support_channel",
-    "ingested_at": "2026-03-08T03:27:01.005405+00:00",
+    "ingested_at": "2026-03-08T03:50:39.426196+00:00",
     "author": "team_chat",
     "metadata": {
       "channel": "#ops"
@@ -13,11 +13,11 @@
     "raw_text": "Alice: Nimbus acquired Atlas Labs in 2025.\nBob: I think the merger launched a new platform called Orbit.\nCara: Maybe the timeline is uncertain."
   },
   {
-    "id": "src_27fc4fad697b",
+    "id": "src_e12541ed7123",
     "workspace_id": "sample",
     "source_type": "document_markdown",
     "origin": "docs/briefing.md",
-    "ingested_at": "2026-03-08T03:27:01.005645+00:00",
+    "ingested_at": "2026-03-08T03:50:39.426310+00:00",
     "author": "analyst",
     "metadata": {
       "doc": "briefing"
@@ -26,11 +26,11 @@
     "raw_text": "# Briefing\nNimbus works at GlobalAlliance according to one source.\nAtlas released an integration update."
   },
   {
-    "id": "src_0a7c8fa4eb1a",
+    "id": "src_f3959efc75df",
     "workspace_id": "sample",
     "source_type": "webpage_text",
     "origin": "https://example.com/news",
-    "ingested_at": "2026-03-08T03:27:01.005821+00:00",
+    "ingested_at": "2026-03-08T03:50:39.426380+00:00",
     "author": "web_crawler",
     "metadata": {
       "title": "Company News"

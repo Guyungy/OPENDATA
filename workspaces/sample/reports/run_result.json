@@ -1,14 +1,14 @@
 {
-  "run_id": "run_20260308_032701",
+  "run_id": "run_20260308_035034",
   "stats": {
     "sources": 3,
     "chunks": 8,
     "claims": 4,
     "entities": 9,
-    "relations": 20,
-    "events": 23,
+    "relations": 22,
+    "events": 25,
     "alias_entries": 0,
-    "identity_candidates": 18,
+    "identity_candidates": 24,
     "merge_blocks": 0,
     "taxonomy_nodes": 3,
     "ontology_patterns": 2,

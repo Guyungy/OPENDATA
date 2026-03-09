@@ -1,0 +1,25 @@
+{
+  "created_at": "2026-03-08T04:04:10.706526+00:00",
+  "entity_delta": 3,
+  "relation_delta": 0,
+  "event_delta": 0,
+  "review_outcomes": {
+    "review_items_resolved": 0,
+    "merges_accepted": 0,
+    "aliases_accepted": 0,
+    "conflicts_resolved": 0,
+    "schema_promotions_accepted": 0,
+    "placeholders_deprecated": 0,
+    "review_items_deferred": 0,
+    "merge_blocks_created": 0,
+    "identity_candidates_resolved": 0,
+    "taxonomy_candidates_promoted": 0,
+    "taxonomy_candidates_rejected": 0
+  },
+  "taxonomy_nodes_added": 1,
+  "ontology_patterns_added": 0,
+  "taxonomy_candidates_created": 0,
+  "taxonomy_candidates_promoted": 0,
+  "taxonomy_candidates_rejected": 0,
+  "summary": "Canonical layer updated from extracted candidates and governance checks."
+}

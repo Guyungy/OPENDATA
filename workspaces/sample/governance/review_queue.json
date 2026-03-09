@@ -1,12 +1,12 @@
 [
   {
-    "id": "rev_eacc82f13200",
+    "id": "rev_079911c61722",
     "type": "entity_merge",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "high",
     "target_ids": [
-      "entc_3e0e3a9879dc"
+      "entc_64da4bf0d9b2"
     ],
     "reason": "low_confidence_entity_merge",
     "supporting_artifacts": [
@@ -14,23 +14,23 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
-      "clm_a110791f4858",
-      "clm_e29e28974f91",
-      "clm_53105831f278"
+      "clm_3601ab981494",
+      "clm_b1cc801a10ae",
+      "clm_fee95a85e9bf"
     ],
     "confidence": 0.7,
     "suggested_action": "Require human review before canonicalizing entity merge.",
-    "created_at": "2026-03-08T03:27:01.007811+00:00",
-    "updated_at": "2026-03-08T03:27:01.007811+00:00"
+    "created_at": "2026-03-08T03:50:43.392321+00:00",
+    "updated_at": "2026-03-08T03:50:43.392321+00:00"
   },
   {
-    "id": "rev_399d0bda3dbc",
+    "id": "rev_cca5a91b1cd3",
     "type": "entity_merge",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "high",
     "target_ids": [
-      "entc_3c5642801466"
+      "entc_19800fed9a26"
     ],
     "reason": "low_confidence_entity_merge",
     "supporting_artifacts": [
@@ -38,22 +38,22 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
-      "clm_a110791f4858",
-      "clm_53105831f278"
+      "clm_3601ab981494",
+      "clm_fee95a85e9bf"
     ],
     "confidence": 0.7,
     "suggested_action": "Require human review before canonicalizing entity merge.",
-    "created_at": "2026-03-08T03:27:01.007886+00:00",
-    "updated_at": "2026-03-08T03:27:01.007886+00:00"
+    "created_at": "2026-03-08T03:50:43.392391+00:00",
+    "updated_at": "2026-03-08T03:50:43.392391+00:00"
   },
   {
-    "id": "rev_a217c03be9da",
+    "id": "rev_e36ccb21195b",
     "type": "entity_merge",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "high",
     "target_ids": [
-      "entc_721fe540a4e1"
+      "entc_3d2c9faee448"
     ],
     "reason": "low_confidence_entity_merge",
     "supporting_artifacts": [
@@ -61,22 +61,22 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
-      "clm_a110791f4858",
-      "clm_53105831f278"
+      "clm_3601ab981494",
+      "clm_fee95a85e9bf"
     ],
     "confidence": 0.7,
     "suggested_action": "Require human review before canonicalizing entity merge.",
-    "created_at": "2026-03-08T03:27:01.007940+00:00",
-    "updated_at": "2026-03-08T03:27:01.007940+00:00"
+    "created_at": "2026-03-08T03:50:43.392412+00:00",
+    "updated_at": "2026-03-08T03:50:43.392412+00:00"
   },
   {
-    "id": "rev_e919b9e490b0",
+    "id": "rev_de7156960da9",
     "type": "entity_merge",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "high",
     "target_ids": [
-      "entc_6e401d579c40"
+      "entc_7410528ed8d7"
     ],
     "reason": "low_confidence_entity_merge",
     "supporting_artifacts": [
@@ -84,21 +84,21 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
-      "clm_72419c308e10"
+      "clm_d0b11974ba46"
     ],
     "confidence": 0.7,
     "suggested_action": "Require human review before canonicalizing entity merge.",
-    "created_at": "2026-03-08T03:27:01.007966+00:00",
-    "updated_at": "2026-03-08T03:27:01.007966+00:00"
+    "created_at": "2026-03-08T03:50:43.392429+00:00",
+    "updated_at": "2026-03-08T03:50:43.392429+00:00"
   },
   {
-    "id": "rev_fa39afaa227d",
+    "id": "rev_512e2209b033",
     "type": "entity_merge",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "high",
     "target_ids": [
-      "entc_48c3d195aa39"
+      "entc_a854b7fbc389"
     ],
     "reason": "low_confidence_entity_merge",
     "supporting_artifacts": [
@@ -106,21 +106,21 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
-      "clm_72419c308e10"
+      "clm_d0b11974ba46"
     ],
     "confidence": 0.7,
     "suggested_action": "Require human review before canonicalizing entity merge.",
-    "created_at": "2026-03-08T03:27:01.008185+00:00",
-    "updated_at": "2026-03-08T03:27:01.008185+00:00"
+    "created_at": "2026-03-08T03:50:43.392445+00:00",
+    "updated_at": "2026-03-08T03:50:43.392445+00:00"
   },
   {
-    "id": "rev_9dc2ff069c14",
+    "id": "rev_9ae368bc3981",
     "type": "entity_merge",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "high",
     "target_ids": [
-      "entc_ebce252ce600"
+      "entc_1471e858daa5"
     ],
     "reason": "low_confidence_entity_merge",
     "supporting_artifacts": [
@@ -128,21 +128,21 @@
       "canonical/current.json"
     ],
     "supporting_claims": [
-      "clm_72419c308e10"
+      "clm_d0b11974ba46"
     ],
     "confidence": 0.7,
     "suggested_action": "Require human review before canonicalizing entity merge.",
-    "created_at": "2026-03-08T03:27:01.008242+00:00",
-    "updated_at": "2026-03-08T03:27:01.008242+00:00"
+    "created_at": "2026-03-08T03:50:43.392460+00:00",
+    "updated_at": "2026-03-08T03:50:43.392460+00:00"
   },
   {
-    "id": "rev_308e6a51f912",
+    "id": "rev_c64a4dee89be",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_29ee55e04c87",
+      "ph_36e44ab1c9e2",
       "ent_d8408745ce45"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -178,17 +178,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.008821+00:00",
-    "updated_at": "2026-03-08T03:27:01.008821+00:00"
+    "created_at": "2026-03-08T03:50:45.841439+00:00",
+    "updated_at": "2026-03-08T03:50:45.841439+00:00"
   },
   {
-    "id": "rev_9895b7133702",
+    "id": "rev_084ffc0c4784",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_e16937d94baa",
+      "ph_ad85053e6fe4",
       "ent_83bad3f17139"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -218,17 +218,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.008893+00:00",
-    "updated_at": "2026-03-08T03:27:01.008893+00:00"
+    "created_at": "2026-03-08T03:50:45.841455+00:00",
+    "updated_at": "2026-03-08T03:50:45.841455+00:00"
   },
   {
-    "id": "rev_1c861742bf27",
+    "id": "rev_dee493d12de2",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_bac8ea08c337",
+      "ph_a47727bd15e4",
       "ent_c0d11e2cd62c"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -259,17 +259,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.008929+00:00",
-    "updated_at": "2026-03-08T03:27:01.008929+00:00"
+    "created_at": "2026-03-08T03:50:45.841468+00:00",
+    "updated_at": "2026-03-08T03:50:45.841468+00:00"
   },
   {
-    "id": "rev_2164ac0913aa",
+    "id": "rev_3a84da92ae9d",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_20341775762d",
+      "ph_437ec3f51a72",
       "ent_af31fc3c8b7c"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -292,17 +292,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.008985+00:00",
-    "updated_at": "2026-03-08T03:27:01.008985+00:00"
+    "created_at": "2026-03-08T03:50:45.841479+00:00",
+    "updated_at": "2026-03-08T03:50:45.841479+00:00"
   },
   {
-    "id": "rev_b75c9f896abd",
+    "id": "rev_77dcc19ae916",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_66536707269a",
+      "ph_6807d973a35b",
       "ent_ba7c8a7f6785"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -317,17 +317,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.009008+00:00",
-    "updated_at": "2026-03-08T03:27:01.009008+00:00"
+    "created_at": "2026-03-08T03:50:45.841490+00:00",
+    "updated_at": "2026-03-08T03:50:45.841490+00:00"
   },
   {
-    "id": "rev_1b45a4eb3331",
+    "id": "rev_c45c371266ff",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_ca4139413002",
+      "ph_21c05b31bf64",
       "ent_3dcdf8779e04"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -342,17 +342,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.009043+00:00",
-    "updated_at": "2026-03-08T03:27:01.009043+00:00"
+    "created_at": "2026-03-08T03:50:45.841509+00:00",
+    "updated_at": "2026-03-08T03:50:45.841509+00:00"
   },
   {
-    "id": "rev_b90b505b93c2",
+    "id": "rev_2f8954f56993",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_af8f34a082ef",
+      "ph_9fa816b4e501",
       "ent_4c99e54a0f1f"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -367,17 +367,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.009064+00:00",
-    "updated_at": "2026-03-08T03:27:01.009064+00:00"
+    "created_at": "2026-03-08T03:50:45.841519+00:00",
+    "updated_at": "2026-03-08T03:50:45.841519+00:00"
   },
   {
-    "id": "rev_375eddc54f08",
+    "id": "rev_4bcc68c5d2da",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_58c9e114ceda",
+      "ph_3558fbd61030",
       "ent_5d611c519fa7"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -397,17 +397,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.009083+00:00",
-    "updated_at": "2026-03-08T03:27:01.009083+00:00"
+    "created_at": "2026-03-08T03:50:45.841529+00:00",
+    "updated_at": "2026-03-08T03:50:45.841529+00:00"
   },
   {
-    "id": "rev_03847e993fe9",
+    "id": "rev_67c2d94e7794",
     "type": "placeholder_relevance",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "ph_c1af15ba7341",
+      "ph_c36f6b546c29",
       "ent_456b584e915e"
     ],
     "reason": "placeholder_aging_or_missing_core_field",
@@ -427,17 +427,17 @@
     ],
     "confidence": 0.2,
     "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
-    "created_at": "2026-03-08T03:27:01.009120+00:00",
-    "updated_at": "2026-03-08T03:27:01.009120+00:00"
+    "created_at": "2026-03-08T03:50:45.841539+00:00",
+    "updated_at": "2026-03-08T03:50:45.841539+00:00"
   },
   {
-    "id": "rev_e4767233c1dc",
+    "id": "rev_a0af16af5b38",
     "type": "schema_promotion",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "schc_349801dbfa0f"
+      "schc_8950bb16c9b1"
     ],
     "reason": "schema_candidate_requires_review",
     "supporting_artifacts": [
@@ -447,17 +447,17 @@
     "supporting_claims": [],
     "confidence": 0.5,
     "suggested_action": "Review schema candidate and approve or reject promotion.",
-    "created_at": "2026-03-08T03:27:01.010259+00:00",
-    "updated_at": "2026-03-08T03:27:01.010259+00:00"
+    "created_at": "2026-03-08T03:50:45.841552+00:00",
+    "updated_at": "2026-03-08T03:50:45.841552+00:00"
   },
   {
-    "id": "rev_18625f40fd0d",
+    "id": "rev_77367d42ccf9",
     "type": "schema_promotion",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "schc_48757c5288b7"
+      "schc_c0e774f00274"
     ],
     "reason": "schema_candidate_requires_review",
     "supporting_artifacts": [
@@ -467,17 +467,17 @@
     "supporting_claims": [],
     "confidence": 0.5,
     "suggested_action": "Review schema candidate and approve or reject promotion.",
-    "created_at": "2026-03-08T03:27:01.010298+00:00",
-    "updated_at": "2026-03-08T03:27:01.010298+00:00"
+    "created_at": "2026-03-08T03:50:45.841560+00:00",
+    "updated_at": "2026-03-08T03:50:45.841560+00:00"
   },
   {
-    "id": "rev_bf011786c884",
+    "id": "rev_7d587c7d8aa0",
     "type": "schema_promotion",
     "workspace_id": "sample",
     "status": "pending",
     "priority": "medium",
     "target_ids": [
-      "schc_4ffaf7b86775"
+      "schc_a0f05279da86"
     ],
     "reason": "schema_candidate_requires_review",
     "supporting_artifacts": [
@@ -487,7 +487,7 @@
     "supporting_claims": [],
     "confidence": 0.5,
     "suggested_action": "Review schema candidate and approve or reject promotion.",
-    "created_at": "2026-03-08T03:27:01.010314+00:00",
-    "updated_at": "2026-03-08T03:27:01.010314+00:00"
+    "created_at": "2026-03-08T03:50:45.841565+00:00",
+    "updated_at": "2026-03-08T03:50:45.841565+00:00"
   }
 ]

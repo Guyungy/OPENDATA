@@ -1,6 +1,6 @@
 [
   {
-    "id": "schc_349801dbfa0f",
+    "id": "schc_8950bb16c9b1",
     "candidate_kind": "entity",
     "candidate_name": "organization",
     "evidence_count": 10,
@@ -10,7 +10,7 @@
     "status": "pending_review"
   },
   {
-    "id": "schc_48757c5288b7",
+    "id": "schc_c0e774f00274",
     "candidate_kind": "relation",
     "candidate_name": "acquired",
     "evidence_count": 2,
@@ -20,7 +20,7 @@
     "status": "pending_review"
   },
   {
-    "id": "schc_4ffaf7b86775",
+    "id": "schc_a0f05279da86",
     "candidate_kind": "event",
     "candidate_name": "announcement",
     "evidence_count": 2,

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "ph_eb68e515f489",
+    "target_type": "entity",
+    "target_id": "ent_9b5f85c06a1d",
+    "field": "type",
+    "status": "missing",
+    "first_detected_at": "2026-03-08T04:04:10.706324+00:00",
+    "last_updated_at": "2026-03-08T04:04:10.706325+00:00",
+    "fill_confidence": 0.2,
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ]
+  },
+  {
+    "id": "ph_f39053701bf6",
+    "target_type": "entity",
+    "target_id": "ent_8deaa865a8d1",
+    "field": "type",
+    "status": "missing",
+    "first_detected_at": "2026-03-08T04:04:10.706334+00:00",
+    "last_updated_at": "2026-03-08T04:04:10.706335+00:00",
+    "fill_confidence": 0.2,
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ]
+  },
+  {
+    "id": "ph_5f03d6762d46",
+    "target_type": "entity",
+    "target_id": "ent_79c77568efdf",
+    "field": "type",
+    "status": "missing",
+    "first_detected_at": "2026-03-08T04:04:10.706343+00:00",
+    "last_updated_at": "2026-03-08T04:04:10.706344+00:00",
+    "fill_confidence": 0.2,
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ]
+  }
+]

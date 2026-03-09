@@ -1,0 +1,35 @@
+[
+  {
+    "id": "entc_35aa511bc64b",
+    "candidate_type": "unknown",
+    "candidate_name": "S222",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "id": "entc_ba928a1977b9",
+    "candidate_type": "unknown",
+    "candidate_name": "S666",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ],
+    "confidence": 0.65
+  },
+  {
+    "id": "entc_507e971ec2a4",
+    "candidate_type": "unknown",
+    "candidate_name": "S858",
+    "aliases": [],
+    "extracted_attributes": {},
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ],
+    "confidence": 0.65
+  }
+]

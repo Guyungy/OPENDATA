@@ -1,0 +1,28 @@
+{
+  "run_id": "run_20260308_040410",
+  "stats": {
+    "sources": 1,
+    "chunks": 72,
+    "claims": 74,
+    "entities": 3,
+    "relations": 0,
+    "events": 0,
+    "alias_entries": 0,
+    "identity_candidates": 0,
+    "merge_blocks": 0,
+    "taxonomy_nodes": 1,
+    "ontology_patterns": 0,
+    "pending_taxonomy_candidates": 0
+  },
+  "intent": {
+    "goal": "Build a balanced general-purpose knowledge base for this workspace.",
+    "focus": [],
+    "ignore": [],
+    "preferred_entity_types": [],
+    "preferred_relation_types": [],
+    "report_preferences": {
+      "include_intent_summary": true
+    }
+  },
+  "validation_errors": []
+}

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1440" width="1080" height="1440">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2d3436"/>
+      <stop offset="100%" stop-color="#636e72"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1440" fill="url(#bg2)"/>
+
+  <text x="120" y="200" font-family="sans-serif" font-size="60" font-weight="bold" fill="#dfe6e9">运行效果分析与优化建议</text>
+  <line x1="120" y1="260" x2="480" y2="260" stroke="#00b894" stroke-width="8"/>
+
+  <!-- Analysis Box -->
+  <rect x="120" y="360" width="840" height="850" rx="20" fill="#ffffff" filter="drop-shadow(0 20px 20px rgba(0,0,0,0.2))"/>
+  
+  <text x="180" y="470" font-family="sans-serif" font-size="45" font-weight="bold" fill="#2d3436">💡 为什么提取结果比较少？</text>
+  
+  <!-- Point 1 -->
+  <circle cx="200" cy="580" r="15" fill="#0984e3"/>
+  <text x="240" y="590" font-family="sans-serif" font-size="35" font-weight="bold" fill="#2d3436">文本拆分有效：</text>
+  <text x="240" y="650" font-family="sans-serif" font-size="32" fill="#636e72">系统能把长文分词成了 72 个文本块和 74 个主张声明，</text>
+  <text x="240" y="700" font-family="sans-serif" font-size="32" fill="#636e72">证明处理引擎没有任何问题。</text>
+
+  <!-- Point 2 -->
+  <circle cx="200" cy="810" r="15" fill="#e17055"/>
+  <text x="240" y="820" font-family="sans-serif" font-size="35" font-weight="bold" fill="#2d3436">非标准术语的意图限制：</text>
+  <text x="240" y="880" font-family="sans-serif" font-size="32" fill="#636e72">MindVault 默认偏向寻找机构 (Organizations) 或地点等，</text>
+  <text x="240" y="930" font-family="sans-serif" font-size="32" fill="#636e72">而测试文档主要以黑话评测为主，所以只有像代号</text>
+  <text x="240" y="980" font-family="sans-serif" font-size="32" fill="#636e72">（S222, S858）碰巧命中了识别池。</text>
+
+  <!-- Point 3 -->
+  <circle cx="200" cy="1090" r="15" fill="#00b894"/>
+  <text x="240" y="1100" font-family="sans-serif" font-size="35" font-weight="bold" fill="#2d3436">优化方案建议：</text>
+  <text x="240" y="1160" font-family="sans-serif" font-size="32" fill="#636e72">之后可以通过在 `intent.json` 中定义新的 `preferred_entity`，</text>
+
+  <!-- Footer Tip -->
+  <text x="540" y="1350" font-family="sans-serif" font-size="30" fill="#b2bec3" text-anchor="middle">—— 佳宜项目数据反馈呈现 ——</text>
+</svg>

@@ -1,6 +1,6 @@
 [
   {
-    "id": "clm_a110791f4858",
+    "id": "clm_3601ab981494",
     "workspace_id": "sample",
     "subject": "Nimbus",
     "predicate": "mentions",
@@ -8,17 +8,17 @@
     "claim_text": "Nimbus acquired Atlas Labs in 2025",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_0aa51d154da7",
-      "chunk_id": "chk_f1c9d5f53520"
+      "source_id": "src_b3c8f0a84f0b",
+      "chunk_id": "chk_b2333ba18dab"
     },
     "speaker": "Alice",
-    "claim_time": "2026-03-08T03:27:01.006141+00:00",
+    "claim_time": "2026-03-08T03:50:39.426540+00:00",
     "confidence": 0.8,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_e29e28974f91",
+    "id": "clm_b1cc801a10ae",
     "workspace_id": "sample",
     "subject": "Atlas",
     "predicate": "mentions",
@@ -26,17 +26,17 @@
     "claim_text": "Atlas released an integration update",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_27fc4fad697b",
-      "chunk_id": "chk_2842456f571c"
+      "source_id": "src_e12541ed7123",
+      "chunk_id": "chk_e57cea37bec6"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-08T03:27:01.006416+00:00",
+    "claim_time": "2026-03-08T03:50:39.426689+00:00",
     "confidence": 0.8,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_53105831f278",
+    "id": "clm_fee95a85e9bf",
     "workspace_id": "sample",
     "subject": "Nimbus",
     "predicate": "mentions",
@@ -44,17 +44,17 @@
     "claim_text": "Nimbus acquired Atlas Labs to expand enterprise AI capabilities",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_0a7c8fa4eb1a",
-      "chunk_id": "chk_a8799d4692c1"
+      "source_id": "src_f3959efc75df",
+      "chunk_id": "chk_3297e62b5c31"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-08T03:27:01.006495+00:00",
+    "claim_time": "2026-03-08T03:50:39.426722+00:00",
     "confidence": 0.8,
     "verdict": "unverified",
     "status": "active"
   },
   {
-    "id": "clm_72419c308e10",
+    "id": "clm_d0b11974ba46",
     "workspace_id": "sample",
     "subject": "The",
     "predicate": "mentions",
@@ -62,11 +62,11 @@
     "claim_text": "The company announced Orbit in Berlin during the annual summit",
     "claim_type": "fact",
     "source_ref": {
-      "source_id": "src_0a7c8fa4eb1a",
-      "chunk_id": "chk_d426c3b9d74e"
+      "source_id": "src_f3959efc75df",
+      "chunk_id": "chk_347fe91a2cb7"
     },
     "speaker": "unknown",
-    "claim_time": "2026-03-08T03:27:01.006551+00:00",
+    "claim_time": "2026-03-08T03:50:39.426751+00:00",
     "confidence": 0.8,
     "verdict": "unverified",
     "status": "active"

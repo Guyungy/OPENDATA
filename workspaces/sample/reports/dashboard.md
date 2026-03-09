@@ -1,7 +1,7 @@
 # MindVault Dashboard
 
-- Run ID: `run_20260308_032701`
-- Timestamp: 2026-03-08T03:27:01.023540+00:00
+- Run ID: `run_20260308_035034`
+- Timestamp: 2026-03-08T03:50:56.817261+00:00
 
 ## Workspace Intent
 - Goal: Build an organization-centric knowledge base for market and product updates.
@@ -15,8 +15,8 @@
 - Chunks: 8
 - Claims: 4
 - Entities: 9
-- Relations: 20
-- Events: 23
+- Relations: 22
+- Events: 25
 
 ## Governance State
 - Conflicts: 0
@@ -43,7 +43,7 @@
 
 ## Identity Memory
 - Alias entries: 0
-- Unresolved identity candidates: 17
+- Unresolved identity candidates: 23
 - Merge blocks: 0
 
 ## Taxonomy & Ontology
@@ -65,8 +65,8 @@
 - Review items deferred: 2
 - Merge blocks created: 0
 - Identity candidates resolved: 1
-- Taxonomy nodes added: 3
-- Ontology patterns added: 2
+- Taxonomy nodes added: 0
+- Ontology patterns added: 0
 - Taxonomy candidates created: 0
 - Taxonomy candidates promoted: 0
 - Taxonomy candidates rejected: 0

@@ -1,0 +1,30 @@
+{
+  "run_id": "run_20260308_040344",
+  "created_at": "2026-03-08T04:03:44.426026+00:00",
+  "canonical": {
+    "entities": [],
+    "relations": [],
+    "events": [],
+    "insights": [
+      {
+        "id": "ins_6063b7950a6f",
+        "title": "Run summary",
+        "text": "Goal: Build a balanced general-purpose knowledge base for this workspace. | Processed 0 claims and produced 0 events.",
+        "based_on": [],
+        "confidence": 0.6,
+        "created_at": "2026-03-08T04:03:44.424870+00:00"
+      }
+    ],
+    "schema": {
+      "entity_types": [],
+      "relation_types": [],
+      "fields": []
+    },
+    "taxonomy": {
+      "nodes": []
+    },
+    "ontology": {
+      "entries": []
+    }
+  }
+}

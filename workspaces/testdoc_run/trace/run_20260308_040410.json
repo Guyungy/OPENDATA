@@ -1,0 +1,48 @@
+{
+  "run_id": "run_20260308_040410",
+  "events": [
+    {
+      "stage": "intent",
+      "at": "2026-03-08T04:04:10.700057+00:00",
+      "goal": "Build a balanced general-purpose knowledge base for this workspace."
+    },
+    {
+      "stage": "policy",
+      "at": "2026-03-08T04:04:10.700061+00:00",
+      "entity_merge_min_confidence": 0.65
+    },
+    {
+      "stage": "ingress",
+      "count": 1,
+      "at": "2026-03-08T04:04:10.700212+00:00"
+    },
+    {
+      "stage": "adapter",
+      "count": 72,
+      "at": "2026-03-08T04:04:10.703267+00:00"
+    },
+    {
+      "stage": "extraction",
+      "count": 74,
+      "at": "2026-03-08T04:04:10.704763+00:00"
+    },
+    {
+      "stage": "render",
+      "at": "2026-03-08T04:04:10.711534+00:00",
+      "stats": {
+        "sources": 1,
+        "chunks": 72,
+        "claims": 74,
+        "entities": 3,
+        "relations": 0,
+        "events": 0,
+        "alias_entries": 0,
+        "identity_candidates": 0,
+        "merge_blocks": 0,
+        "taxonomy_nodes": 1,
+        "ontology_patterns": 0,
+        "pending_taxonomy_candidates": 0
+      }
+    }
+  ]
+}

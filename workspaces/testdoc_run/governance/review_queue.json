@@ -1,0 +1,115 @@
+[
+  {
+    "id": "rev_4c681e0baa2f",
+    "type": "conflict",
+    "workspace_id": "testdoc_run",
+    "status": "pending",
+    "priority": "high",
+    "target_ids": [
+      "conf_8a418dc65e7c"
+    ],
+    "reason": "multiple_object_values",
+    "supporting_artifacts": [
+      "governance/conflicts.json",
+      "extracted/claims.json"
+    ],
+    "supporting_claims": [
+      "clm_59e245602e3c",
+      "clm_24dd54484015",
+      "clm_8601d62bbacd"
+    ],
+    "confidence": 0.4,
+    "suggested_action": "Resolve conflicting claim objects and set canonical verdict.",
+    "created_at": "2026-03-08T04:04:10.706315+00:00",
+    "updated_at": "2026-03-08T04:04:10.706315+00:00"
+  },
+  {
+    "id": "rev_99b3bcf2f61a",
+    "type": "placeholder_relevance",
+    "workspace_id": "testdoc_run",
+    "status": "pending",
+    "priority": "medium",
+    "target_ids": [
+      "ph_eb68e515f489",
+      "ent_9b5f85c06a1d"
+    ],
+    "reason": "placeholder_aging_or_missing_core_field",
+    "supporting_artifacts": [
+      "governance/placeholders.json",
+      "canonical/current.json"
+    ],
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ],
+    "confidence": 0.2,
+    "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
+    "created_at": "2026-03-08T04:04:10.706327+00:00",
+    "updated_at": "2026-03-08T04:04:10.706327+00:00"
+  },
+  {
+    "id": "rev_2cadd751593a",
+    "type": "placeholder_relevance",
+    "workspace_id": "testdoc_run",
+    "status": "pending",
+    "priority": "medium",
+    "target_ids": [
+      "ph_f39053701bf6",
+      "ent_8deaa865a8d1"
+    ],
+    "reason": "placeholder_aging_or_missing_core_field",
+    "supporting_artifacts": [
+      "governance/placeholders.json",
+      "canonical/current.json"
+    ],
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ],
+    "confidence": 0.2,
+    "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
+    "created_at": "2026-03-08T04:04:10.706336+00:00",
+    "updated_at": "2026-03-08T04:04:10.706336+00:00"
+  },
+  {
+    "id": "rev_aa32e1007d54",
+    "type": "placeholder_relevance",
+    "workspace_id": "testdoc_run",
+    "status": "pending",
+    "priority": "medium",
+    "target_ids": [
+      "ph_5f03d6762d46",
+      "ent_79c77568efdf"
+    ],
+    "reason": "placeholder_aging_or_missing_core_field",
+    "supporting_artifacts": [
+      "governance/placeholders.json",
+      "canonical/current.json"
+    ],
+    "supporting_claims": [
+      "clm_aebf9703b440"
+    ],
+    "confidence": 0.2,
+    "suggested_action": "Confirm placeholder is still relevant and prioritize enrichment.",
+    "created_at": "2026-03-08T04:04:10.706346+00:00",
+    "updated_at": "2026-03-08T04:04:10.706346+00:00"
+  },
+  {
+    "id": "rev_016855d20634",
+    "type": "schema_promotion",
+    "workspace_id": "testdoc_run",
+    "status": "pending",
+    "priority": "medium",
+    "target_ids": [
+      "schc_8cf0adf43f5f"
+    ],
+    "reason": "schema_candidate_requires_review",
+    "supporting_artifacts": [
+      "extracted/schema_candidates.json",
+      "governance/schema_candidate_queue.json"
+    ],
+    "supporting_claims": [],
+    "confidence": 0.5,
+    "suggested_action": "Review schema candidate and approve or reject promotion.",
+    "created_at": "2026-03-08T04:04:10.706356+00:00",
+    "updated_at": "2026-03-08T04:04:10.706356+00:00"
+  }
+]

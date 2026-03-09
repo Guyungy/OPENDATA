@@ -1,0 +1,10 @@
+{
+  "goal": "Build a balanced general-purpose knowledge base for this workspace.",
+  "focus": [],
+  "ignore": [],
+  "preferred_entity_types": [],
+  "preferred_relation_types": [],
+  "report_preferences": {
+    "include_intent_summary": true
+  }
+}
